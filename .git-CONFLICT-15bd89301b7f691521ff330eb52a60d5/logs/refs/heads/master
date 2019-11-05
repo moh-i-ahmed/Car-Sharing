@@ -1,0 +1,6 @@
+0000000000000000000000000000000000000000 9e97bc4375faab2542d7755fa00c71e9fd3d28ea Mohammed I. Ahmed <mohde57@live.com> 1572970443 +0000	clone: from https://github.com/moa38/Car-Sharing.git
+9e97bc4375faab2542d7755fa00c71e9fd3d28ea 8dc5c957c81f4c7209ddb9aafac4946dd5bb9afd Mohammed I. Ahmed <mohde57@live.com> 1572970554 +0000	commit: Update README.md
+8dc5c957c81f4c7209ddb9aafac4946dd5bb9afd 1fec30554b38226dd4f6a114b3e3ba6e3243d5f4 Mohammed I. Ahmed <mohde57@live.com> 1572971578 +0000	commit: Added TravisCI config file
+1fec30554b38226dd4f6a114b3e3ba6e3243d5f4 ac51fa96282ab27232cf2933eb6d19615c0235ee Mohammed I. Ahmed <mohde57@live.com> 1572971598 +0000	commit: Updated gitignore
+ac51fa96282ab27232cf2933eb6d19615c0235ee 6f76b1eb225e701a5a2597fe660e2d2dacccb0e1 Mohammed I. Ahmed <mohde57@live.com> 1572971823 +0000	commit: Added gradle config
+6f76b1eb225e701a5a2597fe660e2d2dacccb0e1 c478668d00b5ae7d47ea4671f7cd46e9214d1a9a Mohammed I. Ahmed <mohde57@live.com> 1572971846 +0000	commit: Upload initial project structure
