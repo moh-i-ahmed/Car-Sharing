@@ -1,0 +1,21 @@
+language: java
+
+# Matrix of JDKs
+matrix:
+  include:
+    - env: JDK='Oracle JDK 8'
+       oraclejdk8
+    - env: JDK='Open JDK 8'
+       openjdk8
+    - env: JDK='Oracle JDK 11'
+       oraclejdk11
+
+# Cache gradle
+cache:
+  directories:
+    - $HOME/.gradle/caches/   # gradle bin
+    - $HOME/.m2               # maven repository
+
+# Execute ./gradlew
+script:
+  - ./gradlew check --info
