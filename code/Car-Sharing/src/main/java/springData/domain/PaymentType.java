@@ -3,41 +3,37 @@
  */
 package springData.domain;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 
 /**
  * @author mia17
  */
 @Entity
-@IdClass(PaymentTypePK.class)
 public class PaymentType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long paymentTypeID;
+    private String paymentTypeCode;
 
     @Basic
     private String paymentTypeDescription;
 
-    @Basic
-    private String paymentTypeCode;
+    @OneToMany(mappedBy = "paymentType")
+    private List<Payment> payments;
 
-    @Id
-    @OneToOne
-    private Payment payment;
-
-    public Long getPaymentTypeID() {
-        return this.paymentTypeID;
+    public String getPaymentTypeCode() {
+        return this.paymentTypeCode;
     }
 
-    public void setPaymentTypeID(Long paymentTypeID) {
-        this.paymentTypeID = paymentTypeID;
+    public void setPaymentTypeCode(String paymentTypeCode) {
+        this.paymentTypeCode = paymentTypeCode;
     }
 
     public String getPaymentTypeDescription() {
@@ -48,20 +44,25 @@ public class PaymentType {
         this.paymentTypeDescription = paymentTypeDescription;
     }
 
-    public String getPaymentTypeCode() {
-        return this.paymentTypeCode;
+    public List<Payment> getPayments() {
+        if (payments == null) {
+            payments = new ArrayList<>();
+        }
+        return this.payments;
     }
 
-    public void setPaymentTypeCode(String paymentTypeCode) {
-        this.paymentTypeCode = paymentTypeCode;
+    public void setPayments(List<Payment> payments) {
+        this.payments = payments;
     }
 
-    public Payment getPayment() {
-        return this.payment;
+    public void addPayment(Payment payment) {
+        getPayments().add(payment);
+        payment.setPaymentType(this);
     }
 
-    public void setPayment(Payment payment) {
-        this.payment = payment;
+    public void removePayment(Payment payment) {
+        getPayments().remove(payment);
+        payment.setPaymentType(null);
     }
 
 }
