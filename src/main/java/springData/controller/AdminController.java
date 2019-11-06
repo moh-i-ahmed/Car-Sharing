@@ -33,7 +33,6 @@ public class AdminController {
 
    @Autowired UserRepository userRepo;
    @Autowired RoleRepository roleRepo;
-   @Autowired TimesheetRepository timesheetRepo;
 
    @InitBinder("userDTO")
    protected void initUserDTOBinder(WebDataBinder binder) {
