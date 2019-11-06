@@ -10,14 +10,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 /**
  * @author mia17
  */
 @Entity
-@IdClass(InvoicePK.class)
 public class Invoice {
 
     @Id
@@ -25,6 +27,7 @@ public class Invoice {
     private Long invoiceID;
 
     @Basic
+    @DateTimeFormat(iso = ISO.DATE)
     private LocalDate invoiceDate;
 
     @Basic
@@ -34,9 +37,9 @@ public class Invoice {
     private String invoiceStatus;
 
     @OneToOne
+    @JoinColumn(name = "REQUESTID")
     private Request request;
 
-    @Id
     @OneToOne
     private Payment payment;
 

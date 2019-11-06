@@ -9,7 +9,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 /**
  * @author mia17
@@ -22,16 +26,17 @@ public class Payment {
     private Long paymentID;
 
     @Basic
+    @DateTimeFormat(iso = ISO.DATE)
     private LocalDate paymentDate;
 
     @Basic
     private double paymentAmount;
 
     @OneToOne(mappedBy = "payment")
-    private PaymentType paymentType;
-
-    @OneToOne(mappedBy = "payment")
     private Invoice invoice;
+
+    @ManyToOne
+    private PaymentType paymentType;
 
     public Long getPaymentID() {
         return this.paymentID;
@@ -57,20 +62,20 @@ public class Payment {
         this.paymentAmount = paymentAmount;
     }
 
-    public PaymentType getPaymentType() {
-        return this.paymentType;
-    }
-
-    public void setPaymentType(PaymentType paymentType) {
-        this.paymentType = paymentType;
-    }
-
     public Invoice getInvoice() {
         return this.invoice;
     }
 
     public void setInvoice(Invoice invoice) {
         this.invoice = invoice;
+    }
+
+    public PaymentType getPaymentType() {
+        return this.paymentType;
+    }
+
+    public void setPaymentType(PaymentType paymentType) {
+        this.paymentType = paymentType;
     }
 
 }
