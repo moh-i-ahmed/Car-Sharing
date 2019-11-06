@@ -1,7 +1,5 @@
 package springData;
 
-import java.time.LocalDate;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -29,8 +27,9 @@ public class WebApp implements CommandLineRunner {
 
       Role role = new Role(1, "USER");
       Role admin = new Role(2, "ADMIN");
-      Role manager = new Role(3, "MANAGER");
-      //roleRepo.save(role);
+
+      roleRepo.save(role);
+      roleRepo.save(admin);
 
       User user = new User();
       user.setFirstName("Bob");
@@ -44,7 +43,7 @@ public class WebApp implements CommandLineRunner {
       user2.setLastName("Smith");
       user2.setUsername("smithy@mail.com");
       user2.setPassword(pe.encode("password2"));
-      user2.setRole(manager);
+      user2.setRole(admin);
 
       userRepo.save(user);
       userRepo.save(user2);
