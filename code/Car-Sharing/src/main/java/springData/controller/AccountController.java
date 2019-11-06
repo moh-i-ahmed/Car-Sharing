@@ -47,9 +47,8 @@ public class AccountController {
       userDTO.setLastName(user.getLastName());
       userDTO.setUsername(user.getUsername());
       userDTO.setRoleName(user.getRole().getRole());
-      userDTO.setOrganizationName(user.getOrganization().getName());
 
-      model.addAttribute("userId", user.getUserId());
+      model.addAttribute("userId", user.getUserID());
       model.addAttribute("userDTO", userDTO);
 
       return "account/account-details";
