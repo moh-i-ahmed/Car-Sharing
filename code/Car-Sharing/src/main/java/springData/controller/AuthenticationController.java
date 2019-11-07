@@ -31,7 +31,7 @@ public class AuthenticationController {
       //Get View for Role
       switch (user.getRole().getRole()) {
          case "ADMIN":
-            view = "redirect:/admin/createUser";
+            view = "redirect:/index";
             break;
          case "MANAGER":
             view = "redirect:/dashboard";

@@ -26,6 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
    @Override
    public void addResourceHandlers(ResourceHandlerRegistry registry) {
       registry.addResourceHandler("/static/**").addResourceLocations("/src/main/resources/static");
+      registry.addResourceHandler("/css/**").addResourceLocations("/src/main/resources/templates/css");
    }
 
 }
