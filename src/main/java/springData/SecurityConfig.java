@@ -36,7 +36,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
          //.antMatchers("/", "/index").permitAll()
          .antMatchers("/account/**").permitAll()
          .antMatchers("/user/**").hasRole("USER")
-         .antMatchers("/manager/**").hasRole("MANAGER")
          .antMatchers("/admin/**").hasRole("ADMIN")
          .anyRequest().authenticated() // all requests ABOVE this statement require authentication
          .and() // to redirect the user when trying to access a resource to which access is not granted
