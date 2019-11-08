@@ -35,6 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       .authorizeRequests()
          //.antMatchers("/", "/index").permitAll()
          .antMatchers("/account/**").permitAll()
+         .antMatchers("/", "/static/**", "/js/**", "/vendor/**", "/css/**").permitAll()
          .antMatchers("/user/**").hasRole("USER")
          .antMatchers("/admin/**").hasRole("ADMIN")
          .anyRequest().authenticated() // all requests ABOVE this statement require authentication

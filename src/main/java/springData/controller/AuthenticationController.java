@@ -31,13 +31,10 @@ public class AuthenticationController {
       //Get View for Role
       switch (user.getRole().getRole()) {
          case "ADMIN":
-            view = "redirect:/index";
-            break;
-         case "MANAGER":
             view = "redirect:/dashboard";
             break;
          default:
-            view = "redirect:/user/add-timesheet";
+            view = "redirect:/user/dashboard";
             break;
       }
       return view;
@@ -50,15 +47,16 @@ public class AuthenticationController {
 
       model.addAttribute("name", user.getFirstName());
 
-      //TODO Get latest timesheet by date and display on dashboard
-      //SELECT * FROM table ORDER BY date DESC LIMIT 5
-      if (user.getRole().getRole().equals("MANAGER")) {
-         return "manager/dashboard";
-      }
+      //Check for Admin access
       if (user.getRole().getRole().equals("ADMIN")) {
-         return "admin/dashboard";
+         return "/admin/dashboard";
       }
       return "/user/dashboard";
+   }
+
+   @RequestMapping(value = "/index")
+   public String index() {
+      return "index";
    }
 
    @RequestMapping(value = "/help")
