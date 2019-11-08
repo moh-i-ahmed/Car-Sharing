@@ -23,10 +23,23 @@ public class WebConfig implements WebMvcConfigurer {
    // Handles HTTP GET requests for /resources/** by efficiently serving up static
    // resources in the ${webappRoot}/resources/ directory
    // TODO
+   /*@Override
+   public void addResourceHandlers(ResourceHandlerRegistry registry) {
+      registry.addResourceHandler("/static/**").addResourceLocations("/src/main/resources/static/");
+      registry.addResourceHandler("/css/**").addResourceLocations("/src/main/resources/static/css/");
+   }*/
+
    @Override
    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-      registry.addResourceHandler("/static/**").addResourceLocations("/src/main/resources/static");
-      registry.addResourceHandler("/css/**").addResourceLocations("/src/main/resources/templates/css");
+       registry.addResourceHandler(
+            "/css/**",
+            "/vendor/**",
+            "/js/**")
+          .addResourceLocations(
+            "classpath:/static/css/",
+            "classpath:/static/vendor/",
+            "classpath:/static/js/");
    }
 
 }
+
