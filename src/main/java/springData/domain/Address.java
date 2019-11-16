@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 /**
  * @author mia17
@@ -14,16 +15,16 @@ public class Address {
 
    @Id
    @GeneratedValue(strategy = GenerationType.AUTO)
-   private Long addressID;
+   private int addressID;
 
    @Basic
-   private String line_1;
+   private String line1;
 
    @Basic
-   private String line_2;
+   private String line2;
 
    @Basic
-   private String line_3;
+   private String line3;
 
    @Basic
    private String city;
@@ -34,36 +35,39 @@ public class Address {
    @Basic
    private String country;
 
-   public Long getAddressID() {
+   @ManyToOne
+   private User user;
+
+   public int getAddressID() {
       return this.addressID;
    }
 
-   public void setAddressID(Long addressID) {
+   public void setAddressID(int addressID) {
       this.addressID = addressID;
    }
 
-   public String getLine_1() {
-      return this.line_1;
+   public String getLine1() {
+      return this.line1;
    }
 
-   public void setLine_1(String line_1) {
-      this.line_1 = line_1;
+   public void setLine1(String line1) {
+      this.line1 = line1;
    }
 
-   public String getLine_2() {
-      return this.line_2;
+   public String getLine2() {
+      return this.line2;
    }
 
-   public void setLine_2(String line_2) {
-      this.line_2 = line_2;
+   public void setLine2(String line2) {
+      this.line2 = line2;
    }
 
-   public String getLine_3() {
-      return this.line_3;
+   public String getLine3() {
+      return this.line3;
    }
 
-   public void setLine_3(String line_3) {
-      this.line_3 = line_3;
+   public void setLine3(String line3) {
+      this.line3 = line3;
    }
 
    public String getCity() {
@@ -90,4 +94,14 @@ public class Address {
       this.country = country;
    }
 
+   public User getUser() {
+      return this.user;
+   }
+
+   public void setUser(User user) {
+      this.user = user;
+   }
+
 }
+//Address
+
