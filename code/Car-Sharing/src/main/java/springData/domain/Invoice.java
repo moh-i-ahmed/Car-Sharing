@@ -24,7 +24,7 @@ public class Invoice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long invoiceID;
+    private int invoiceID;
 
     @Basic
     @DateTimeFormat(iso = ISO.DATE)
@@ -43,11 +43,11 @@ public class Invoice {
     @OneToOne
     private Payment payment;
 
-    public Long getInvoiceID() {
+    public int getInvoiceID() {
         return this.invoiceID;
     }
 
-    public void setInvoiceID(Long invoiceID) {
+    public void setInvoiceID(int invoiceID) {
         this.invoiceID = invoiceID;
     }
 

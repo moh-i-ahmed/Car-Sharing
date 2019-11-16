@@ -26,7 +26,7 @@ public class Request {
 
    @Id
    @GeneratedValue(strategy = GenerationType.AUTO)
-   private Long requestID;
+   private int requestID;
 
    @Basic
    @DateTimeFormat(iso = ISO.DATE)
@@ -64,11 +64,11 @@ public class Request {
    @ManyToOne
    private User user;
 
-   public Long getRequestID() {
+   public int getRequestID() {
       return this.requestID;
    }
 
-   public void setRequestID(Long requestID) {
+   public void setRequestID(int requestID) {
       this.requestID = requestID;
    }
 

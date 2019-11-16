@@ -23,7 +23,7 @@ public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long paymentID;
+    private int paymentID;
 
     @Basic
     @DateTimeFormat(iso = ISO.DATE)
@@ -38,11 +38,11 @@ public class Payment {
     @ManyToOne
     private PaymentType paymentType;
 
-    public Long getPaymentID() {
+    public int getPaymentID() {
         return this.paymentID;
     }
 
-    public void setPaymentID(Long paymentID) {
+    public void setPaymentID(int paymentID) {
         this.paymentID = paymentID;
     }
 

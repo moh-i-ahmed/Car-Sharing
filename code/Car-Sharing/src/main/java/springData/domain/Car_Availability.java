@@ -16,7 +16,7 @@ public class Car_Availability {
 
    @Id
    @GeneratedValue(strategy = GenerationType.AUTO)
-   private Long availabilityID;
+   private int availabilityID;
 
    @Basic
    private LocalTime availability_time;
@@ -27,11 +27,11 @@ public class Car_Availability {
    @OneToOne(mappedBy = "car_Availability")
    private Car car;
 
-   public Long getAvailabilityID() {
+   public int getAvailabilityID() {
       return this.availabilityID;
    }
 
-   public void setAvailabilityID(Long availabilityID) {
+   public void setAvailabilityID(int availabilityID) {
       this.availabilityID = availabilityID;
    }
 
