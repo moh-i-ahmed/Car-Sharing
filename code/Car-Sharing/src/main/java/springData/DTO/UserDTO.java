@@ -10,6 +10,8 @@ public class UserDTO {
 
    private String password;
 
+   private String matchingPassword;
+
    private String roleName;
 
    private String organizationName;
@@ -25,6 +27,14 @@ public class UserDTO {
 
    public void setPassword(String password) {
       this.password = password;
+   }
+
+   public String getMatchingPassword() {
+      return matchingPassword;
+   }
+
+   public void setMatchingPassword(String matchingPassword) {
+      this.matchingPassword = matchingPassword;
    }
 
    public void setFirstName(String firstName) {
