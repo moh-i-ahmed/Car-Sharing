@@ -12,19 +12,19 @@ import javax.persistence.OneToOne;
  * @author mia17
  */
 @Entity
-public class Car_Availability {
+public class CarAvailability {
 
    @Id
    @GeneratedValue(strategy = GenerationType.AUTO)
    private int availabilityID;
 
    @Basic
-   private LocalTime availability_time;
+   private LocalTime availabilityTime;
 
    @Basic
    private String accessCode;
 
-   @OneToOne(mappedBy = "car_Availability")
+   @OneToOne(mappedBy = "carAvailability")
    private Car car;
 
    public int getAvailabilityID() {
@@ -35,12 +35,12 @@ public class Car_Availability {
       this.availabilityID = availabilityID;
    }
 
-   public LocalTime getAvailability_time() {
-      return this.availability_time;
+   public LocalTime getAvailabilityTime() {
+      return this.availabilityTime;
    }
 
-   public void setAvailability_time(LocalTime availability_time) {
-      this.availability_time = availability_time;
+   public void setAvailabilityTime(LocalTime availabilityTime) {
+      this.availabilityTime = availabilityTime;
    }
 
    public String getAccessCode() {
@@ -60,3 +60,4 @@ public class Car_Availability {
    }
 
 }
+//CarAvailability
