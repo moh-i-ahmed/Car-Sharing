@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  */
 @Entity
 @Table(name = "REQUEST")
-@JsonPropertyOrder({"car", "accessCode", "dropoff", "endTime", "pickup", "requestID", "startTime"})
+@JsonPropertyOrder({"car", "accessCode", "latitude", "longitude", "endTime", "requestID", "startTime"})
 public class Request {
 
    @Id
@@ -41,16 +41,16 @@ public class Request {
    private LocalTime endTime;
 
    /**
-    * Pickup location
+    * Starting location latitude
     */
    @Basic
-   private float pickup;
+   private String latitude;
 
    /**
-    * Dropoff location
+    * Starting location longitude
     */
    @Basic
-   private float dropoff;
+   private String longitude;
 
    @Basic
    private String accessCode;
@@ -96,20 +96,20 @@ public class Request {
       this.endTime = endTime;
    }
 
-   public float getPickup() {
-      return this.pickup;
+   public String getLatitude() {
+      return latitude;
    }
 
-   public void setPickup(float pickup) {
-      this.pickup = pickup;
+   public void setLatitude(String latitude) {
+      this.latitude = latitude;
    }
 
-   public float getDropoff() {
-      return this.dropoff;
+   public String getLongitude() {
+      return longitude;
    }
 
-   public void setDropoff(float dropoff) {
-      this.dropoff = dropoff;
+   public void setLongitude(String longitude) {
+      this.longitude = longitude;
    }
 
    public String getAccessCode() {
