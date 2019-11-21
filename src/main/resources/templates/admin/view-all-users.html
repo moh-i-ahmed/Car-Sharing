@@ -302,7 +302,9 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                  <td th:text="${firstName} + ' ' + ${lastName}"></td>
+                </span>
                 <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
               </a>
               <!-- Dropdown - User Information -->
@@ -336,7 +338,7 @@
         <div class="container-fluid">
 
           <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">Tables</h1>
+          <h1 class="h3 mb-2 text-gray-800">Users</h1>
           <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p>
 
           <!-- DataTales Example -->
@@ -381,25 +383,47 @@
                       <td th:text="${user.date_of_birth}">
                       <td th:text="${user.driverLicense}">
                       <td>
-                        <a class="btn btn-primary btn-icon-split" th:href="@{/admin/view-user/} + ${user.userID}">
-                           <span class="icon text-white-50">
-                              <i class="fas fa-arrow-right"></i>
-                            </span>
-                            <span class="text">View</span>
-                        </a>
-                        <a class="btn btn-primary btn-icon-split" th:href="@{/admin/edit-user/} + ${user.userID}">
-                           <span class="icon text-white-50">
-                              <i class="fas fa-arrow-right"></i>
-                            </span>
-                            <span class="text">Edit</span>
-                        </a>
-                        <a class="btn btn-danger btn-icon-split" th:href="@{/admin/delete-user/} + ${user.userID}">
-                           <span class="icon text-white-50">
-                              <i class="fas fa-trash"></i>
-                           </span>
-                           <span class="text">Delete</span>
-                        </a>
+                      <div class="dropdown mb-6">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                           Actions
+                        </button>
+                        <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
+                           <a class="dropdown-item" th:href="@{/admin/view-user/} + ${user.userID}">
+                              <i class="fas fa-arrow-right fa-sm fa-fw mr-2 text-gray-400"></i>
+                              View
+                           </a>
+                           <a class="dropdown-item" th:href="@{/admin/edit-user/} + ${user.userID}">
+                              <i class="fas fa-info-circle fa-sm fa-fw mr-2 text-gray-400"></i>
+                              Edit
+                           </a>
+                           <div class="dropdown-divider"></div>
+                           <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteModal">
+                              <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-400"></i>
+                              Delete
+                           </a>         
+                        </div>
+                     </div>      
                      </td>
+                     
+                     <!-- Delete User Modal-->
+                     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                           <div class="modal-content">
+                              <div class="modal-header">
+                                 <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+                                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                 </button>
+                              </div>
+                              <div class="modal-body">Select "Delete" below if you are ready to remove this user from the system.</div>
+                              <div class="modal-footer">
+                                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                 <a class="btn btn-danger" th:href="@{/admin/delete-user/} + ${user.userID}">Delete</a>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- Table end -->
                     </tr>               
                   </tbody>
                 </table>
@@ -452,6 +476,8 @@
       </div>
     </div>
   </div>
+  
+  
 
   <!-- Bootstrap core JavaScript-->
   <script src="/vendor/jquery/jquery.min.js"></script>
