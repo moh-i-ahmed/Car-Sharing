@@ -1,10 +1,13 @@
 package springData.domain;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 /**
@@ -35,7 +38,9 @@ public class Address {
    @Basic
    private String country;
 
-   @ManyToOne
+   //@ManyToOne
+   @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+   @JoinColumn(name = "USER_ID")
    private User user;
 
    public int getAddressID() {
@@ -104,4 +109,3 @@ public class Address {
 
 }
 //Address
-

@@ -9,6 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
+
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
@@ -16,122 +19,140 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  */
 @Entity
 @Table(name = "CAR")
-@JsonPropertyOrder({"car_color", "registrationNumber", "car_name", "car_type", "current_location", "fuel_level", "isActive", "last_location", "request"})
+@JsonPropertyOrder({"carColor", "registrationNumber", "carName", "carType", "currentLocation", "fuelLevel",
+   "isActive", "last_location", "request"})
 public class Car {
 
    @Column(length = 10)
    @Id
-   @GeneratedValue(strategy = GenerationType.AUTO)
    private String registrationNumber;
 
    @Basic
-   private String car_name;
+   private String carName;
 
    @Basic
-   private String car_type;
+   private String carType;
 
    @Basic
-   private String car_color;
+   private String carColor;
 
+   /**
+    * Starting location latitude
+    */
    @Basic
-   private float current_location;
+   private String latitude;
 
+   /**
+    * Starting location longitude
+    */
    @Basic
-   private float last_location;
+   private String longitude;
 
    /**
     * Is the car active or not?
     */
-   @Basic
+   @Type(type = "yes_no")
+   @Column(name = "isActive", nullable = false)
    private boolean isActive;
 
    @Basic(optional = false)
-   private int fuel_level;
+   private int fuelLevel;
 
    @OneToOne(mappedBy = "car")
    private Request request;
 
    @OneToOne
-   private Car_Availability car_Availability;
+   private CarAvailability carAvailability;
 
-   public String getRegistrationNumber() {
-      return this.registrationNumber;
+   public Car() {
    }
-
-   public void setRegistrationNumber(String registrationNumber) {
+   
+   public Car(String registrationNumber, String carColor, boolean isActive) {
+      super();
       this.registrationNumber = registrationNumber;
-   }
-
-   public String getCar_name() {
-      return this.car_name;
-   }
-
-   public void setCar_name(String car_name) {
-      this.car_name = car_name;
-   }
-
-   public String getCar_type() {
-      return this.car_type;
-   }
-
-   public void setCar_type(String car_type) {
-      this.car_type = car_type;
-   }
-
-   public String getCar_color() {
-      return this.car_color;
-   }
-
-   public void setCar_color(String car_color) {
-      this.car_color = car_color;
-   }
-
-   public float getCurrent_location() {
-      return this.current_location;
-   }
-
-   public void setCurrent_location(float current_location) {
-      this.current_location = current_location;
-   }
-
-   public float getLast_location() {
-      return this.last_location;
-   }
-
-   public void setLast_location(float last_location) {
-      this.last_location = last_location;
-   }
-
-   public boolean isIsActive() {
-      return this.isActive;
-   }
-
-   public void setIsActive(boolean isActive) {
+      this.carColor = carColor;
       this.isActive = isActive;
    }
 
-   public int getFuel_level() {
-      return this.fuel_level;
+   public String getRegistrationNumber() {
+       return this.registrationNumber;
    }
 
-   public void setFuel_level(int fuel_level) {
-      this.fuel_level = fuel_level;
+   public void setRegistrationNumber(String registrationNumber) {
+       this.registrationNumber = registrationNumber;
+   }
+
+   public String getCarName() {
+       return this.carName;
+   }
+
+   public void setCarName(String carName) {
+       this.carName = carName;
+   }
+
+   public String getCarType() {
+       return this.carType;
+   }
+
+   public void setCarType(String carType) {
+       this.carType = carType;
+   }
+
+   public String getCarColor() {
+       return this.carColor;
+   }
+
+   public void setCarColor(String carColor) {
+       this.carColor = carColor;
+   }
+
+   public String getLatitude() {
+      return latitude;
+   }
+
+   public void setLatitude(String latitude) {
+      this.latitude = latitude;
+   }
+
+   public String getLongitude() {
+      return longitude;
+   }
+
+   public void setLongitude(String longitude) {
+      this.longitude = longitude;
+   }
+
+   public boolean isIsActive() {
+       return this.isActive;
+   }
+
+   public void setIsActive(boolean isActive) {
+       this.isActive = isActive;
+   }
+
+   public int getFuelLevel() {
+       return this.fuelLevel;
+   }
+
+   public void setFuelLevel(int fuelLevel) {
+       this.fuelLevel = fuelLevel;
    }
 
    public Request getRequest() {
-      return this.request;
+       return this.request;
    }
 
    public void setRequest(Request request) {
-      this.request = request;
+       this.request = request;
    }
 
-   public Car_Availability getCar_Availability() {
-      return this.car_Availability;
+   public CarAvailability getCarAvailability() {
+       return this.carAvailability;
    }
 
-   public void setCar_Availability(Car_Availability car_Availability) {
-      this.car_Availability = car_Availability;
+   public void setCarAvailability(CarAvailability carAvailability) {
+       this.carAvailability = carAvailability;
    }
 
 }
+
