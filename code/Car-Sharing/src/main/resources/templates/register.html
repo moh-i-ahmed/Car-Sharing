@@ -39,15 +39,15 @@
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
                     <input type="text" class="form-control form-control-user" placeholder="First Name" id="firstName" th:field="*{firstName}">
-                    <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+                    <span class="form-control-user is-invalid" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
                   </div>
                   <div class="col-sm-6">
                     <input type="text" class="form-control form-control-user" placeholder="Last Name" id="lastName" th:field="*{lastName}">
-                    <span class="help is-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+                    <span class="form-control-user is-invalid" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
                   </div>
                 </div>
                 <div class="form-group">
-                  <input type="email" class="form-control form-control-user" placeholder="Email Address" id="username" th:field="*{username}">
+                  <input type="email" class="form-control form-control-user" placeholder="Email Address" id="username" th:field="*{username}" required>
                   <span class="icon is-small is-right" th:if="${#fields.hasErrors('username')}">
                      <i class="fas fa-exclamation-triangle"></i>
                   </span>
@@ -60,7 +60,12 @@
                         <i class="fas fa-exclamation-triangle"></i>
                      </span>
                   </div>
-       
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    <input type="password" class="form-control form-control-user" placeholder="Repeat Password" id="matchingPassword" th:field="*{matchingPassword}">
+                    <span class="icon is-small is-right" th:if="${#fields.hasErrors('matchingPassword')}" th:errors="*{matchingPassword}">
+                        <i class="fas fa-exclamation-triangle"></i>
+                     </span>
+                  </div>
                 </div>
                 <button class="btn btn-primary btn-user btn-block" type="submit" name="action" value="create">
                   Register Account
@@ -68,10 +73,10 @@
               </form>
               <hr>
               <div class="text-center">
-                <a class="small" href="forgot-password.html">Forgot Password?</a>
+                <a class="small" th:href="@{/account/forgot-password}">Forgot Password?</a>
               </div>
               <div class="text-center">
-                <a class="small" href="login.html">Already have an account? Login!</a>
+                <a class="small" th:href="@{/}">Already have an account? Login!</a>
               </div>
             </div>
           </div>
