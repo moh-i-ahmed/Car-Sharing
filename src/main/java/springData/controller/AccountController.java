@@ -35,7 +35,7 @@ public class AccountController {
       binder.addValidators(new PasswordDTOValidator());
    }
 
-   @GetMapping
+   @GetMapping("/profile")
    public String account(Model model, Principal principal) {
       //Find User
       User user = userRepo.findByUsername(principal.getName());
@@ -51,7 +51,7 @@ public class AccountController {
       model.addAttribute("userId", user.getUserID());
       model.addAttribute("userDTO", userDTO);
 
-      return "account/account-details";
+      return "profile";
    }
 
    @GetMapping("/change-password/{userId}")
@@ -80,6 +80,11 @@ public class AccountController {
 
          return "redirect:/account";
       }
+   }
+
+   @RequestMapping(value = "/forgot-password")
+   public String forgotPassword() {
+      return "forgot-password";
    }
 
 }

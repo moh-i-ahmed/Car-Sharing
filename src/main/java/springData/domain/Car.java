@@ -67,10 +67,11 @@ public class Car {
    public Car() {
    }
    
-   public Car(String registrationNumber, String carColor, boolean isActive) {
+   public Car(String registrationNumber, String carColor, String carName, boolean isActive) {
       super();
       this.registrationNumber = registrationNumber;
       this.carColor = carColor;
+      this.carName = carName;
       this.isActive = isActive;
    }
 
