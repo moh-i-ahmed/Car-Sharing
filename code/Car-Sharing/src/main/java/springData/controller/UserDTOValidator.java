@@ -26,7 +26,8 @@ public class UserDTOValidator implements Validator {
       ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "", "Enter a First Name");
       ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "", "Enter a Last Name");
       ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "", "Username is required");
-      //ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "", "Please enter a password");
+      ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "", "Please enter a password");
+      ValidationUtils.rejectIfEmptyOrWhitespace(errors, "matchingPassword", "", "Please enter a matching password");
 
       //Ensure First Name is valid
       if ((dto.getFirstName() != null) && (dto.getFirstName().length() > 0) && (dto.getFirstName().length() < 2)) {
@@ -47,10 +48,18 @@ public class UserDTOValidator implements Validator {
       //Ensure Password is entered
       if ((dto.getPassword() != null) && (dto.getPassword().length() > 0) && (dto.getPassword().length() < 4)) {
          errors.rejectValue("password", "", "Password must have more than 4 characters.");
+         System.out.println("Password error");
       }
-      //Ensure Role is selected
-      if ((dto.getRoleName() != null) && (dto.getRoleName().equals("")) || (dto.getRoleName() == null)) {
-         errors.rejectValue("roleName", "", "Select a Role.");
+      //Ensure Matching Password is entered
+      if ((dto.getMatchingPassword() != null) && (dto.getMatchingPassword().length() > 0)
+              && (dto.getMatchingPassword().length() < 4)) {
+         errors.rejectValue("matchingPassword", "", "Password must have more than 4 characters.");
+         System.out.println("Password error");
+      }
+      //Ensure Passwords match
+      if (!(dto.getPassword().equals(dto.getMatchingPassword()))) {
+         errors.rejectValue("password", "", "Password must match.");
+         errors.rejectValue("matchingPassword", "", "Passwords must match.");
       }
    }
 
