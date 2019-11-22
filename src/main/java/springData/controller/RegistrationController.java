@@ -123,4 +123,4 @@ public class RegistrationController {
    }
 
 }
-//AdminController
+//RegistrationController
