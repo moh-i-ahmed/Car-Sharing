@@ -53,33 +53,6 @@
 
       <!-- Heading -->
       <div class="sidebar-heading">
-        Interface
-      </div>
-
-      <!-- Nav Item - Pages Collapse Menu -->
-
-      <!-- Nav Item - Utilities Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-          <i class="fas fa-fw fa-wrench"></i>
-          <span>Utilities</span>
-        </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Utilities:</h6>
-            <a class="collapse-item" href="utilities-color.html">Colors</a>
-            <a class="collapse-item" href="/admin/utilities-border.html">Borders</a>
-            <a class="collapse-item" href="/admin/utilities-animation.html">Animations</a>
-            <a class="collapse-item" href="/admin/utilities-other.html">Other</a>
-          </div>
-        </div>
-      </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <div class="sidebar-heading">
         Profile
       </div>
 
@@ -89,7 +62,7 @@
       <li class="nav-item">
         <a class="nav-link" th:href="@{/user/history}">
           <i class="fas fa-fw fa-chart-area"></i>
-          <span>Car History</span></a>
+          <span>History</span></a>
       </li>
 
       <!-- Nav Item - Tables -->
@@ -123,18 +96,6 @@
           <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
             <i class="fa fa-bars"></i>
           </button>
-
-          <!-- Topbar Search -->
-          <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-            <div class="input-group">
-              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-              <div class="input-group-append">
-                <button class="btn btn-primary" type="button">
-                  <i class="fas fa-search fa-sm"></i>
-                </button>
-              </div>
-            </div>
-          </form>
 
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
@@ -313,7 +274,7 @@
           <!-- Content Row -->
           <div class="row justify-content-center">
             <!-- Area Chart -->
-            <div class="col-lg-5">
+            <div class="col-lg-4">
                <div class="card shadow mb-4">
                   <!-- Card Header - Dropdown -->
                   <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -328,25 +289,25 @@
                         <div class="form-group row">
                         
                            <!-- Google Autocomplete location  -->
-                           <div class="col-sm-6 mb-3 mb-sm-0 text-center">
+                           <div class="col-sm-8 mb-3 mb-sm-0 text-center">
                               <label class="m-0 font-weight-bold text-gray">Pickup Location</label>
                               <input type="text" class="form-control form-control-user" placeholder="Pickup Location" id="search_input" required>
                               <input type="hidden" id="loc_lat" th:field="*{latitude}" />
                               <input type="hidden" id="loc_long" th:field="*{longitude}"/>
                            </div>
                            
-                           <!-- Display latitude and longitude -->
-                           <div class="latlong-view">
+                           <!-- Display latitude and longitude >
+                           <div>
                               <p><b>Latitude:</b> <span id="latitude_view"></span></p>
                               <p><b>Longitude:</b> <span id="longitude_view"></span></p>
-                           </div>
+                           </div-->
 
                         </div>
                         <div class="form-group row">
                            <div class="col-sm-6 mb-3 mb-sm-0 text-center">
                               <label class="m-0 font-weight-bold text-gray">Start Time</label>
                               <input type="time" class="form-control form-control-user" placeholder="Start Time" id="startTime" th:field="*{startTime}" required>
-                           <span class="icon is-small is-right" th:if="${#fields.hasErrors('startTime')}">
+                           <span class="icon is-small is-right" th:if="${#fields.hasErrors('startTime')}" th:errors="*{startTime}">
                               <i class="fas fa-exclamation-triangle"></i>
                            </span>
                            <span class="help is-danger" th:if="${#fields.hasErrors('startTime')}" th:errors="*{startTime}"></span>
@@ -360,7 +321,10 @@
                            </div>
                         </div>
                         <hr>
-                        <div class="col-sm-6 align-items-center">
+                        <!--div class="col-sm-6 align-items-center"-->
+                        <div class="col row align-items-center">
+                        <div class="col-sm-180">
+                        </div>
                         <button class="btn btn-primary btn-user btn-block" type="submit" name="action">
                            Request a Car
                         </button>
