@@ -343,7 +343,6 @@
                   <h6 class="m-0 font-weight-bold text-primary">Add New User Account</h6>
                 </div>
                 <div class="card-body">
-                  <p>Use Font Awesome Icons (included with this theme package) along with the circle buttons as shown in the examples below!</p>
                   
                   <!-- User Form -->
                   <form class="user" th:object="${userDTO}" th:action="@{/admin/createUser/create}" method="post">
@@ -362,14 +361,16 @@
                      <div class="col-sm-6 mb-3 mb-sm-0">
                         <input type="password" class="form-control form-control-user" placeholder="Password" id="password" th:field="*{password}">
                      </div>
-                    <div class="select">
-                        <select id="roleName" th:field="*{roleName}">
-                           <option value="">Select Role</option>
-                           <option th:each="role : ${roles}" th:text="${role.role}" th:value="${role.role}"></option>
-                        </select>
-                        <span class="help is-danger" th:if="${#fields.hasErrors('roleName')}" th:errors="*{roleName}"></span>
-                     </div>
-                     <div class="dropdown mb-4">
+                  <div class="dropdown mb-4">
+                     <select id="roleName" th:field="*{roleName}" class="btn btn-primary dropdown-toggle" >
+                        <option value="">Select Role</option>
+                        <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
+                           <option th:each="role : ${roles}" th:text="${role.role}" th:value="${role.role}" class="dropdown-item"></option>
+                        </div>
+                     </select>
+                     <span class="help is-danger" th:if="${#fields.hasErrors('roleName')}" th:errors="*{roleName}"></span>
+                  </div>
+                     <!-- div class="dropdown mb-4">
                         <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                            Select Role
                         </button>
@@ -377,12 +378,13 @@
                            <a class="dropdown-item" th:each="role : ${roles}" th:text="${role.role}" th:value="${role.role}">Action</a>
                            <a class="dropdown-item" href="#">Another action</a>
                         </div>
-                     </div>
+                     </div-->
                   </div>
+                  <hr>
                   <a href="login.html" class="btn btn-primary btn-user btn-block">
                      Register Account
                   </a>
-                  <hr>
+                  
             
                   </form>
                 </div>
