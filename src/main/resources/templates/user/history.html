@@ -63,15 +63,15 @@
       <!-- Nav Item - Charts -->
       <li class="nav-item">
         <a class="nav-link" th:href="@{/user/history}">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>History</span></a>
+          <i class="fas fa-list fa-sm fa-fw mr-2"></i>
+          <span> History </span></a>
       </li>
 
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" th:href="@{/account/profile}">
+        <a class="nav-link" th:href="@{/user/profile}">
           <i class="fas fa-fw fa-cog"></i>
-          <span>Settings</span></a>
+          <span>Profile</span></a>
       </li>
 
       <!-- Divider -->
@@ -279,13 +279,13 @@
             </div>
             <div class="card-body">
               <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <!-- table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
                       <th>Date</th>
                       <th>From</th>
                       <th>To</th>             
-                      <th>Price</th>
+                      <th>Car</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
@@ -294,7 +294,7 @@
                       <th>Date</th>
                       <th>From</th>
                       <th>To</th>             
-                      <th>Price</th>
+                      <th>Car</th>
                       <th>Actions</th>
                     </tr>
                   </tfoot>
@@ -303,7 +303,7 @@
                       <td th:text="${request.requestDate}">
                       <td th:text="${request.startTime}">
                       <td th:text="${request.endTime}">
-                      <td> £0.00</td>
+                      <td th:text="${request.car.carColor} + ' ' + ${request.car.carName}">
                       <td>
                       <div class="dropdown mb-6">
                         <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -319,9 +319,62 @@
                      </td>
    
                      <!-- Table end -->
-                    </tr>               
+                    </tr> 
+                                  
                   </tbody>
-                </table>
+                </table-->
+              </div>
+              <div class="col-lg-3" th:each="request: ${requests}">
+	              <!-- Collapsable Card Example -->
+	              <div class="card shadow mb-4">
+	                <!-- Card Header - Accordion -->
+	                <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+	                  <h6 class="m-0 font-weight-bold text-primary">
+	                    <td th:text="${request.requestDate} + ', ' + ${request.startTime}"></td>
+	                  </h6>
+	                </a>
+	                <!-- Card Content - Collapse -->
+	                <div class="collapse show" id="collapseCardExample">
+	                  <div class="card-body">   
+		                  <div class="form-group row">
+		                     <div class="col-sm-3 mb-3 mb-sm-0">
+                              <strong><td>From</td></strong>
+                           </div>
+	                        <div class="col-sm-6">
+	                         <td th:text="${request.startTime}"></td>
+	                        </div>
+                        </div>
+                        <div class="form-group row">
+                           <div class="col-sm-3 mb-3 mb-sm-0">
+                              <strong><td>To</td></strong>
+                           </div>
+                           <div class="col-sm-6">
+                            <td th:text="${request.endTime}"></td>
+                           </div>
+                        </div>
+                        <div class="form-group row">
+                           <div class="col-sm-3 mb-3 mb-sm-0">
+                              <strong><td>Car</td></strong>
+                           </div>
+                           <div class="col-sm-6">
+                            <td th:text="${request.car.carColor} + ' ' + ${request.car.carName}"></td>
+                           </div>
+                        </div>
+                        <hr>
+                     
+	                     <div class="form-group row float-right">
+                           <div class="col-sm-3 mb-3 mb-sm-0">
+                              <a href="#" class="btn btn-primary btn-icon-split btn-sm" th:href="@{/user/view-request/} + ${request.requestID}">
+                              <span class="icon text-white-50">
+                                 <i class="fas fa-arrow-right"></i>
+                              </span>
+                              <span class="text">Details</span>
+                           </a>
+                           </div>
+                        </div>
+	                  </div>
+	                </div>
+	              </div>
               </div>
             </div>
           </div>
