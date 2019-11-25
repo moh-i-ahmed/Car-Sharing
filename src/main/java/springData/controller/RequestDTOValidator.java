@@ -23,15 +23,15 @@ public class RequestDTOValidator implements Validator {
    public void validate(Object target, Errors errors) {
       RequestDTO dto = (RequestDTO) target;
 
-      ValidationUtils.rejectIfEmptyOrWhitespace(errors, "startTime", "", "Pick a Start Time");
+      ValidationUtils.rejectIfEmptyOrWhitespace(errors, "startTime", "", "Pick a Starting Time");
       ValidationUtils.rejectIfEmptyOrWhitespace(errors, "endTime", "", "Pick an Ending Time");
 
       //Ensure Start Time is valid
-      if ((dto.getStartTime() != null)) {
+      if ((dto.getStartTime() == null)) {
          errors.rejectValue("startTime", "", "Pick a Start time");
       }
       //Ensure Start Time is valid
-      if ((dto.getEndTime() != null)) {
+      if ((dto.getEndTime() == null)) {
          errors.rejectValue("endTime", "", "Pick an End time");
       }
       //Ensure StartTime != EndTime
