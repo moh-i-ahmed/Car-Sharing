@@ -21,7 +21,8 @@
 
   <!-- Custom styles for this page -->
   <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
+ <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
 </head>
 
 <body id="page-top">
@@ -335,7 +336,7 @@
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <div class="container-fluid">
+        <div class="container-fluid"> 
 
           <!-- Page Heading -->
           <h1 class="h3 mb-2 text-gray-800">Users</h1>
@@ -402,7 +403,7 @@
                               Delete
                            </a>         
                         </div>
-                     </div>      
+                     </div>     
                      </td>
                      
                      <!-- Delete User Modal-->
@@ -427,6 +428,8 @@
                     </tr>               
                   </tbody>
                 </table>
+                <div></div>
+                <div th:if="${message}" th:text="${message}" th:class="${'card mb-4 py-3 border-left-primary ' + alertClass}" id="updateDetails" class="animated--fade-in"/>
               </div>
             </div>
           </div>
@@ -478,7 +481,29 @@
   </div>
   
   
+<script>
+  
+  document.getElementById('updateDetails').addEventListener('click', function() {
+     toastr.success('Button clicked');
+  });
+  
+  $('form').submit( function(event) {
+       var formId = this.id,
+           form = this;
+       mySpecialFunction(formId);
 
+       event.preventDefault();
+
+       setTimeout( function () { 
+           form.submit();
+       }, 3000);
+   });
+  
+  </script>
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  
   <!-- Bootstrap core JavaScript-->
   <script src="/vendor/jquery/jquery.min.js"></script>
   <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

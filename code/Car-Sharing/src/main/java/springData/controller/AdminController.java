@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import springData.DTO.PasswordDTO;
 import springData.DTO.UserDTO;
@@ -131,25 +132,32 @@ public class AdminController {
 
    @PostMapping(value = "/update-user/{userID}")
    public String updateUser(@Valid @ModelAttribute("userDTO") UserDTO userDTO, BindingResult result,
-           @PathVariable int userID, Model model) {
+           @PathVariable int userID, Model model, RedirectAttributes redirectAttributes) {
 
+      User user = userRepo.findById(userID);
+      
       if (result.hasErrors()) {
          //List of Roles
-         List<Role> roles = (List<Role>) roleRepo.findAll();
-         model.addAttribute("roles", roles);
+         //List<Role> roles = (List<Role>) roleRepo.findAll();
+         System.err.println(result);
+         //userDTO.setRoleName(user.getRole().getRole());
+         //model.addAttribute("roles", roles);
 
          return "admin/edit-user";
       } else {
          //Create new User using UserDTO details
-         User user = userRepo.findById(userID);
+         //User user = userRepo.findById(userID);
          user.setFirstName(userDTO.getFirstName());
          user.setLastName(userDTO.getLastName());
          user.setUsername(userDTO.getUsername());
          //user.setPassword(pe.encode(userDTO.getPassword()));
-         user.setRole(roleRepo.findByRoleName(userDTO.getRoleName()));
+         //user.setRole(roleRepo.findByRoleName(userDTO.getRoleName()));
 
          //Save User
          userRepo.save(user);
+         
+         redirectAttributes.addFlashAttribute("message", "User profile updated");
+         redirectAttributes.addFlashAttribute("alertClass", "alert-success");
 
          return "redirect:/admin/view-all-users";
       }

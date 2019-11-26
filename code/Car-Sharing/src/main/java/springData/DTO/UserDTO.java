@@ -12,9 +12,11 @@ public class UserDTO {
 
    private String matchingPassword;
 
+   private String phoneNumber;
+   
    private String roleName;
 
-   private String organizationName;
+   private String driverLicense;
 
    // default and parameterized constructors
    public UserDTO() {
@@ -61,21 +63,30 @@ public class UserDTO {
       return username;
    }
 
+   public String getPhoneNumber() {
+      return phoneNumber;
+   }
+
+   public void setPhoneNumber(String phoneNumber) {
+      this.phoneNumber = phoneNumber;
+   }
+
+   public String getDriverLicense() {
+      return driverLicense;
+   }
+
+   public void setDriverLicense(String driverLicense) {
+      this.driverLicense = driverLicense;
+   }
+
    public String getRoleName() {
       return roleName;
    }
 
-   public void setRoleName(String role) {
-      this.roleName = role;
+   public void setRoleName(String roleName) {
+      this.roleName = roleName;
    }
 
-   public String getOrganizationName() {
-      return organizationName;
-   }
-
-   public void setOrganizationName(String organizationName) {
-      this.organizationName = organizationName;
-   }
 
 }
-//UserFormDTO
+//UserDTO

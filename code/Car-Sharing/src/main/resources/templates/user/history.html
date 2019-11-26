@@ -266,8 +266,8 @@
         <div class="container-fluid">
 
           <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">Ride History</h1>
-          <p class="mb-4">Table showing your ride history</p>
+          <h1 class="h3 mb-2 text-gray-800">Car History</h1>
+          <p class="mb-4">View your activity</p>
 
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
@@ -340,7 +340,7 @@
 		                     <div class="col-sm-3 mb-3 mb-sm-0">
                               <strong><td>From</td></strong>
                            </div>
-	                        <div class="col-sm-6">
+	                        <div class="col-sm-3">
 	                         <td th:text="${request.startTime}"></td>
 	                        </div>
                         </div>
@@ -348,7 +348,7 @@
                            <div class="col-sm-3 mb-3 mb-sm-0">
                               <strong><td>To</td></strong>
                            </div>
-                           <div class="col-sm-6">
+                           <div class="col-sm-3">
                             <td th:text="${request.endTime}"></td>
                            </div>
                         </div>
@@ -356,22 +356,22 @@
                            <div class="col-sm-3 mb-3 mb-sm-0">
                               <strong><td>Car</td></strong>
                            </div>
-                           <div class="col-sm-6">
+                           <div class="col-sm-3">
                             <td th:text="${request.car.carColor} + ' ' + ${request.car.carName}"></td>
                            </div>
                         </div>
                         <hr>
-                     
 	                     <div class="form-group row float-right">
                            <div class="col-sm-3 mb-3 mb-sm-0">
                               <a href="#" class="btn btn-primary btn-icon-split btn-sm" th:href="@{/user/view-request/} + ${request.requestID}">
-                              <span class="icon text-white-50">
-                                 <i class="fas fa-arrow-right"></i>
-                              </span>
-                              <span class="text">Details</span>
-                           </a>
+                                 <span class="icon text-white-50">
+                                    <i class="fas fa-arrow-right"></i>
+                                 </span>
+                                 <span class="text">Details</span>
+                              </a>
                            </div>
                         </div>
+                        
 	                  </div>
 	                </div>
 	              </div>
