@@ -279,62 +279,22 @@
             </div>
             <div class="card-body">
               <div class="table-responsive">
-                <!-- table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                  <thead>
-                    <tr>
-                      <th>Date</th>
-                      <th>From</th>
-                      <th>To</th>             
-                      <th>Car</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tfoot>
-                    <tr>
-                      <th>Date</th>
-                      <th>From</th>
-                      <th>To</th>             
-                      <th>Car</th>
-                      <th>Actions</th>
-                    </tr>
-                  </tfoot>
-                  <tbody>
-                    <tr th:each="request: ${requests}">
-                      <td th:text="${request.requestDate}">
-                      <td th:text="${request.startTime}">
-                      <td th:text="${request.endTime}">
-                      <td th:text="${request.car.carColor} + ' ' + ${request.car.carName}">
-                      <td>
-                      <div class="dropdown mb-6">
-                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                           Actions
-                        </button>
-                        <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
-                           <a class="dropdown-item" th:href="@{/user/view-request/} + ${request.requestID}">
-                              <i class="fas fa-arrow-right fa-sm fa-fw mr-2 text-gray-400"></i>
-                              See more
-                           </a>         
-                        </div>
-                     </div>      
-                     </td>
-   
-                     <!-- Table end -->
-                    </tr> 
-                                  
-                  </tbody>
-                </table-->
+                
               </div>
+              <div class="row">
               <div class="col-lg-3" th:each="request: ${requests}">
 	              <!-- Collapsable Card Example -->
 	              <div class="card shadow mb-4">
 	                <!-- Card Header - Accordion -->
-	                <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+	                <a th:href="@{colla + ${request.requestID}}" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="false" th:aria-controls="colla + ${request.requestID}">
 	                  <h6 class="m-0 font-weight-bold text-primary">
 	                    <td th:text="${request.requestDate} + ', ' + ${request.startTime}"></td>
 	                  </h6>
 	                </a>
+	                
 	                <!-- Card Content - Collapse -->
-	                <div class="collapse show" id="collapseCardExample">
+	             
+	                <div class="collapse" th:id="colla + ${request.requestID}">
 	                  <div class="card-body">   
 		                  <div class="form-group row">
 		                     <div class="col-sm-3 mb-3 mb-sm-0">
@@ -374,7 +334,12 @@
                         
 	                  </div>
 	                </div>
+	                
+	                
+	                
 	              </div>
+              </div>
+              
               </div>
             </div>
           </div>
