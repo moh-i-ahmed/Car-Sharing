@@ -1,30 +1,869 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" output="bin/main" path="src/main/java">
+	<classpathentry kind="output" path="bin/default"/>
+	<classpathentry output="bin/main" kind="src" path="src/main/java">
 		<attributes>
 			<attribute name="gradle_scope" value="main"/>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" output="bin/main" path="src/main/resources">
+	<classpathentry output="bin/main" kind="src" path="src/main/resources">
 		<attributes>
 			<attribute name="gradle_scope" value="main"/>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" output="bin/test" path="src/test/java">
+	<classpathentry output="bin/test" kind="src" path="src/test/java">
 		<attributes>
 			<attribute name="gradle_scope" value="test"/>
 			<attribute name="gradle_used_by_scope" value="test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" output="bin/test" path="src/test/groovy">
+	<classpathentry output="bin/test" kind="src" path="src/test/groovy">
 		<attributes>
 			<attribute name="gradle_scope" value="test"/>
 			<attribute name="gradle_used_by_scope" value="test"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8/"/>
-	<classpathentry kind="con" path="org.eclipse.buildship.core.gradleclasspathcontainer"/>
-	<classpathentry kind="output" path="bin/default"/>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/it.ozimov/spring-boot-email-core/0.5.0/b988cec17e89ea93a0e594ec0bac60d8ea20329e/spring-boot-email-core-0.5.0-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/it.ozimov/spring-boot-email-core/0.5.0/7efdbd3c6a8a294494f5c45dc73ae877a31ff09d/spring-boot-email-core-0.5.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-web/2.1.3.RELEASE/e65a0538c3075a0910e7273a9dbedb189761b1ae/spring-boot-starter-web-2.1.3.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-data-jpa/2.1.3.RELEASE/3220e72c77dfd71988cab7e03748fe22f54926c6/spring-boot-starter-data-jpa-2.1.3.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-thymeleaf/2.1.3.RELEASE/1832aabaa9334b59d3ba02845da02f54652b38b9/spring-boot-starter-thymeleaf-2.1.3.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-security/2.1.3.RELEASE/17eac91bb345a5236a3516f71b0b66e792b54170/spring-boot-starter-security-2.1.3.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-mail/2.2.1.RELEASE/d5d7f8ed919307e41ab7662f2b8c8ef610c68c6f/spring-boot-starter-mail-2.2.1.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-mail/2.2.1.RELEASE/aeafab54eaf05f0104e685bf8965943db83094d4/spring-boot-starter-mail-2.2.1.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-data-redis/2.1.3.RELEASE/d0694f34fdda03a885d59b9716b33abc514914fe/spring-boot-starter-data-redis-2.1.3.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-redis/2.1.5.RELEASE/6a51368c7dc2cb9ea888d008dd6ae3be3af44b05/spring-data-redis-2.1.5.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-redis/2.1.5.RELEASE/5b2bd3552fdbf1398a23eca4f0032a2052e1b365/spring-data-redis-2.1.5.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context-support/4.0.1.RELEASE/f196d490068aeab96acf82ec3b5dd0b428179642/spring-context-support-4.0.1.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context-support/4.0.1.RELEASE/94dc23c49a74f3f4b894b29416b08202e5976f49/spring-context-support-4.0.1.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/jstl/jstl/1.2/74aca283cd4f4b4f3e425f5820cda58f44409547/jstl-1.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-core/5.3.7.Final/26585924d06c52b66e5917ceb314b005ec73b389/hibernate-core-5.3.7.Final-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-core/5.3.7.Final/f87c5c1bbfc638309824140e68dfaaeb1bb479f3/hibernate-core-5.3.7.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/javax.persistence/javax.persistence-api/2.2/462dff65f6f8bde02ee9d8afe07fe9d50268199c/javax.persistence-api-2.2-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/javax.persistence/javax.persistence-api/2.2/25665ac8c0b62f50e6488173233239120fc52c96/javax.persistence-api-2.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.puppycrawl.tools/checkstyle/8.16/e213574c59367ecccdc7adf9a0ebc24771affac5/checkstyle-8.16-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.puppycrawl.tools/checkstyle/8.16/dd27003bd51445b4edadcf10a80d7acf5f3725f9/checkstyle-8.16.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-ant/2.5.6/469a11b01b3988453ac294a7937beb6011e6a005/groovy-ant-2.5.6-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-ant/2.5.6/501156b66c0b676aa438e06f7bb34a12c1693d82/groovy-ant-2.5.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-cli-commons/2.5.6/4de13b6636c2e932fdf22af2593d88a20aaa7400/groovy-cli-commons-2.5.6-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-cli-commons/2.5.6/8b405518664cdfc254a603002314db202c41d2c5/groovy-cli-commons-2.5.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-groovysh/2.5.6/4cad1d486140780bbd722b6ca422d91e5fa8089c/groovy-groovysh-2.5.6-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-groovysh/2.5.6/5641b17c326878b5e8cdedf49f01293177d636a8/groovy-groovysh-2.5.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-console/2.5.6/19a61fa88b6b43b0491acebcf95f0749a5d6d965/groovy-console-2.5.6-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-console/2.5.6/762f2c60319bdfc69a350ecfe65e705b66cbc759/groovy-console-2.5.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-docgenerator/2.5.6/115db67b436eda9bb709d7aff63d1f3222d3ce7/groovy-docgenerator-2.5.6-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-docgenerator/2.5.6/55688a3b5419a0ec6487aa6a1040be94c60555bc/groovy-docgenerator-2.5.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-groovydoc/2.5.6/61e84c9b86507c322c5d275bf8369826475c69fe/groovy-groovydoc-2.5.6-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-groovydoc/2.5.6/60b005e5e7d616fb35d3289d222e7968456ef9a2/groovy-groovydoc-2.5.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-cli-picocli/2.5.6/823b2aa08e52d68295cb9b39c55764f01dfd5660/groovy-cli-picocli-2.5.6-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-cli-picocli/2.5.6/ef8c444340f4f6a45c03cf804d7a21882d85415b/groovy-cli-picocli-2.5.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-datetime/2.5.6/6910b5dace84b15887005bfb30aa30addae71e45/groovy-datetime-2.5.6-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-datetime/2.5.6/e922f49860c90823907e19c2a2e369dadb3b78ab/groovy-datetime-2.5.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-jmx/2.5.6/289ac49118d09e7702f69a2668d92b186d2b0c2d/groovy-jmx-2.5.6-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-jmx/2.5.6/6e47c21a9f0c58f49123bc80bced2751ebf14db5/groovy-jmx-2.5.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-json/2.5.6/c076b6dbff063452ef64e5c309b988d815a17ea9/groovy-json-2.5.6-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-json/2.5.6/c342f6a4f72765085819f949a300c616f33d75c2/groovy-json-2.5.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-jsr223/2.5.6/b0097f344ff4fc5e327d3594e0d958d385f0ae8/groovy-jsr223-2.5.6-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-jsr223/2.5.6/64ae27f6c955aa48bfb0db6bfb4d2e66cc036f7b/groovy-jsr223-2.5.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-macro/2.5.6/89de7da8d4cd817382dd37d1c48b00f1bd86c8f/groovy-macro-2.5.6-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-macro/2.5.6/9fc476ed7c23b8341dc65c52e760c44e9bcec67e/groovy-macro-2.5.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-nio/2.5.6/bc929a82f59a07ca53f9b63fddf1bc8508ca9fac/groovy-nio-2.5.6-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-nio/2.5.6/d95e3d25b664f576be5e3f0f727782ac6fdd1799/groovy-nio-2.5.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-servlet/2.5.6/290a2bb3d74f4023b093f462b67e48f1c9ab9b47/groovy-servlet-2.5.6-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-servlet/2.5.6/ae9aafd858b3fe79633dbc5e7fd65b1281c1c6b4/groovy-servlet-2.5.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-sql/2.5.6/32194a823f81d686f3c008e6677b014c7667d847/groovy-sql-2.5.6-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-sql/2.5.6/c8a40e1f65888f5ac685eb3209ccd425c1297c25/groovy-sql-2.5.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-swing/2.5.6/56e87b32c6a0095e3458ee474e62e7b19f9e8ada/groovy-swing-2.5.6-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-swing/2.5.6/bf6ef14e5ff3004018ccb45a0238f364f8cd492e/groovy-swing-2.5.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-templates/2.5.6/7b5c1dc875a125a45333ba87c026707a7e337bf8/groovy-templates-2.5.6-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-templates/2.5.6/d12298eb38c4812662371f5f51695108f41c28d4/groovy-templates-2.5.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-test/2.5.6/8f60c693b3ba17d180d2fd99186dfb5033a69090/groovy-test-2.5.6-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-test/2.5.6/34154c5ee4f3004259e3a69c3e73d24f7aeab164/groovy-test-2.5.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-test-junit5/2.5.6/918de43945d3b368f3554d8a8f75d0d0975d3ef8/groovy-test-junit5-2.5.6-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-test-junit5/2.5.6/3e45bab2e187d4ce3cf680507d57c5ad834102eb/groovy-test-junit5-2.5.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-testng/2.5.6/948f470ed6ec634ef8149fba5eed2226a316756e/groovy-testng-2.5.6-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-testng/2.5.6/d884add344ae2a54a009f8ca66f6f1b3bc99a38a/groovy-testng-2.5.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-xml/2.5.6/74ab2b09ed4f1e19299eb30ca7818451af0364a0/groovy-xml-2.5.6-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy-xml/2.5.6/f0bcdf0705ac84ba6209de9fea9608150d28a194/groovy-xml-2.5.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy/2.5.6/659f15f6386270acdfd3afa7a2a5caea24a3d8ad/groovy-2.5.6-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.groovy/groovy/2.5.6/6936e700f0fb1b50bac0698ada4347a769d40199/groovy-2.5.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-json/2.1.3.RELEASE/374c3de160f59ee2de2f78f2285ecc9b593caa71/spring-boot-starter-json-2.1.3.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-aop/2.1.3.RELEASE/31a712440dfa221f087357bbc1142fb1eb251ca6/spring-boot-starter-aop-2.1.3.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-jdbc/2.1.3.RELEASE/d3dda1111d0061659882220bba769b9f67e5a94e/spring-boot-starter-jdbc-2.1.3.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter/2.1.3.RELEASE/bf73ada346b2956cbd10067830ac58aa55c46176/spring-boot-starter-2.1.3.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-tomcat/2.1.3.RELEASE/653f835a6da031622636379dca873be106aeddb4/spring-boot-starter-tomcat-2.1.3.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.hibernate.validator/hibernate-validator/6.0.14.Final/1d6c97c1b8db71501d6539e323a9e361544e590f/hibernate-validator-6.0.14.Final-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.hibernate.validator/hibernate-validator/6.0.14.Final/c424524aa7718c564d9199ac5892b05901cabae6/hibernate-validator-6.0.14.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/5.1.5.RELEASE/b2338b40c93e2f46df679a1a5a1ddca913dd111f/spring-webmvc-5.1.5.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/5.1.5.RELEASE/236e3bfdbdc6c86629237a74f0f11414adb4e211/spring-webmvc-5.1.5.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-web/5.1.4.RELEASE/6ae7ec82249ca3b7b64f204f925a7e01971a4cca/spring-security-web-5.1.4.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-web/5.1.4.RELEASE/fc4d93db3b56e8a6ca11f4484a8bb6d328e7accb/spring-security-web-5.1.4.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/5.1.5.RELEASE/46673f1424ad8dc3a9fc39a96730e1ee2663fc18/spring-web-5.1.5.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/5.1.5.RELEASE/c37c4363be4ad6c5f67e3f9f020497e2d599e325/spring-web-5.1.5.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/javax.transaction/javax.transaction-api/1.3/44d85f8aa1185fcbaa63b271ee98b5357c51def4/javax.transaction-api-1.3-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/javax.transaction/javax.transaction-api/1.3/e006adf5cf3cca2181d16bd640ecb80148ec0fce/javax.transaction-api-1.3.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/javax.xml.bind/jaxb-api/2.3.1/e47264d065cecbc572ba99856fcc7da19a470ae3/jaxb-api-2.3.1-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/javax.xml.bind/jaxb-api/2.3.1/8531ad5ac454cc2deb9d4d32c40c4d7451939b5d/jaxb-api-2.3.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-jpa/2.1.5.RELEASE/3039db3b3041913b57092ce7fa8bb43ca1d5b214/spring-data-jpa-2.1.5.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-jpa/2.1.5.RELEASE/968d63d6fd8bfb0bd878e71427f66351e235c73c/spring-data-jpa-2.1.5.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aspects/5.1.5.RELEASE/687dcb72f585a949c0bff7fe0e4d61f03c81b94a/spring-aspects-5.1.5.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aspects/5.1.5.RELEASE/3bb95e05b646ef93e2a4cf0b600924c2979fc723/spring-aspects-5.1.5.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.thymeleaf/thymeleaf-spring5/3.0.11.RELEASE/e4caf542f3f03b2966789b237c7827ae7de6960f/thymeleaf-spring5-3.0.11.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.thymeleaf/thymeleaf-spring5/3.0.11.RELEASE/de7bf0adf13b5e9c4811f95edf18279da193c0c6/thymeleaf-spring5-3.0.11.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.thymeleaf.extras/thymeleaf-extras-java8time/3.0.3.RELEASE/f59e79a236091e1793f1383d6ad8960ba26acbe0/thymeleaf-extras-java8time-3.0.3.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.thymeleaf.extras/thymeleaf-extras-java8time/3.0.3.RELEASE/c6e036843e462a9b26e7713e0372f704ea93bf84/thymeleaf-extras-java8time-3.0.3.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-config/5.1.4.RELEASE/2868102dfd12fd9a8dc5425d825e82e07eadd131/spring-security-config-5.1.4.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-config/5.1.4.RELEASE/91c92c36df49cedfd5ba139c038c17c506190266/spring-security-config-5.1.4.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-autoconfigure/2.1.3.RELEASE/6df39e2fbf8757ce2bf084909224e7e78f315ec7/spring-boot-autoconfigure-2.1.3.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-autoconfigure/2.1.3.RELEASE/58e07f69638a3ca13dffe8a2b68d284af376d105/spring-boot-autoconfigure-2.1.3.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot/2.1.3.RELEASE/5759c931e1287f82d132f37fcb14c396836ee42/spring-boot-2.1.3.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot/2.1.3.RELEASE/92bb92cd73212cefc1e5112e3bbf1f31c154c3fd/spring-boot-2.1.3.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-core/5.1.4.RELEASE/471a9157eb19b4cbe5881a74a8b8ac621d07f0ad/spring-security-core-5.1.4.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-core/5.1.4.RELEASE/5095b422dae31f091bf8eedf7bf46862bfa31876/spring-security-core-5.1.4.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-keyvalue/2.1.5.RELEASE/edd4114e21b6c5a279143822e9ec3bb758313b70/spring-data-keyvalue-2.1.5.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-keyvalue/2.1.5.RELEASE/ad65e3340672386c7a220d882b97b79599a5075f/spring-data-keyvalue-2.1.5.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/5.1.5.RELEASE/9f42597b821f59087bf759695992c5ea8a1fcf0d/spring-context-5.1.5.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/5.1.5.RELEASE/d39299241a2c8353d83f0f0c84d3677973da7c57/spring-context-5.1.5.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/5.1.5.RELEASE/992ff1c4ce798a61c8d060c3edc7b08742fa36a/spring-aop-5.1.5.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/5.1.5.RELEASE/5e6ab23bc14369b0e29881afd85ad13b79846a0e/spring-aop-5.1.5.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.apache.tika/tika-core/1.14/ea1cb61da56d3bde21e48b22eccaf88bc6196fe6/tika-core-1.14-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.apache.tika/tika-core/1.14/afff8f1774994aa973ef90bc8d38ddf089b9d6d9/tika-core-1.14.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-validator/5.3.3.Final/b68f672460ac360a4dd2ca190107eefe27ceee3c/hibernate-validator-5.3.3.Final-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-validator/5.3.3.Final/98275e5ac7ad92ec1cb36ee0d8c710faeab19f1b/hibernate-validator-5.3.3.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/it.ozimov/embedded-redis/0.7.0/212847ad97049a34cd16ac9b6f57a9b8eb84d0da/embedded-redis-0.7.0-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/it.ozimov/embedded-redis/0.7.0/a1a24ee7cfa1d772f3f9a81b8dc5acfbc58b977e/embedded-redis-0.7.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/27.0.1-jre/cb5c1119df8d41a428013289b193eba3ccaf5f60/guava-27.0.1-jre-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/27.0.1-jre/bd41a290787b5301e63929676d792c507bbc00ae/guava-27.0.1-jre.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.sun.mail/jakarta.mail/1.6.4/aa080f2157d8384b8fa5fcbd6959ae2ca10767b3/jakarta.mail-1.6.4-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.sun.mail/jakarta.mail/1.6.4/5015f335c2b974b1a7d08718edc326f0dc613c8a/jakarta.mail-1.6.4.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-orm/5.1.5.RELEASE/17ac59b91902d63e803414a5e7eb60b020619cd6/spring-orm-5.1.5.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-orm/5.1.5.RELEASE/2320c1442ad2d33c4bb0c289d0e48554c7c42ee7/spring-orm-5.1.5.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jdbc/5.1.5.RELEASE/f0168c568975bcd92874fafe0a4cf8eff952b543/spring-jdbc-5.1.5.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jdbc/5.1.5.RELEASE/67a6be20d032276a12a91fce4fe8b13ccc8c95d/spring-jdbc-5.1.5.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-tx/5.1.5.RELEASE/a0b2d9548895774bea629d0232da913dcbac96eb/spring-tx-5.1.5.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-tx/5.1.5.RELEASE/c2d39bf1f87a7b9f74a199b3aa37ffc8be84b918/spring-tx-5.1.5.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-oxm/5.1.5.RELEASE/a467b27c6d618c449fcb2aa9cf0179c8b9d28284/spring-oxm-5.1.5.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-oxm/5.1.5.RELEASE/d6394f9019c4b15270aaecb6f8c158e93d72317a/spring-oxm-5.1.5.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/2.1.5.RELEASE/8e8ee6b7fbc90aed51973b38c27463739daa6200/spring-data-commons-2.1.5.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.data/spring-data-commons/2.1.5.RELEASE/851578f7a47dc3ec6dce071c2688ab3987439142/spring-data-commons-2.1.5.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/5.1.5.RELEASE/65b8846a1d79cfff2bcd44e0d40c5f95c5cb2d14/spring-beans-5.1.5.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/5.1.5.RELEASE/58b10c61f6bf2362909d884813c4049b657735f5/spring-beans-5.1.5.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-expression/5.1.5.RELEASE/f03464511a63a756a470827c890de12b733412ba/spring-expression-5.1.5.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-expression/5.1.5.RELEASE/b728a06924560ee69307a52d100e6b156d9a4a80/spring-expression-5.1.5.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/5.1.5.RELEASE/407c8f57c15605a13c76a869357181825a7a5db1/spring-core-5.1.5.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/5.1.5.RELEASE/aacc4555108f3da913a58114b2aebc819f58cce4/spring-core-5.1.5.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/info.picocli/picocli/3.9.2/d73715363bb6c8d22d8aaf8709b61e9ada353ee1/picocli-3.9.2-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/info.picocli/picocli/3.9.2/60911f3b35e76b442d47e764758f3ecc3aa876c2/picocli-3.9.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/antlr/antlr/2.7.7/83cd2cd674a217ade95a4bb83a8a14f351f48bd0/antlr-2.7.7.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.7.2/14fff5b9b6c84f3b3a1fe0980e8560a555df07c0/antlr4-runtime-4.7.2-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.7.2/e27d8ab4f984f9d186f54da984a6ab1cccac755e/antlr4-runtime-4.7.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/commons-beanutils/commons-beanutils/1.9.3/9d70af7c5982bd09c33efa97ac98cee6363ba0f0/commons-beanutils-1.9.3-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/commons-beanutils/commons-beanutils/1.9.3/c845703de334ddc6b4b3cd26835458cb1cba1f3d/commons-beanutils-1.9.3.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/net.sf.saxon/Saxon-HE/9.9.0-2/294ea53dfb38f001372deee809c375e8736f16f4/Saxon-HE-9.9.0-2-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/net.sf.saxon/Saxon-HE/9.9.0-2/c3437344acc4d2f1b5d1a638166e6ce52b300595/Saxon-HE-9.9.0-2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.apache.ant/ant/1.9.13/1b08a2d90e4ed56316950079ad9a2cf812092e1a/ant-1.9.13-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.apache.ant/ant/1.9.13/7aff87f91ffda6916751e39bb5688f0a53710ec4/ant-1.9.13.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/commons-cli/commons-cli/1.4/40dfd9fdef125e19136135e68d54af6d9b0cfbb8/commons-cli-1.4-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/commons-cli/commons-cli/1.4/c51c00206bb913cd8612b24abd9fa98ae89719b1/commons-cli-1.4.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.thoughtworks.qdox/qdox/1.12.1/a284148a118e10bb84598dfb83f19d1ff128afad/qdox-1.12.1-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.thoughtworks.qdox/qdox/1.12.1/f7122f6ab1f64bdf9f5970b0e89bfb355e036897/qdox-1.12.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/jline/jline/2.14.6/e93dc55cf5b6f201e850ed339fa52e50d51105d5/jline-2.14.6-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/jline/jline/2.14.6/c3aeac59c022bdc497c8c48ed86fa50450e4896a/jline-2.14.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/junit/junit/4.12/a6c32b40bf3d76eca54e3c601e5d1470c86fcdfa/junit-4.12-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/junit/junit/4.12/2973d150c0dc1fefe998f834810d68f278ea58ec/junit-4.12.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.3.2/a2b61ebcbaf677cba765e3b00a46543edceed9dd/junit-platform-launcher-1.3.2-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.3.2/4c503033e9085087cf70d241142068f1e6bd8195/junit-platform-launcher-1.3.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-logging/2.1.3.RELEASE/3ae3b090dfd65caa44e7fd12e433b68b48c24c99/spring-boot-starter-logging-2.1.3.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/javax.annotation/javax.annotation-api/1.3.2/65dfd2c47380bf72ec62a5b8c4ceb78a4eda1a53/javax.annotation-api-1.3.2-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/javax.annotation/javax.annotation-api/1.3.2/934c04d3cfef185a8008e7bf34331b79730a9d43/javax.annotation-api-1.3.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.datatype/jackson-datatype-jdk8/2.9.8/d82c445cc6e5745e7d6eb94b14ca5c2c895369d2/jackson-datatype-jdk8-2.9.8-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.datatype/jackson-datatype-jdk8/2.9.8/bcd02aa9195390e23747ed40bf76be869ad3a2fb/jackson-datatype-jdk8-2.9.8.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.datatype/jackson-datatype-jsr310/2.9.8/b452bf6ebfe953921def884eb2e746218d6e2489/jackson-datatype-jsr310-2.9.8-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.datatype/jackson-datatype-jsr310/2.9.8/28ad1bced632ba338e51c825a652f6e11a8e6eac/jackson-datatype-jsr310-2.9.8.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.module/jackson-module-parameter-names/2.9.8/8d2358499bdaa73ab525ce9cbce90fd8dedb2f0c/jackson-module-parameter-names-2.9.8-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.module/jackson-module-parameter-names/2.9.8/c4eef0e6e20d60fb27af4bc4770dba7bcc3f6de6/jackson-module-parameter-names-2.9.8.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.9.8/f66792d499a6fea6c7a743558f940e0ebf775ce3/jackson-databind-2.9.8-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.9.8/11283f21cc480aa86c4df7a0a3243ec508372ed2/jackson-databind-2.9.8.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.apache.tomcat.embed/tomcat-embed-websocket/9.0.16/1515ca9714c29afc06e16f1515ae5aa34be11466/tomcat-embed-websocket-9.0.16-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.apache.tomcat.embed/tomcat-embed-websocket/9.0.16/f5eac487823c68f5d20742a99df1d94350c24d21/tomcat-embed-websocket-9.0.16.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.apache.tomcat.embed/tomcat-embed-core/9.0.16/8ac536534b3bca3fad92f85b44a585a365a90e5c/tomcat-embed-core-9.0.16-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.apache.tomcat.embed/tomcat-embed-core/9.0.16/d7069e3d0f760035b26b68b7b6af5eaa0c1862f/tomcat-embed-core-9.0.16.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.apache.tomcat.embed/tomcat-embed-el/9.0.16/7d569a216c12285b96342736758f31417e9112cf/tomcat-embed-el-9.0.16-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.apache.tomcat.embed/tomcat-embed-el/9.0.16/baadc5c97260023078f521cfc0085797f7dde91b/tomcat-embed-el-9.0.16.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/javax.validation/validation-api/2.0.1.Final/4b714a5167580122e46ead3317ffcdcdbd67c5f0/validation-api-2.0.1.Final-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/javax.validation/validation-api/2.0.1.Final/cb855558e6271b1b32e716d24cb85c7f583ce09e/validation-api-2.0.1.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.hibernate.common/hibernate-commons-annotations/5.0.4.Final/69dfd6d60ee86cde367fa6dcdfcec0196e2c4298/hibernate-commons-annotations-5.0.4.Final-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.hibernate.common/hibernate-commons-annotations/5.0.4.Final/965a18fdf939ee75e41f7918532d37b3a8350535/hibernate-commons-annotations-5.0.4.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.jboss.logging/jboss-logging/3.3.2.Final/a44f0f22bbd9ccb96952806e73f6cc16ef7d2f67/jboss-logging-3.3.2.Final-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.jboss.logging/jboss-logging/3.3.2.Final/3789d00e859632e6c6206adc0c71625559e6e3b0/jboss-logging-3.3.2.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.fasterxml/classmate/1.4.0/5fa1f08842f94c146ecfd17b39cb80632ccd1c68/classmate-1.4.0-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.fasterxml/classmate/1.4.0/291658ac2ce2476256c7115943652c0accb5c857/classmate-1.4.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjweaver/1.9.2/7aa564f5753105f884c50bc84ffa49a282c10a00/aspectjweaver-1.9.2-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.aspectj/aspectjweaver/1.9.2/d2502817521477faf0712c49a6ee2a5388787fc7/aspectjweaver-1.9.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.zaxxer/HikariCP/3.2.0/214ae6e5db95b776e38493ca5808e3a7c4a574e8/HikariCP-3.2.0-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.zaxxer/HikariCP/3.2.0/6c66db1c636ee90beb4c65fe34abd8ba9396bca6/HikariCP-3.2.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/javax.activation/javax.activation-api/1.2.0/1b4c6e77d35adab19794746d8ea753df30d77dca/javax.activation-api-1.2.0-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/javax.activation/javax.activation-api/1.2.0/85262acf3ca9816f9537ca47d5adeabaead7cb16/javax.activation-api-1.2.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.javassist/javassist/3.23.1-GA/cfdfb9f2777db7f7f148faa9c6b74c87b5c735d5/javassist-3.23.1-GA-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.javassist/javassist/3.23.1-GA/c072c13dcb7f705471c40bafb1536171df850ab2/javassist-3.23.1-GA.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy/1.9.10/4a97f2b09ac6a9966e3aaddb4362b81d795d250b/byte-buddy-1.9.10-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy/1.9.10/211a2b4d3df1eeef2a6cacf78d74a1f725e7a840/byte-buddy-1.9.10.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.jboss/jandex/2.0.5.Final/29cfb8bfeba7924af45a6cdcd00c90bc2cfd12fc/jandex-2.0.5.Final-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.jboss/jandex/2.0.5.Final/7060f67764565b9ee9d467e3ed0cb8a9c601b23a/jandex-2.0.5.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.dom4j/dom4j/2.1.1/a474d56a9ff9ec5973268cb1e80ded8414ffdd40/dom4j-2.1.1-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.dom4j/dom4j/2.1.1/3dce5dbb3571aa820c677fadd8349bfa8f00c199/dom4j-2.1.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.thymeleaf/thymeleaf/3.0.11.RELEASE/ee416ec60f6292587ac14d37a8151d79c4c0b364/thymeleaf-3.0.11.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.thymeleaf/thymeleaf/3.0.11.RELEASE/628ebb91f520053d4120b7b18bf78ff295d57461/thymeleaf-3.0.11.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/ch.qos.logback/logback-classic/1.2.3/cfd5385e0c5ed1c8a5dce57d86e79cf357153a64/logback-classic-1.2.3-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/ch.qos.logback/logback-classic/1.2.3/7c4f3c474fb2c041d8028740440937705ebb473a/logback-classic-1.2.3.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-to-slf4j/2.11.2/5b26345d96fce28b017316c5840484e0e929fa33/log4j-to-slf4j-2.11.2-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-to-slf4j/2.11.2/6d37bf7b046c0ce2669f26b99365a2cfa45c4c18/log4j-to-slf4j-2.11.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.slf4j/jul-to-slf4j/1.7.25/bcea1530927f59b5128841d3571f879ce3af2e86/jul-to-slf4j-1.7.25-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.slf4j/jul-to-slf4j/1.7.25/af5364cd6679bfffb114f0dec8a157aaa283b76/jul-to-slf4j-1.7.25.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.25/962153db4a9ea71b79d047dfd1b2a0d80d8f4739/slf4j-api-1.7.25-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.25/da76ca59f6a57ee3102f8f9bd9cee742973efa8a/slf4j-api-1.7.25.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/io.lettuce/lettuce-core/5.1.4.RELEASE/ac2623a421ce914097ae0941a87fdf3cfb159184/lettuce-core-5.1.4.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/io.lettuce/lettuce-core/5.1.4.RELEASE/5ae33683d9ea6040431fc74d611237956783ff78/lettuce-core-5.1.4.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.5/caf033a4a7c37b4a8ff3ea084cba591539b0b69/commons-io-2.5-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.5/2852e6e05fbb95076fc091f6d1780f1f8fe35e0f/commons-io-2.5.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.sun.activation/jakarta.activation/1.2.1/fa236a4c2936b9c0cf6e5712290d0cbf42ae553/jakarta.activation-1.2.1-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.sun.activation/jakarta.activation/1.2.1/8013606426a73d8ba6b568370877251e91a38b89/jakarta.activation-1.2.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jcl/5.1.5.RELEASE/6f3212c91ac78f8cc4bcaf600f624f92a6287ca6/spring-jcl-5.1.5.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jcl/5.1.5.RELEASE/5cbd44d11a031c64c788edf1f99706b31c434469/spring-jcl-5.1.5.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.google.guava/failureaccess/1.0.1/1d064e61aad6c51cc77f9b59dc2cccc78e792f5a/failureaccess-1.0.1-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.google.guava/failureaccess/1.0.1/1dcf1de382a0bf95a3d8b0849546c88bac1292c9/failureaccess-1.0.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.google.guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/b421526c5f297295adef1c886e5246c39d4ac629/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.2/b19b5927c2c25b6c70f093767041e641ae0b1b35/jsr305-3.0.2-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.2/25ea2e8b0c338a877313bd4672d3fe056ea78f0d/jsr305-3.0.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-qual/2.5.2/ebb8ebccd42218434674f3e1d9022c13df1c19f8/checker-qual-2.5.2-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-qual/2.5.2/cea74543d5904a30861a61b4643a5f2bb372efc4/checker-qual-2.5.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.2.0/a8cd7823aa1dcd2fd6677c0c5988fdde9d1fb0a3/error_prone_annotations-2.2.0-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.2.0/88e3c593e9b3586e1c6177f89267da6fc6986f0c/error_prone_annotations-2.2.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.1/1efdf5b737b02f9b72ebdec4f72c37ec411302ff/j2objc-annotations-1.1-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.1/ed28ded51a8b1c6b112568def5f4b455e6809019/j2objc-annotations-1.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.mojo/animal-sniffer-annotations/1.17/8fb5b5ad9c9723951b9fccaba5bb657fa6064868/animal-sniffer-annotations-1.17-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.codehaus.mojo/animal-sniffer-annotations/1.17/f97ce6decaea32b36101e37979f8b647f00681fb/animal-sniffer-annotations-1.17.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/ecf26c7507d67782a3bbd148d170b31dfad001aa/commons-logging-1.2-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/4bfc12adfe4842bf07b657f0369c4cb522955686/commons-logging-1.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/commons-collections/commons-collections/3.2.2/78c50ebda5784937ca1615fc0e1d0cb35857d572/commons-collections-3.2.2-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/commons-collections/commons-collections/3.2.2/8ad72fe39fa8c91eaaf12aadb21e0c3661fe26d5/commons-collections-3.2.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.apache.ant/ant-launcher/1.9.13/f48c4ba6dbf4652032f82030c64a1b580d824d74/ant-launcher-1.9.13-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.apache.ant/ant-launcher/1.9.13/24cf1a899bb4b69373dc4cd000bb52a9f46c459d/ant-launcher-1.9.13.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/1dc37250fbc78e23a65a67fbbaf71d2e9cbc3c0b/hamcrest-core-1.3-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/42a25dc3219429f0e5d060061f71acb49bf010a0/hamcrest-core-1.3.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.3.2/ede8c4de1464c7c7c6aa4da5def7d5b614f25737/junit-platform-engine-1.3.2-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.3.2/c54bc1d4654bd1ef15fccf512ce664184085969/junit-platform-engine-1.3.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.3.2/58f3a24c0f76eda58df496649e27e242f0bc6b41/junit-platform-commons-1.3.2-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.3.2/378d1d1b162426ad031522f6d51e3bf28d1631a4/junit-platform-commons-1.3.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.apiguardian/apiguardian-api/1.0.0/777508fa9f3e03cafb3c1fb2eba3dca317f4b1ee/apiguardian-api-1.0.0-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.apiguardian/apiguardian-api/1.0.0/3ef5276905e36f4d8055fe3cb0bdcc7503ffc85d/apiguardian-api-1.0.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.9.0/a0ad4e203304ccab7e01266fa814115850edb8a9/jackson-annotations-2.9.0-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.9.0/7c10d545325e3a6e72e06381afe469fd40eb701/jackson-annotations-2.9.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.9.8/ecaea301e166a0b48f11615864246de739b6619b/jackson-core-2.9.8-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.9.8/f5a654e4675769c716e5b387830d19b501ca191/jackson-core-2.9.8.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.attoparser/attoparser/2.0.5.RELEASE/14657ecc2618f5cbc894070b01aed1cbeee25456/attoparser-2.0.5.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.attoparser/attoparser/2.0.5.RELEASE/a93ad36df9560de3a5312c1d14f69d938099fa64/attoparser-2.0.5.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.unbescape/unbescape/1.1.6.RELEASE/968e1622c27c39bcbcbbecadfb7a0d3c4b8a9d36/unbescape-1.1.6.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.unbescape/unbescape/1.1.6.RELEASE/7b90360afb2b860e09e8347112800d12c12b2a13/unbescape-1.1.6.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/io.netty/netty-handler/4.1.33.Final/6a8199036220a146611e97067370b33a94ab6699/netty-handler-4.1.33.Final-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/io.netty/netty-handler/4.1.33.Final/3bcc2db64f7b0ebacba552aff319b41962c2df96/netty-handler-4.1.33.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/io.netty/netty-codec/4.1.33.Final/792628a57e5f595f9c6c1d54bb2ee63dd0e37e1b/netty-codec-4.1.33.Final-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/io.netty/netty-codec/4.1.33.Final/600762bf6861fa62b061782debb6fcdeff1f1984/netty-codec-4.1.33.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport/4.1.33.Final/c1f32569ddb5e16fc1bf7df3014c380344be2cd5/netty-transport-4.1.33.Final-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/io.netty/netty-transport/4.1.33.Final/b9f9af72dfcd8464c16169670d52c6dc5fe65897/netty-transport-4.1.33.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/io.netty/netty-buffer/4.1.33.Final/4ff360a43355447254a0a8f240af723bf9b19daf/netty-buffer-4.1.33.Final-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/io.netty/netty-buffer/4.1.33.Final/d4fdb13d5832a0f348e4d855c71201a2b15d560/netty-buffer-4.1.33.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/io.netty/netty-resolver/4.1.33.Final/a7d448302734acc5315a2f80ea129f3be52dc899/netty-resolver-4.1.33.Final-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/io.netty/netty-resolver/4.1.33.Final/f3873f5ed509b5c169fb7cbaf34b694d8c748926/netty-resolver-4.1.33.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/io.netty/netty-common/4.1.33.Final/6d884e9a61091135e2fe922aad3f8a554e32c0e8/netty-common-4.1.33.Final-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/io.netty/netty-common/4.1.33.Final/398b725cbaca8c691b74759ae6c3d69b8eeb0574/netty-common-4.1.33.Final.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/io.projectreactor/reactor-core/3.2.6.RELEASE/124ddf154061da1b082017c493abd6e9b94374d9/reactor-core-3.2.6.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/io.projectreactor/reactor-core/3.2.6.RELEASE/53fcd991bcbfadf7a49b651d1d4aa1cd273b0efd/reactor-core-3.2.6.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.1.1/88a3a2cb15c413565462cea99f201b67bc6d2f10/opentest4j-1.1.1-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.1.1/efd9f971e91074491ea55b19f67b13470cf4fcdd/opentest4j-1.1.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/ch.qos.logback/logback-core/1.2.3/3ebabe69eba0196af9ad3a814f723fb720b9101e/logback-core-1.2.3-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/ch.qos.logback/logback-core/1.2.3/864344400c3d4d92dfeb0a305dc87d953677c03c/logback-core-1.2.3.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.11.2/a11bdc0e8f95da31527b4f34f1a35c23e197498d/log4j-api-2.11.2-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.11.2/f5e9a2ffca496057d6891a3de65128efc636e26e/log4j-api-2.11.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.reactivestreams/reactive-streams/1.0.2/fb592a3d57b11e71eb7a6211dd12ba824c5dd037/reactive-streams-1.0.2-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.reactivestreams/reactive-streams/1.0.2/323964c36556eb0e6209f65c1cef72b53b461ab8/reactive-streams-1.0.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-devtools/2.1.3.RELEASE/1d47ce2ea889d92d99af1f2d1b2ca9e7a723f83a/spring-boot-devtools-2.1.3.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-devtools/2.1.3.RELEASE/90d61e7266c7e6f1e7788095503d8936ce626790/spring-boot-devtools-2.1.3.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/mysql/mysql-connector-java/8.0.15/88e2c0d4108b8660ae1f138d70b4be6346eb7665/mysql-connector-java-8.0.15-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/mysql/mysql-connector-java/8.0.15/1cd928d0f1a93563993ce1d8b468217ea0d19b11/mysql-connector-java-8.0.15.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.apache.ant/ant-junit/1.9.13/9c80b02a274bd495f458fbe477b1925e80e58a6d/ant-junit-1.9.13-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.apache.ant/ant-junit/1.9.13/618f3aac074fabfea4712db2635409a592da9ecd/ant-junit-1.9.13.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.apache.ant/ant-antlr/1.9.13/c1295b90bdc2c8586fa0ccce7d7618ba1f8739cc/ant-antlr-1.9.13-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.apache.ant/ant-antlr/1.9.13/d5b701718c6de5620fa78e0aedb64cdcae1336cf/ant-antlr-1.9.13.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.3.2/3d1af92523b01820ee1f99fad188ae361172d089/junit-jupiter-engine-5.3.2-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.3.2/69350316a14c46d8f6c4c909e469ec9edf58c4f8/junit-jupiter-engine-5.3.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.testng/testng/6.13.1/a2b77dfee647263d2c1010215441bfa3e28c4b9c/testng-6.13.1-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.testng/testng/6.13.1/2495393a0b4b7d7a4b49ea1f8516376f70f482c/testng-6.13.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.yaml/snakeyaml/1.23/1186bcf89d33080275bab74a0b0f495af5c812ef/snakeyaml-1.23-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.yaml/snakeyaml/1.23/ec62d74fe50689c28c0ff5b35d3aebcaa8b5be68/snakeyaml-1.23.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.3.2/77c667ed802af6253c68910b6cadfd973f3c6d0b/junit-jupiter-api-5.3.2-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.3.2/3602b523ffae9dabc04c329d73ab39ab04b3cbe2/junit-jupiter-api-5.3.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.beust/jcommander/1.72/7ef123d5dfb6f839b41265648ff1be34982d50f8/jcommander-1.72-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.beust/jcommander/1.72/6375e521c1e11d6563d4f25a07ce124ccf8cd171/jcommander-1.72.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.apache.tomcat/tomcat-annotations-api/9.0.16/46bf05374485a7900aaabc2612cbd6927cfe2405/tomcat-annotations-api-9.0.16-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.apache.tomcat/tomcat-annotations-api/9.0.16/96d9fc709325f7f3ed175f52068487421747f3cf/tomcat-annotations-api-9.0.16.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.spockframework/spock-core/1.2-groovy-2.5/61fafd5ed7e61dad39272618e84c8ae5004ffa7a/spock-core-1.2-groovy-2.5-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.spockframework/spock-core/1.2-groovy-2.5/8a7cdbd646c4ac6be8d60c8c7a329bbe77441ea2/spock-core-1.2-groovy-2.5.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-test/2.1.3.RELEASE/79ccc36b5cf5ee197e3bde7fc5ed91fa6bed594a/spring-boot-starter-test-2.1.3.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-library/1.3/47a7ee46628ab7133129cd7cef1e92657bc275e/hamcrest-library-1.3-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-library/1.3/4785a3c21320980282f9f33d0d1264a69040538f/hamcrest-library-1.3.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.athaydes/spock-reports/1.3.1/ef696725c32fa7a4a83a62931f4eea37152cce8c/spock-reports-1.3.1-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.athaydes/spock-reports/1.3.1/53e90c085db00acbe4fee2d3383d4e4de499c3e9/spock-reports-1.3.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-test/5.1.4.RELEASE/eac779a56e95f1376a120a5f1f6b7a76a8354317/spring-security-test-5.1.4.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.security/spring-security-test/5.1.4.RELEASE/afa4c30b86dce36f43005eef6cea2363cba3b260/spring-security-test-5.1.4.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-test-autoconfigure/2.1.3.RELEASE/8e7fbe82abd4e83b213a6045cb691861156668bb/spring-boot-test-autoconfigure-2.1.3.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-test-autoconfigure/2.1.3.RELEASE/f667520b788e87a38bcee2538fce16d3d1a484a5/spring-boot-test-autoconfigure-2.1.3.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-test/2.1.3.RELEASE/8dc9577a4c20058f6ff101a4c664d9ceecc903fd/spring-boot-test-2.1.3.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-test/2.1.3.RELEASE/3615e9ac8c032ff246d6f30fe36642333e45881d/spring-boot-test-2.1.3.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-test/5.1.5.RELEASE/914fe3553db493413746a350230c4300f6d5d910/spring-test-5.1.5.RELEASE-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.springframework/spring-test/5.1.5.RELEASE/693fac3c64b4617b7c2b207e45e93529f6594bd/spring-test-5.1.5.RELEASE.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.jayway.jsonpath/json-path/2.4.0/c43fc506196089da87a7bb36ec847b57072a818b/json-path-2.4.0-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.jayway.jsonpath/json-path/2.4.0/765a4401ceb2dc8d40553c2075eb80a8fa35c2ae/json-path-2.4.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.assertj/assertj-core/3.11.1/55362d8f04018b1140c5a370057bf8cd4a63c3de/assertj-core-3.11.1-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.assertj/assertj-core/3.11.1/fdac3217b804d6900fa3650f17b5cb48e620b140/assertj-core-3.11.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.mockito/mockito-core/2.23.4/6878fee8002a77fc3d29d2407d9cb059e3792827/mockito-core-2.23.4-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.mockito/mockito-core/2.23.4/a35b6f8ffcfa786771eac7d7d903429e790fdf3f/mockito-core-2.23.4.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.skyscreamer/jsonassert/1.5.0/d729b258165a2fd9b5d6156c05c4c4f7ca053117/jsonassert-1.5.0-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.skyscreamer/jsonassert/1.5.0/6c9d5fe2f59da598d9aefc1cfc6528ff3cf32df3/jsonassert-1.5.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.xmlunit/xmlunit-core/2.6.2/d5002e03c5ecf84d06ce2f2ce714e025b288f327/xmlunit-core-2.6.2-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.xmlunit/xmlunit-core/2.6.2/b0461888cdd8d3975ea8a57df96520409cadcb6c/xmlunit-core-2.6.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/net.minidev/json-smart/2.3/36c61f1b839bde5b284528cb76f6811efbe0f08b/json-smart-2.3-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/net.minidev/json-smart/2.3/7396407491352ce4fa30de92efb158adb76b5b/json-smart-2.3.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.9.10/a00b33b443dc92a59ab01f21e37dd2aee07c4256/byte-buddy-agent-1.9.10-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.9.10/9674aba5ee793e54b864952b001166848da0f26b/byte-buddy-agent-1.9.10.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.objenesis/objenesis/2.6/96614f514a1031296657bf0dde452dc15e42fcb8/objenesis-2.6-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.objenesis/objenesis/2.6/639033469776fd37c08358c6b92a4761feb2af4b/objenesis-2.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.vaadin.external.google/android-json/0.0.20131108.vaadin1/bf42d7e47a3228513b626dd7d37ac6f072aeca4f/android-json-0.0.20131108.vaadin1-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/com.vaadin.external.google/android-json/0.0.20131108.vaadin1/fa26d351fe62a6a17f5cda1287c1c6110dec413f/android-json-0.0.20131108.vaadin1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/net.minidev/accessors-smart/1.2/c837e3903ff07b478041f761915d764b98e71e05/accessors-smart-1.2-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/net.minidev/accessors-smart/1.2/c592b500269bfde36096641b01238a8350f8aa31/accessors-smart-1.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm/5.0.4/112ff54474f1f04ccf1384c92e39fdc566f0bb5e/asm-5.0.4-sources.jar" kind="lib" path="C:/Users/mia17/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm/5.0.4/da08b8cce7bbf903602a25a3a163ae252435795/asm-5.0.4.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="test"/>
+		</attributes>
+	</classpathentry>
 </classpath>
