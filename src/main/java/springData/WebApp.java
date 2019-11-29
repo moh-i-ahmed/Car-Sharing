@@ -9,6 +9,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import it.ozimov.springboot.mail.configuration.EnableEmailTools;
 import springData.repository.RoleRepository;
 import springData.repository.UserRepository;
 import springData.utils.AccessCodeGenerator;
@@ -22,6 +23,7 @@ import springData.domain.Role;
 import springData.domain.User;
 
 @SpringBootApplication
+@EnableEmailTools
 public class WebApp implements CommandLineRunner {
 
    @Autowired UserRepository userRepo;
@@ -85,7 +87,7 @@ public class WebApp implements CommandLineRunner {
       Car redPrius = new Car("ALIDJGLSA", "Red", "Prius", false);
       Car silverHilux = new Car("DBIDJLI89", "Silver", "Hilux", false);
       Car blackCorolla = new Car("MQ3DJLI33", "Black", "Corolla", false);
-      Car blueCivic = new Car("JS8DJGLGB", "Blue", "Civic", true);
+      Car blueCivic = new Car("JS8DJGLGB", "Blue", "Civic", false);
       
       //Parked together
       redPrius.setLongitude("-1.1263900999999805");
