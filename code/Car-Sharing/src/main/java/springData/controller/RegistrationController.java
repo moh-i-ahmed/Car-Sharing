@@ -44,7 +44,7 @@ public class RegistrationController {
    }
 
    @GetMapping()
-   public String register(Model model, Principal principal) {
+   public String register(Model model) {
       //List of Roles
       UserDTO userDTO = new UserDTO();
 

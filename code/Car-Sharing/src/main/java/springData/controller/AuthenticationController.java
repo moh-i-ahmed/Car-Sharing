@@ -82,7 +82,7 @@ public class AuthenticationController {
 
    @GetMapping("/access-denied")
    public String accessDenied() {
-      return "access-denied";
+      return "404";
    }
 
    @GetMapping("/404")
