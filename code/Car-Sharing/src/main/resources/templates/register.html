@@ -35,39 +35,32 @@
               <div class="text-center">
                 <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
               </div>
-              <form class="user" th:object="${userDTO}" th:action="@{/register/create}" method="post">
+              <form class="user" th:object="${userDTO}" th:action="@{/register/create}" method="post" id="requestForm">
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
                     <input type="text" class="form-control form-control-user" placeholder="First Name" id="firstName" th:field="*{firstName}">
-                    <span class="form-control-user is-invalid" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+                    <span class="form-control-user text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
                   </div>
                   <div class="col-sm-6">
-                    <input type="text" class="form-control form-control-user" placeholder="Last Name" id="lastName" th:field="*{lastName}">
-                    <span class="form-control-user is-invalid" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+                    <input type="text" class="form-control form-control-user" placeholder="Last Name" id="lastName" th:field="*{lastName}" >
+                    <span class="form-control-user is-invalid text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
                   </div>
                 </div>
                 <div class="form-group">
-                  <input type="email" class="form-control form-control-user" placeholder="Email Address" id="username" th:field="*{username}" required>
-                  <span class="icon is-small is-right" th:if="${#fields.hasErrors('username')}">
-                     <i class="fas fa-exclamation-triangle"></i>
-                  </span>
-                  <span class="help is-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+                  <input type="email" class="form-control form-control-user" placeholder="Email Address" id="username" th:field="*{username}" >
+                  <span class="form-control-user is-invalid text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
                 </div>
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="password" class="form-control form-control-user" placeholder="Password" id="password" th:field="*{password}">
-                    <span class="icon is-small is-right" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
-                        <i class="fas fa-exclamation-triangle"></i>
-                     </span>
+                    <input type="password" class="form-control form-control-user" placeholder="Password" id="password" th:field="*{password}" >
+                    <span class="form-control-user is-invalid text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
                   </div>
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="password" class="form-control form-control-user" placeholder="Repeat Password" id="matchingPassword" th:field="*{matchingPassword}">
-                    <span class="icon is-small is-right" th:if="${#fields.hasErrors('matchingPassword')}" th:errors="*{matchingPassword}">
-                        <i class="fas fa-exclamation-triangle"></i>
-                     </span>
+                    <input type="password" class="form-control form-control-user" placeholder="Repeat Password" id="matchingPassword" th:field="*{matchingPassword}" >
+                    <span class="form-control-user is-invalid text-danger" th:if="${#fields.hasErrors('matchingPassword')}" th:errors="*{matchingPassword}"></span>
                   </div>
                 </div>
-                <button class="btn btn-primary btn-user btn-block" type="submit" name="action" value="create">
+                <button class="btn btn-primary btn-user btn-block" type="submit" name="action" value="create" id="register_bt">
                   Register Account
                 </button>
               </form>
@@ -86,6 +79,23 @@
 
   </div>
 
+   <script type="text/javascript">
+   
+   $( "#firstName" ).change(function() {
+	      
+	      var x = $("#firstName").val();        
+
+	      if(x == "" || x = null){
+	    	  alert("Name must be filled out");
+	    	  $("#register_bt").attr("disabled", true);
+	      }
+	      else{
+	         $('#register_bt').removeAttr("disabled");
+	      }
+	    });
+
+   </script>
+   
   <!-- Bootstrap core JavaScript-->
   <script src="/vendor/jquery/jquery.min.js"></script>
   <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
