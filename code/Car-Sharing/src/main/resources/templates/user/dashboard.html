@@ -287,10 +287,10 @@
                   
                      <!-- Form Body -->
                      <form class="user" th:object="${requestDTO}" th:action="@{/user/requestCar}" method="post">
-                        <div class="form-group row">
+                        <div class="form-group">
                         
                            <!-- Google Autocomplete location  -->
-                           <div class="col-sm-8 mb-3 mb-sm-0 text-center">
+                           <div class="mb-3 mb-sm-0 text-center">
                               <label class="m-0 font-weight-bold text-gray">Pickup Location</label>
                               <input type="text" class="form-control form-control-user" placeholder="Pickup Location" id="search_input" required>
                               <input type="hidden" id="loc_lat" th:field="*{latitude}" />
@@ -369,7 +369,7 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Your Website 2019</span>
+            <span>Copyright &copy; <strong> <a href="https://github.com/moa38">moa38</a> </strong> 2019 </span>
           </div>
         </div>
       </footer>
@@ -407,6 +407,7 @@
    
   <!-- Google Maps JS Library -->
   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyAi9qsACSRpv-drbqKhofMzyVFf_Hr_fI0"></script>
+  
   <script>
   var searchInput = 'search_input';
 
