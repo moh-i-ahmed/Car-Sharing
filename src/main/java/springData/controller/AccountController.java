@@ -4,6 +4,8 @@ import java.security.Principal;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -21,14 +23,19 @@ import springData.DTO.PasswordDTO;
 import springData.DTO.UserDTO;
 import springData.domain.User;
 import springData.repository.UserRepository;
+import springData.services.EmailServiceImpl;
+import springData.utils.PasswordGenerator;
 
 @Controller
 @RequestMapping("/account")
 public class AccountController {
 
+   Logger logger = LoggerFactory.getLogger(AccountController.class);
+
    BCryptPasswordEncoder pe = new  BCryptPasswordEncoder();
 
    @Autowired UserRepository userRepo;
+   @Autowired private EmailServiceImpl emailService;
 
    @InitBinder("passwordDTO")
    protected void initPasswordDTOBinder(WebDataBinder binder) {
@@ -66,7 +73,7 @@ public class AccountController {
 
    @PostMapping(value = "/change-password/submit/{userId}")
    public String changePassword(@Valid @ModelAttribute("passwordDTO") PasswordDTO passwordDTO, BindingResult result,
-           @PathVariable int userId) {
+         @PathVariable int userId) {
 
       if (result.hasErrors()) {
          return "account/change-password";
@@ -83,8 +90,44 @@ public class AccountController {
    }
 
    @RequestMapping(value = "/forgot-password")
-   public String forgotPassword() {
+   public String forgotPassword(Model model) {
+      UserDTO userDTO = new UserDTO();
+      model.addAttribute("userDTO", userDTO);
+
       return "forgot-password";
+   }
+
+   @GetMapping(value = "/forgot-password/submit")
+   public String resetPassword(@ModelAttribute("userDTO") UserDTO userDTO, Model model) {
+
+      //Find User using UserDTO details
+      User user = userRepo.findByUsername(userDTO.getUsername());
+
+      if (user != null) {
+
+         //Generate password
+         String generatedPassword = PasswordGenerator.generateRandomPassword(8);
+         System.err.println(generatedPassword);
+
+         userDTO.setFirstName(user.getFirstName());
+         userDTO.setPassword(generatedPassword);
+
+         //Send Email
+         emailService.sendResetEmail(userDTO);
+
+         logger.info("\n Password reset for: " + userDTO.getUsername() +
+                     "\n Reset email sent.");
+
+         //Save User
+         user.setPassword(pe.encode(generatedPassword));   
+         userRepo.save(user);
+
+         return "redirect:/";
+      }
+      else {
+         System.err.println("User not found");
+         return "forgot-password";
+      }
    }
 
 }
