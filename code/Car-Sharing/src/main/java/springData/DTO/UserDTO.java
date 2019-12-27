@@ -2,6 +2,8 @@ package springData.DTO;
 
 public class UserDTO {
 
+   private int userID;
+   
    private String firstName;
 
    private String lastName;
@@ -25,6 +27,14 @@ public class UserDTO {
    // getter and setter
    public String getPassword() {
       return password;
+   }
+
+   public int getUserID() {
+      return userID;
+   }
+
+   public void setUserID(int userID) {
+      this.userID = userID;
    }
 
    public void setPassword(String password) {
