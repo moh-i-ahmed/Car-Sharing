@@ -1,7 +1,6 @@
 package springData;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -12,13 +11,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import it.ozimov.springboot.mail.configuration.EnableEmailTools;
 import springData.repository.RoleRepository;
 import springData.repository.UserRepository;
-import springData.utils.AccessCodeGenerator;
 import springData.repository.AddressRepository;
 import springData.repository.CarAvailabilityRepository;
 import springData.repository.CarRepository;
 import springData.domain.Address;
 import springData.domain.Car;
-import springData.domain.CarAvailability;
 import springData.domain.Role;
 import springData.domain.User;
 

@@ -58,7 +58,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
          .permitAll();
 
       http.authorizeRequests().and() //
-         .rememberMe().tokenRepository(this.persistentTokenRepository()) //
+         .rememberMe()
+         .key("uniqueAndSecret") //
+         .tokenRepository(this.persistentTokenRepository()) //
          .tokenValiditySeconds(1 * 24 * 60); // * 60); // 24h
    }
 
