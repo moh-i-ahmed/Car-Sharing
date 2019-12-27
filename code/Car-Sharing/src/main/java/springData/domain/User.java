@@ -4,12 +4,15 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.Type;
 
 /**
  * @author mia17
@@ -41,6 +44,10 @@ public class User {
 
    @Basic
    private LocalDate date_of_birth;
+   
+   @Type(type = "yes_no")
+   @Column(name = "isActive", nullable = false)
+   private boolean isActive;
 
    @ManyToOne
    private Role role;
@@ -113,6 +120,14 @@ public class User {
 
    public void setDate_of_birth(LocalDate date_of_birth) {
       this.date_of_birth = date_of_birth;
+   }
+   
+   public boolean isActive() {
+      return isActive;
+   }
+
+   public void setActive(boolean isActive) {
+      this.isActive = isActive;
    }
 
    public Role getRole() {

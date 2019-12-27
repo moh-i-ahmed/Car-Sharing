@@ -31,13 +31,11 @@ public class CarAvailability {
    public CarAvailability() {
    }
 
-
    public CarAvailability(LocalTime availabilityTime, String accessCode, Car car) {
       this.availabilityTime = availabilityTime;
       this.accessCode = accessCode;
       this.car = car;
    }
-
 
    public int getAvailabilityID() {
       return this.availabilityID;

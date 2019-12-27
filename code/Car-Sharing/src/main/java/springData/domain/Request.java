@@ -52,9 +52,6 @@ public class Request {
    @Basic
    private String longitude;
 
-   @Basic
-   private String accessCode;
-
    @OneToOne
    private Car car;
 
@@ -110,14 +107,6 @@ public class Request {
 
    public void setLongitude(String longitude) {
       this.longitude = longitude;
-   }
-
-   public String getAccessCode() {
-      return this.accessCode;
-   }
-
-   public void setAccessCode(String accessCode) {
-      this.accessCode = accessCode;
    }
 
    public Car getCar() {
