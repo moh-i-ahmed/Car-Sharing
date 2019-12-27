@@ -37,7 +37,7 @@
         <div class="sidebar-brand-icon rotate-n-15">
           <i class="fas fa-laugh-wink"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">Admin <sup>2</sup></div>
+        <div class="sidebar-brand-text mx-3">Admin</div>
       </a>
 
       <!-- Divider -->
@@ -55,81 +55,21 @@
 
       <!-- Heading -->
       <div class="sidebar-heading">
-        Interface
+        User 
       </div>
 
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-fw fa-cog"></i>
-          <span>Components</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Components:</h6>
-            <a class="collapse-item" th:href="@{buttons.html}">Buttons</a>
-            <a class="collapse-item" href="cards.html">Cards</a>
-          </div>
-        </div>
-      </li>
-
-      <!-- Nav Item - Utilities Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-          <i class="fas fa-fw fa-wrench"></i>
-          <span>Utilities</span>
-        </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Utilities:</h6>
-            <a class="collapse-item" href="utilities-color.html">Colors</a>
-            <a class="collapse-item" href="/admin/utilities-border.html">Borders</a>
-            <a class="collapse-item" href="/admin/utilities-animation.html">Animations</a>
-            <a class="collapse-item" href="/admin/utilities-other.html">Other</a>
-          </div>
-        </div>
-      </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Addons
-      </div>
-
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-          <i class="fas fa-fw fa-folder"></i>
-          <span>Pages</span>
-        </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Login Screens:</h6>
-            <a class="collapse-item" href="login.html">Login</a>
-            <a class="collapse-item" th:href="@{/register}">Register</a>
-            <a class="collapse-item" th:href="@{/forgot-password}">Forgot Password</a>
-            <div class="collapse-divider"></div>
-            <h6 class="collapse-header">Other Pages:</h6>
-            <a class="collapse-item" th:href="@{/404}">404 Page</a>
-            <a class="collapse-item" href="blank.html">Blank Page</a>
-          </div>
-        </div>
-      </li>
-
-      <!-- Nav Item - Charts -->
+      <!-- Nav Item - Add User -->
       <li class="nav-item">
         <a class="nav-link" th:href="@{/admin/createUser}">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>Create Users</span></a>
+          <i class="fas fa-fw fa-plus"></i>
+          <span>Add User</span></a>
       </li>
 
-      <!-- Nav Item - Tables -->
+      <!-- Nav Item - View Users -->
       <li class="nav-item">
         <a class="nav-link" th:href="@{/admin/view-all-users}">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Manage Users</span></a>
+          <i class="fas fa-fw fa-users"></i>
+          <span>View Users</span></a>
       </li>
 
       <!-- Divider -->
@@ -381,7 +321,24 @@
                          <td th:text="${userDTO.roleName}"></td>
                       </div>
                    </div>
+                   <div class="form-group row">
+                        <div class="col-sm-3 mb-3 mb-sm-0">
+                           <strong><td>Phone Number</td></strong>
+                        </div>
+                        <div class="col-sm-6">
+                         <td th:text="${userDTO.phoneNumber}"></td>
+                      </div>
+                   </div>
+                   <div class="form-group row">
+                        <div class="col-sm-3 mb-3 mb-sm-0">
+                           <strong><td>Driver's License</td></strong>
+                        </div>
+                        <div class="col-sm-6">
+                         <td th:text="${userDTO.driverLicense}"></td>
+                      </div>
+                   </div>
                 </div>
+                <hr>
               </div>
     
             </div>    
@@ -399,7 +356,7 @@
                      <div class="modal-body">Select "Delete" below if you are ready to remove this user from the system.</div>
                         <div class="modal-footer">
                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                           <a class="btn btn-danger" th:href="@{/admin/delete-user/} + ${user.userID}">Delete</a>
+                           <a class="btn btn-danger" th:href="@{/admin/delete-user/} + ${userID}">Delete</a>
                         </div>
                   </div>
                </div>
@@ -408,13 +365,14 @@
          <!-- /.container-fluid -->
          </div>
       </div>
+      </div>
       <!-- End of Main Content -->
 
       <!-- Footer -->
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Your Website 2019</span>
+            <span>Copyright &copy; <strong> <a href="https://github.com/moa38">moa38</a> </strong> 2019 </span>
           </div>
         </div>
       </footer>
