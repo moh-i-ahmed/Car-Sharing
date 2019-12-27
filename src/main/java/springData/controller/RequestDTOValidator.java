@@ -13,10 +13,10 @@ public class RequestDTOValidator implements Validator {
       return RequestDTO.class.equals(clazz);
    }
 
-   private RequestRepository requestRepo;
+   //private RequestRepository requestRepo;
 
    public RequestDTOValidator(RequestRepository requestRepo) {
-      this.requestRepo = requestRepo;
+      //this.requestRepo = requestRepo;
    }
 
    @Override
