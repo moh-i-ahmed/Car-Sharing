@@ -10,7 +10,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>SB Admin 2 - Blank</title>
+  <title>Admin - Add User</title>
 
   <!-- Custom fonts for this template-->
   <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -34,7 +34,7 @@
         <div class="sidebar-brand-icon rotate-n-15">
           <i class="fas fa-laugh-wink"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">Admin <sup>2</sup></div>
+        <div class="sidebar-brand-text mx-3">Admin</div>
       </a>
 
       <!-- Divider -->
@@ -52,81 +52,21 @@
 
       <!-- Heading -->
       <div class="sidebar-heading">
-        Interface
+        User 
       </div>
 
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-fw fa-cog"></i>
-          <span>Components</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Components:</h6>
-            <a class="collapse-item" th:href="@{buttons.html}">Buttons</a>
-            <a class="collapse-item" href="cards.html">Cards</a>
-          </div>
-        </div>
-      </li>
-
-      <!-- Nav Item - Utilities Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-          <i class="fas fa-fw fa-wrench"></i>
-          <span>Utilities</span>
-        </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Utilities:</h6>
-            <a class="collapse-item" href="utilities-color.html">Colors</a>
-            <a class="collapse-item" href="/admin/utilities-border.html">Borders</a>
-            <a class="collapse-item" href="/admin/utilities-animation.html">Animations</a>
-            <a class="collapse-item" href="/admin/utilities-other.html">Other</a>
-          </div>
-        </div>
-      </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Addons
-      </div>
-
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-          <i class="fas fa-fw fa-folder"></i>
-          <span>Pages</span>
-        </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Login Screens:</h6>
-            <a class="collapse-item" href="login.html">Login</a>
-            <a class="collapse-item" th:href="@{/register}">Register</a>
-            <a class="collapse-item" th:href="@{/forgot-password}">Forgot Password</a>
-            <div class="collapse-divider"></div>
-            <h6 class="collapse-header">Other Pages:</h6>
-            <a class="collapse-item" th:href="@{/404}">404 Page</a>
-            <a class="collapse-item" href="blank.html">Blank Page</a>
-          </div>
-        </div>
-      </li>
-
-      <!-- Nav Item - Charts -->
+      <!-- Nav Item - Add User -->
       <li class="nav-item">
         <a class="nav-link" th:href="@{/admin/createUser}">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>Create Users</span></a>
+          <i class="fas fa-fw fa-plus"></i>
+          <span>Add User</span></a>
       </li>
 
-      <!-- Nav Item - Tables -->
+      <!-- Nav Item - View Users -->
       <li class="nav-item">
         <a class="nav-link" th:href="@{/admin/view-all-users}">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Manage Users</span></a>
+          <i class="fas fa-fw fa-users"></i>
+          <span>View Users</span></a>
       </li>
 
       <!-- Divider -->
@@ -335,12 +275,12 @@
           <!-- Page Heading -->
           <h1 class="h3 mb-4 text-gray-800">Add User</h1>
           
-          <div class="col-lg-6">
+          <div class="col-xl-4 col-lg-6">
           
           <!-- Circle Buttons -->
               <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Add New User Account</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">Add New User</h6>
                 </div>
                 <div class="card-body">
                   
@@ -348,29 +288,31 @@
                   <form class="user" th:object="${userDTO}" th:action="@{/admin/createUser/create}" method="post">
                      <div class="form-group row">
                         <div class="col-sm-6 mb-3 mb-sm-0">
-                           <input type="text" class="form-control form-control-user" placeholder="First Name" id="firstName" th:field="*{firstName}">
+                           <input type="text" class="form-control form-control-user" placeholder="First Name" id="firstName" th:field="*{firstName}" required>
+                           <span class="form-control-user text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
                         </div>
                         <div class="col-sm-6">
-                         <input type="text" class="form-control form-control-user" placeholder="Last Name" id="lastName" th:field="*{lastName}">
+                         <input type="text" class="form-control form-control-user" placeholder="Last Name" id="lastName" th:field="*{lastName}" required>
+                         <span class="form-control-user text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
                       </div>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" class="form-control form-control-user" placeholder="Email Address" id="username" th:field="*{username}">
-                  </div>
-                  <div class="form-group row">
-                     <div class="col-sm-6 mb-3 mb-sm-0">
-                        <input type="password" class="form-control form-control-user" placeholder="Password" id="password" th:field="*{password}">
                      </div>
-                  <div class="dropdown mb-4">
-                     <select id="roleName" th:field="*{roleName}" class="btn btn-primary dropdown-toggle" >
-                        <option value="">Select Role</option>
-                        <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
-                           <option th:each="role : ${roles}" th:text="${role.role}" th:value="${role.role}" class="dropdown-item"></option>
+                     <div class="form-group">
+                        <input type="email" class="form-control form-control-user" placeholder="Email Address" id="username" th:field="*{username}" required
+                           oninvalid="this.setCustomValidity('Enter Username')"
+                           oninput="this.setCustomValidity('')" />
+                        <span class="form-control-user text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+                     </div>
+                     <div class="form-group">
+                        <div class="dropdown mb-4">
+                           <select id="roleName" th:field="*{roleName}" class="btn btn-primary" type="button" aria-haspopup="true" aria-expanded="false" required>
+                              <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
+                                 <option value="">Select Role</option>
+                                 <option th:each="role : ${roles}" th:text="${role.role}" th:value="${role.role}"></option>
+                              </div>
+                           </select>
+                           <span class="help is-danger" th:if="${#fields.hasErrors('roleName')}" th:errors="*{roleName}"></span>
                         </div>
-                     </select>
-                     <span class="help is-danger" th:if="${#fields.hasErrors('roleName')}" th:errors="*{roleName}"></span>
-                  </div>
-                     <!-- div class="dropdown mb-4">
+                        <!-- div class="dropdown mb-4">
                         <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                            Select Role
                         </button>
@@ -379,13 +321,11 @@
                            <a class="dropdown-item" href="#">Another action</a>
                         </div>
                      </div-->
-                  </div>
-                  <hr>
-                  <a href="login.html" class="btn btn-primary btn-user btn-block">
-                     Register Account
-                  </a>
-                  
-            
+                     </div>
+                     <hr>
+                     <button class="btn btn-primary btn-user btn-block" type="submit" name="action" value="create" id="register_bt">
+                        Create User
+                     </button>
                   </form>
                 </div>
               </div>
@@ -393,7 +333,6 @@
 
         </div>
         <!-- /.container-fluid -->
-
       </div>
       <!-- End of Main Content -->
 
@@ -401,7 +340,7 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Your Website 2019</span>
+            <span>Copyright &copy; <strong> <a href="https://github.com/moa38">moa38</a> </strong> 2019 </span>
           </div>
         </div>
       </footer>
