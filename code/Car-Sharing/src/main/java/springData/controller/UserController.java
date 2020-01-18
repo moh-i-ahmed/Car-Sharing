@@ -32,7 +32,6 @@ import springData.repository.AddressRepository;
 import springData.repository.CarAvailabilityRepository;
 import springData.repository.CarRepository;
 import springData.repository.RequestRepository;
-import springData.repository.RoleRepository;
 import springData.repository.UserRepository;
 import springData.utils.AccessCodeGenerator;
 
@@ -45,7 +44,6 @@ public class UserController {
    AccessCodeGenerator codeGenerator = new AccessCodeGenerator();
 
    @Autowired UserRepository userRepo;
-   @Autowired RoleRepository roleRepo;
    @Autowired AddressRepository addressRepo;
    @Autowired CarRepository carRepo;
    @Autowired CarAvailabilityRepository carAvailabilityRepo;
@@ -60,17 +58,18 @@ public class UserController {
    public String createUser(@Valid @ModelAttribute("requestDTO") RequestDTO requestDTO, BindingResult result,
            Model model, Principal principal) {
 
+      //Get Logged in User
+      User user = userRepo.findByUsername(principal.getName());
       
       if (result.hasErrors()) {
-         System.out.println("Lukas likes wings 55");
          //Add Car Request form
          //RequestDTO newRequestDTO = new RequestDTO();
          model.addAttribute("requestDTO", requestDTO);
          
          System.err.println(result);
-         return "/user/dashboard";
-      } else {
-         System.out.println("Lukas likes wings");
+         return "redirect:/dashboard";
+      }
+      else {
          //Create new User using UserDTO details
          Request newRequest = new Request();
 
@@ -87,36 +86,29 @@ public class UserController {
          newRequest.setLatitude(requestDTO.getLatitude());
          newRequest.setLongitude(requestDTO.getLongitude());
          newRequest.setUser(userRepo.findByUsername(principal.getName()));
+         user.setActive(true);
 
          //Find available Car
          newRequest.setCar(findCar(newRequest));
          System.out.println("it is a dish");
          //Save Request
          requestRepo.save(newRequest);
-
+         userRepo.save(user);
+         
          model.addAttribute("requestID", newRequest.getRequestID());
-
-         return "redirect:/user/requestCars";
+         
+         return "redirect:/user/request";
       }
    }
-   
-   public LocalTime timeConverter(String time) {
-      String convert = LocalTime.parse(time, DateTimeFormatter.ofPattern("hh:mm a", Locale.US)).format(DateTimeFormatter.ofPattern("hh:mm"));
-      return LocalTime.parse(convert);
-   }
 
-   @GetMapping("/requestCars")
+   @GetMapping("/request")
    public String viewUser(@RequestParam(value = "requestID", required = true) int requestID, Model model) {
       //Find Request by ID
-      Request newRequest = requestRepo.findById(requestID);
+      Request request = requestRepo.findById(requestID);
 
       //Add details to model
-      model.addAttribute("startTime", newRequest.getStartTime());
-      model.addAttribute("endTime", newRequest.getEndTime());
-      model.addAttribute("accessCode", newRequest.getCar().getCarAvailability().getAccessCode());
-      model.addAttribute("carColor", newRequest.getCar().getCarColor());
-      model.addAttribute("carName", newRequest.getCar().getCarName());
-      model.addAttribute("registrationNumber", newRequest.getCar().getRegistrationNumber());
+      model.addAttribute("request", request);
+      model.addAttribute("username", request.getUser().getUsername());
 
       return "/user/requestCar";
    }
@@ -130,6 +122,7 @@ public class UserController {
       List<Request> requests = (List<Request>) requestRepo.findAllByUser(user);
 
       model.addAttribute("requests", requests);
+      model.addAttribute("username", principal.getName());
 
       return "/user/history";
    }
@@ -146,34 +139,16 @@ public class UserController {
       model.addAttribute("carColor", request.getCar().getCarColor());
       model.addAttribute("carName", request.getCar().getCarName());
       model.addAttribute("registrationNumber", request.getCar().getRegistrationNumber());
+      model.addAttribute("username", request.getUser().getUsername());
 
       return "/user/view-request";
    }
-   
-   @GetMapping("/profile")
-   public String account(Model model, Principal principal) {
-      //Find User
-      User user = userRepo.findByUsername(principal.getName());
 
-      //Display User info using UserDTO
-      UserDTO userDTO = new UserDTO();
-
-      userDTO.setFirstName(user.getFirstName());
-      userDTO.setLastName(user.getLastName());
-      userDTO.setUsername(user.getUsername());
-      userDTO.setPhoneNumber(user.getPhoneNumber());
-      userDTO.setDriverLicense(user.getDriverLicense());
-
-      model.addAttribute("userId", user.getUserID());
-      model.addAttribute("userDTO", userDTO);
-
-      return "user/profile";
-   }
-
-   //Function that finds 1st available Car
+   //Function that finds first available Car
    private Car findCar(Request request) {
       Car car = new Car();
       List<Car> availableCars = carRepo.findAllAvailable();
+      
       car = availableCars.get(0);
       car.setIsActive(true);
       carRepo.save(car);
@@ -188,6 +163,11 @@ public class UserController {
       carRepo.save(car);
 
       return car;
+   }
+   
+   public LocalTime timeConverter(String time) {
+      String convert = LocalTime.parse(time, DateTimeFormatter.ofPattern("hh:mm a", Locale.US)).format(DateTimeFormatter.ofPattern("hh:mm"));
+      return LocalTime.parse(convert);
    }
 
 }
