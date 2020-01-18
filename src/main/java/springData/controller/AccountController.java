@@ -43,49 +43,73 @@ public class AccountController {
    }
 
    @GetMapping("/profile")
-   public String account(Model model, Principal principal) {
-      //Find User
+   public String profile(Model model, Principal principal) {
+      //Retrieve logged in User
       User user = userRepo.findByUsername(principal.getName());
 
-      //Display User info using UserDTO
-      UserDTO userDTO = new UserDTO();
+      //Check for User
+      if (user.getRole().getRole().equals("USER")) {
+         //Display User info using UserDTO
+         UserDTO userDTO = new UserDTO();
+         PasswordDTO passwordDTO = new PasswordDTO();
 
-      userDTO.setFirstName(user.getFirstName());
-      userDTO.setLastName(user.getLastName());
-      userDTO.setUsername(user.getUsername());
-      userDTO.setRoleName(user.getRole().getRole());
+         userDTO.setFirstName(user.getFirstName());
+         userDTO.setLastName(user.getLastName());
+         userDTO.setUsername(user.getUsername());
+         userDTO.setPhoneNumber(user.getPhoneNumber());
+         userDTO.setDriverLicense(user.getDriverLicense());
 
-      model.addAttribute("userId", user.getUserID());
-      model.addAttribute("userDTO", userDTO);
+         model.addAttribute("userId", user.getUserID());
+         model.addAttribute("username", principal.getName());
 
-      return "profile";
-   }
+         model.addAttribute("userDTO", userDTO);
+         model.addAttribute("passwordDTO", passwordDTO);
 
-   @GetMapping("/change-password/{userId}")
-   public String changePassword(@PathVariable int userId, Model model) {
-      PasswordDTO passwordDTO = new PasswordDTO();
-
-      model.addAttribute("userId", userId);
-      model.addAttribute("passwordDTO", passwordDTO);
-
-      return "account/change-password";
+         return "user/profile";
+      }
+      return "user/profile";
    }
 
    @PostMapping(value = "/change-password/submit/{userId}")
    public String changePassword(@Valid @ModelAttribute("passwordDTO") PasswordDTO passwordDTO, BindingResult result,
-         @PathVariable int userId) {
+         @PathVariable int userId, Model model) {
 
-      if (result.hasErrors()) {
-         return "account/change-password";
+      //Retrieve User
+      User user = userRepo.findById(userId);
+
+      if (result.hasErrors() || (user.getPassword() != passwordDTO.getCurrentPassword())) {
+         //Reject wrong current password
+         if (user.getPassword() != passwordDTO.getCurrentPassword()) {
+            result.reject("currentPassword", "Incorrect current password");
+
+            logger.info("\n Current password entered != stored password");
+         }
+         //Display User info using UserDTO
+         UserDTO userDTO = new UserDTO();
+         userDTO.setFirstName(user.getFirstName());
+         userDTO.setLastName(user.getLastName());
+         userDTO.setUsername(user.getUsername());
+         userDTO.setPhoneNumber(user.getPhoneNumber());
+         userDTO.setDriverLicense(user.getDriverLicense());
+
+         model.addAttribute("userId", user.getUserID());
+         model.addAttribute("username", user.getUsername());
+         model.addAttribute("userDTO", userDTO);
+
+         logger.info(result.toString());
+
+         return "user/profile";
       } else {
-         //Create new User using UserDTO details
-         User user = userRepo.findById(userId);
-         user.setPassword(pe.encode(passwordDTO.getPassword()));
+         //Update Password
+         //User user = userRepo.findById(userId);
+         user.setPassword(pe.encode(passwordDTO.getNewPassword()));
+
+         logger.info("\n Password changed by: " + user.getUsername());
 
          //Save User
          userRepo.save(user);
 
-         return "redirect:/account";
+         return "redirect:/account/profile";
       }
    }
 
@@ -116,7 +140,7 @@ public class AccountController {
          emailService.sendResetEmail(userDTO);
 
          logger.info("\n Password reset for: " + userDTO.getUsername() +
-                     "\n Reset email sent.");
+               "\n Reset email sent.");
 
          //Save User
          user.setPassword(pe.encode(generatedPassword));   
