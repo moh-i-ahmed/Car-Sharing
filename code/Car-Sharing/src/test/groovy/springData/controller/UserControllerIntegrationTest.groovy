@@ -1,4 +1,4 @@
-package springData.domain
+package springData.controller
 
 import spock.lang.Specification
 
