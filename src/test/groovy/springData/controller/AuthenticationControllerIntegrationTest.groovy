@@ -1,6 +1,11 @@
-package springData.domain
+package springData.controller
 
+import spock.lang.Shared
 import spock.lang.Specification
+import springData.domain.Role
+import springData.domain.User
+import springData.repository.RoleRepository
+import springData.repository.UserRepository
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
@@ -101,4 +106,57 @@ class AuthenticationControllerIntegrationTest extends Specification {
            user | role
            'bob@bobmail.com' | 'USER'
    }
+/*   @Autowired
+   UserRepository userRepo;
+
+   @Autowired
+   RoleRepository roleRepo
+   @Shared Role userr
+   @Shared Role admin
+   @Shared User u1
+   @Shared User u2
+   private MockMvc mockMvc;
+   private ResultActions result;
+  
+   def setup() {
+      this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build()
+      
+      userr = new Role(1, "USER");
+      admin = new Role(2, "ADMIN");
+
+      roleRepo.save(userr);
+      roleRepo.save(admin);
+      
+       u1 = new User()
+      u1.setUsername("bob@mail.com")
+      u1.setPassword("password")
+      u1.setRole(userr)
+      userRepo.save(u1)
+      
+       u2 = new User()
+      u2.setUsername("smith@mail.com")
+      u2.setPassword("password")
+      u2.setRole(admin)
+      userRepo.save(u2)
+   }
+   
+   def "1: Demo"() {
+     given: "dsafas"
+        if (userRepo.findByUsername("smith@mail.com"))
+      and: "the context of is setup"
+           result = this.mockMvc.perform(get("/success-login").secure(true).with(user(u2).roles('ADMIN')))
+     expect:
+         result.andExpect(redirectedUrl(redirect))
+
+  }
+  
+  def "2: Demo"() {
+     given: "the context of is setup"
+           result = this.mockMvc.perform(get("/dashboard"))
+     when:
+           
+     expect: "I see a view dashboard"
+           result.andExpect(view().name("login"))
+  }*/
+  
 }
