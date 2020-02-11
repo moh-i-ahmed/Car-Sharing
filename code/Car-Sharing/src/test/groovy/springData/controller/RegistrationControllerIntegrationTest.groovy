@@ -25,7 +25,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest()
+@SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(locations="classpath:test.properties")
 class RegistrationControllerIntegrationTest extends Specification {
@@ -51,16 +51,16 @@ class RegistrationControllerIntegrationTest extends Specification {
    def "registration complete"(){
       when: "registration form is posted"
             result = mockMvc.perform(post("/register/create").secure(true)
-               .with(csrf())
-               .param("userID", "1")
-               .param("firstName", "firstName")
-               .param("lastName", "lastName")
-               .param("username", "xxxx@xyz.com")
-               .param("password", "password")
-               .param("matchingPassword", "password")
-               .param("phoneNumber", "phoneNumber")
-               .param("roleName", "roleName")
-               .param("driverLicense", "driverLicense"))
+                  .with(csrf())
+                  .param("userID", "1")
+                  .param("firstName", "firstName")
+                  .param("lastName", "lastName")
+                  .param("username", "registration@xyz.com")
+                  .param("password", "password")
+                  .param("matchingPassword", "password")
+                  .param("phoneNumber", "phoneNumber")
+                  .param("roleName", "roleName")
+                  .param("driverLicense", "driverLicense"))
       then: "expect redirected to login page"
             result.andExpect(status().is3xxRedirection())
                   .andExpect(redirectedUrl("/"))
@@ -70,16 +70,16 @@ class RegistrationControllerIntegrationTest extends Specification {
    def "registration with existing username fails"(){
       when: "attempting to register with existing username"
             result = mockMvc.perform(post("/register/create").secure(true)
-               .with(csrf())
-               .param("userID", "1")
-               .param("firstName", "Bob")
-               .param("lastName", "Bobson")
-               .param("username", "bob@bobmail.com")
-               .param("password", "password")
-               .param("matchingPassword", "password")
-               .param("phoneNumber", "phoneNumber")
-               .param("roleName", "roleName")
-               .param("driverLicense", "driverLicense"))
+                  .with(csrf())
+                  .param("userID", "1")
+                  .param("firstName", "Bob")
+                  .param("lastName", "Bobson")
+                  .param("username", "bob@bobmail.com")
+                  .param("password", "password")
+                  .param("matchingPassword", "password")
+                  .param("phoneNumber", "phoneNumber")
+                  .param("roleName", "roleName")
+                  .param("driverLicense", "driverLicense"))
       then: "validator returns error"
             result.andExpect(model().attributeHasErrors("userDTO"))
                   .andExpect(status().is2xxSuccessful())
@@ -90,15 +90,15 @@ class RegistrationControllerIntegrationTest extends Specification {
    def "registration with incomplete fields fails"(){
       when: "attempting to register with missing fields"
             result = mockMvc.perform(post("/register/create").secure(true)
-               .with(csrf())
-               .param("userID", "1")
-               .param("lastName", "Bobson")
-               .param("username", "xyz@mail.com")
-               .param("password", "password")
-               .param("matchingPassword", "password")
-               .param("phoneNumber", "phoneNumber")
-               .param("roleName", "roleName")
-               .param("driverLicense", "driverLicense"))
+                  .with(csrf())
+                  .param("userID", "1")
+                  .param("lastName", "Bobson")
+                  .param("username", "xyz@mail.com")
+                  .param("password", "password")
+                  .param("matchingPassword", "password")
+                  .param("phoneNumber", "phoneNumber")
+                  .param("roleName", "roleName")
+                  .param("driverLicense", "driverLicense"))
       then: "validator returns error"
             result.andExpect(model().attributeHasErrors("userDTO"))
                   .andExpect(view().name("register"))
