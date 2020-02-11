@@ -25,7 +25,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest()
+@SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(locations="classpath:test.properties")
 class UserControllerIntegrationTest extends Specification {
@@ -96,7 +96,8 @@ class UserControllerIntegrationTest extends Specification {
    }
 
    /*
-    * Tests
+    * When the user cancels an active request
+    * then they should be redirected to the dashboard
     */
    def "cancel request"() {
       when: "user cancels a request"
@@ -133,7 +134,7 @@ class UserControllerIntegrationTest extends Specification {
             'bob@bobmail.com' | 'USER' | 5
    }
 
-   def "user history loads"() {
+   def "history loads"() {
       when: "logged in user views their history"
             result = mockMvc.perform(get("/user/history")
                             .secure(true)

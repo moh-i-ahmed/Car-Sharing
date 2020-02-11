@@ -30,7 +30,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest()
+@SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(locations="classpath:test.properties")
 class AuthenticationControllerIntegrationTest extends Specification {
@@ -51,10 +51,26 @@ class AuthenticationControllerIntegrationTest extends Specification {
                .andExpect(view().name("login"))
                .andDo(print())
    }
-   
+
    def "success-login"(){
+      when: "landing page is called"
+         result = mockMvc.perform(get("/success-login")
+                         .secure(true)
+                         .with(user(user)
+                           .roles(role)))
+      then: "expect status 200 & correct view"
+         result.andExpect(status().is3xxRedirection())
+               .andExpect(redirectedUrl("/dashboard"))
+               .andDo(print())
+      where:
+           user | role
+           'bob@bobmail.com' | 'USER'
+           'smithy@mail.com' | 'ADMIN'
+   }
+
+   def "dashboard"(){
       when: "after a successful login"
-            result = mockMvc.perform(get("/success-login")
+            result = mockMvc.perform(get("/dashboard")
                             .secure(true)
                             .with(user(user)
                                .roles(role)))
@@ -101,6 +117,22 @@ class AuthenticationControllerIntegrationTest extends Specification {
       then: "expect status 403-Forbidden"
          result.andExpect(status().is4xxClientError())
                .andExpect(view().name("access-denied"))
+               .andDo(print())
+      where:
+           user | role
+           'bob@bobmail.com' | 'USER'
+   }
+
+   def "error 404 page"(){
+      when: "error occurs"
+         result = mockMvc.perform(get("/error")
+                         .secure(true)
+                            .with(user(user)
+                               .roles(role)))
+      then: "expect status 404"
+         result.andExpect(status().is4xxClientError())
+               .andExpect(model().attributeExists("username"))
+               .andExpect(view().name("404"))
                .andDo(print())
       where:
            user | role
@@ -160,3 +192,4 @@ class AuthenticationControllerIntegrationTest extends Specification {
   }*/
   
 }
+//AuthenticationControllerIntegrationTest
