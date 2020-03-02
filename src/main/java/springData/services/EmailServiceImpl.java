@@ -77,5 +77,21 @@ public class EmailServiceImpl {
       }
    }
 
+   //Function processing username update email requests
+   public void sendUsernameChangeEmail(UserDTO userDTO) {
+      try {
+         Map<String, Object> modelObject = null;
+
+         modelObject = ImmutableMap.of(
+               "name", userDTO.getFirstName()
+               );
+
+         //Send email with required info
+         sendMimeEmailWithFreemarker(Constants.USERNAME_UPDATE_SUBJECT, Constants.USERNAME_UPDATE_TEMPLATE,
+               userDTO, modelObject);
+      } catch (UnsupportedEncodingException | CannotSendEmailException | URISyntaxException e) {
+         e.printStackTrace();
+      }
+   }
 }
 //EmailServiceImpl
