@@ -1,6 +1,7 @@
 package springData.controller
 
 import spock.lang.Specification
+import spock.lang.Stepwise;
 import spock.lang.Shared;
 import springData.domain.Role
 import springData.domain.User
@@ -11,7 +12,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
+import org.hamcrest.Matchers
 import org.junit.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -24,6 +25,7 @@ import org.springframework.test.web.servlet.ResultActions
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
 import javax.transaction.Transactional
+import org.springframework.test.annotation.Rollback;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
@@ -34,6 +36,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.time.LocalDate
 
+@Stepwise
+@Rollback
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(locations="classpath:test.properties")
@@ -46,6 +50,8 @@ class AccountControllerIntegrationTest extends Specification {
 
    private ResultActions result;
 
+   def cleanup() {}
+
    def "profile page loads"() {
       when: "profile is called"
          result = mockMvc.perform(get("/account/profile")
@@ -53,11 +59,13 @@ class AccountControllerIntegrationTest extends Specification {
                            .with(user(user)
                               .roles(role)))
       then: "expect model attributes exists"
-         result.andExpect(model().attributeExists("username"))
+         result.andExpect(model().attributeExists("user"))
+               .andExpect(model().attributeExists("username"))
                .andExpect(model().attributeExists("userId"))
                .andExpect(model().attributeExists("passwordDTO"))
                .andExpect(model().attributeExists("userDTO"))
-               .andExpect(model().size(4))
+               .andExpect(model().attributeExists("address"))
+               .andExpect(model().size(6))
       and: "status 200 & correct view"
          result.andExpect(status().is2xxSuccessful())
                .andExpect(view().name("user/profile"))
@@ -72,15 +80,15 @@ class AccountControllerIntegrationTest extends Specification {
     * Redirects to profile page:
     * @Transactional allows repository calls
     */
-   @Transactional
+  // @Transactional
    def "change password is successful"() {
       when: "attempting to change password with incorrect details"
-            result = mockMvc.perform(post("/account/change-password/submit/" + "$userId")
+            result = mockMvc.perform(post("/account/change-password/" + "$userId")
                             .secure(true)
                               .with(user(user)
                                  .roles(role))
                               .with(csrf())
-                     .param("currentPassword", userRepo.findByUsername(user).getPassword())
+                     .param("currentPassword", 'password')
                      .param("newPassword", 'password123')
                      .param("confirmPassword", 'password123'))
       then: "redirected to /account/profile"
@@ -98,7 +106,7 @@ class AccountControllerIntegrationTest extends Specification {
     */
    def "changing password with incorrect current password fails"() {
       when: "attempting to change password with incorrect details"
-            result = mockMvc.perform(post("/account/change-password/submit/" + "$userId")
+            result = mockMvc.perform(post("/account/change-password/" + "$userId")
                             .secure(true)
                               .with(user(user)
                                  .roles(role))
@@ -123,7 +131,7 @@ class AccountControllerIntegrationTest extends Specification {
     */
    def "changing password with empty fields fails"() {
       when: "attempting to change password with incorrect details"
-            result = mockMvc.perform(post("/account/change-password/submit/" + "$userId")
+            result = mockMvc.perform(post("/account/change-password/" + "$userId")
                             .secure(true)
                               .with(user(user)
                                  .roles(role))
@@ -140,23 +148,75 @@ class AccountControllerIntegrationTest extends Specification {
             'bob@bobmail.com' | 'USER' | 1
    }
 
-   def "forgot-password page loads"() {
-      when: "forgot-password is called"
-         result = mockMvc.perform(get("/account/forgot-password")
+   /*
+    * Tests PasswordDTOValidator
+    */
+   def "edit profile is successful"() {
+      when: "attempting to edit profile with invalid details"
+            result = mockMvc.perform(post("/account/edit-profile/" + "$userId")
+                            .secure(true)
+                              .with(user(user)
+                                 .roles(role))
+                              .with(csrf())
+                     .param("userID", "1")
+                     .param("firstName", "Bob")
+                     .param("lastName", "Bobson")
+                     .param("username", "bob@bobmail.com")
+                     .param("phoneNumber", "phoneNumber")
+                     .param("roleName", "roleName")
+                     .param("driverLicense", "driverLicense"))
+      then: "validator returns error"
+            result.andExpect(status().is3xxRedirection())
+                  .andExpect(redirectedUrl("/account/profile"))
+                  .andDo(print())
+      where:
+           user | role | userId
+            'bob@bobmail.com' | 'USER' | 1
+   }
+
+   /*
+    * Tests PasswordDTOValidator
+    * Returns errors: [currentPassword]
+    *                 [newPassword]
+    *                 [confirmPassword]
+    */
+   def "edit profile with empty fields fails"() {
+      when: "attempting to edit profile with invalid details"
+            result = mockMvc.perform(post("/account/edit-profile/" + "$userId")
+                            .secure(true)
+                              .with(user(user)
+                                 .roles(role))
+                              .with(csrf())
+                     .param("userID", "1")
+                     .param("firstName", "")
+                     .param("lastName", "")
+                     .param("username", "bob@bobmail.com")
+                     .param("phoneNumber", "phoneNumber")
+                     .param("roleName", "roleName")
+                     .param("driverLicense", "driverLicense"))
+      then: "validator returns error"
+            result.andExpect(model().attributeHasErrors("userDTO"))
+                  .andExpect(view().name("user/profile"))
+                  .andDo(print())
+      where:
+           user | role | userId
+            'bob@bobmail.com' | 'USER' | 1
+   }
+
+   @Rollback
+   def "deleting account is successful"() {
+      when: "user deletes their account"
+         result = mockMvc.perform(get("/account/delete-account")
                          .secure(true)
                            .with(user(user)
                               .roles(role)))
-      then: "expect model attributes exists"
-         result.andExpect(model().attributeExists("userDTO"))
-               .andExpect(model().size(1))
-      and: "status 200 & correct view"
-         result.andExpect(status().is2xxSuccessful())
-               .andExpect(view().name("forgot-password"))
+      then: "tatus 302 & redirect to logout"
+         result.andExpect(status().is3xxRedirection())
+               .andExpect(redirectedUrl("/logout"))
                .andDo(print())
       where:
            user | role
             'bob@bobmail.com' | 'USER'
    }
-
 }
 //AccountControllerIntegrationTest
