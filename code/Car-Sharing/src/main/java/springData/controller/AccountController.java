@@ -1,12 +1,19 @@
 package springData.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,24 +25,33 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import springData.DTO.PasswordDTO;
 import springData.DTO.UserDTO;
 import springData.domain.User;
+import springData.repository.AddressRepository;
 import springData.repository.UserRepository;
 import springData.services.EmailServiceImpl;
-import springData.utils.PasswordGenerator;
+import springData.validator.PasswordDTOValidator;
+import springData.validator.UserDTOValidator;
 
 @Controller
 @RequestMapping("/account")
 public class AccountController {
 
-   Logger logger = LoggerFactory.getLogger(AccountController.class);
+   private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
-   BCryptPasswordEncoder pe = new  BCryptPasswordEncoder();
+   BCryptPasswordEncoder pe = new BCryptPasswordEncoder();
 
    @Autowired UserRepository userRepo;
+   @Autowired AddressRepository addressRepo;
    @Autowired private EmailServiceImpl emailService;
+
+   @InitBinder("userDTO")
+   protected void initUserDTOBinder(WebDataBinder binder) {
+      binder.addValidators(new UserDTOValidator(userRepo));
+   }
 
    @InitBinder("passwordDTO")
    protected void initPasswordDTOBinder(WebDataBinder binder) {
@@ -44,12 +60,12 @@ public class AccountController {
 
    @GetMapping("/profile")
    public String profile(Model model, Principal principal) {
-      //Retrieve logged in User
+      // Retrieve logged in User
       User user = userRepo.findByUsername(principal.getName());
 
-      //Check for User
+      // Check for User
       if (user.getRole().getRole().equals("USER")) {
-         //Display User info using UserDTO
+         // Display User info using UserDTO
          UserDTO userDTO = new UserDTO();
          PasswordDTO passwordDTO = new PasswordDTO();
 
@@ -61,30 +77,31 @@ public class AccountController {
 
          model.addAttribute("userId", user.getUserID());
          model.addAttribute("username", principal.getName());
+         model.addAttribute("address", user.getAddresses().get(0));
 
+         model.addAttribute("user", user);
          model.addAttribute("userDTO", userDTO);
          model.addAttribute("passwordDTO", passwordDTO);
 
-         return "user/profile";
+         //return "user/profile";
       }
       return "user/profile";
    }
 
-   @PostMapping(value = "/change-password/submit/{userId}")
+   @PostMapping("/change-password/{userId}")
    public String changePassword(@Valid @ModelAttribute("passwordDTO") PasswordDTO passwordDTO, BindingResult result,
-         @PathVariable int userId, Model model) {
+         @PathVariable int userId, Model model, RedirectAttributes redirectAttributes) {
 
-      //Retrieve User
+      // Retrieve User
       User user = userRepo.findById(userId);
 
-      if (result.hasErrors() || (user.getPassword() != passwordDTO.getCurrentPassword())) {
-         //Reject wrong current password
-         if (user.getPassword() != passwordDTO.getCurrentPassword()) {
+      // Validate Password Input
+      if (result.hasErrors() || !(pe.matches(passwordDTO.getCurrentPassword(), user.getPassword()))) {
+         // Reject wrong current password
+         if (!(pe.matches(passwordDTO.getCurrentPassword(), user.getPassword() ))) {
             result.reject("currentPassword", "Incorrect current password");
-
-            logger.info("\n Current password entered != stored password");
          }
-         //Display User info using UserDTO
+         // Display User info using UserDTO
          UserDTO userDTO = new UserDTO();
          userDTO.setFirstName(user.getFirstName());
          userDTO.setLastName(user.getLastName());
@@ -92,67 +109,122 @@ public class AccountController {
          userDTO.setPhoneNumber(user.getPhoneNumber());
          userDTO.setDriverLicense(user.getDriverLicense());
 
+         model.addAttribute("user", user);
          model.addAttribute("userId", user.getUserID());
          model.addAttribute("username", user.getUsername());
+         model.addAttribute("address", user.getAddresses().get(0));
+         
          model.addAttribute("userDTO", userDTO);
+         model.addAttribute("passwordError", "password error");
 
          logger.info(result.toString());
 
          return "user/profile";
       } else {
-         //Update Password
-         //User user = userRepo.findById(userId);
+         // Update Password
          user.setPassword(pe.encode(passwordDTO.getNewPassword()));
 
          logger.info("\n Password changed by: " + user.getUsername());
 
-         //Save User
+         // Save User
          userRepo.save(user);
+
+         // Notification Message
+         String success = "Success: Password Changed";
+         redirectAttributes.addFlashAttribute("success", success);
 
          return "redirect:/account/profile";
       }
    }
 
-   @RequestMapping(value = "/forgot-password")
-   public String forgotPassword(Model model) {
-      UserDTO userDTO = new UserDTO();
-      model.addAttribute("userDTO", userDTO);
+   @PostMapping("/edit-profile/{userId}")
+   public String editProfile(@Valid @ModelAttribute("userDTO") UserDTO userDTO, BindingResult result,
+         @PathVariable int userId, Model model, RedirectAttributes redirectAttributes) {
 
-      return "forgot-password";
-   }
+      // Retrieve User
+      User user = userRepo.findById(userId);
 
-   @GetMapping(value = "/forgot-password/submit")
-   public String resetPassword(@ModelAttribute("userDTO") UserDTO userDTO, Model model) {
+      // Check if another account uses the username
+      User userExists = userRepo.findByUsername(userDTO.getUsername());
 
-      //Find User using UserDTO details
-      User user = userRepo.findByUsername(userDTO.getUsername());
+      // Username is already in use
+      if (userExists != null) {
+         //result.rejectValue("username", "", "Email is already in use.");
+      }
 
-      if (user != null) {
+      // Validate Password Input
+      if (result.hasErrors()) {
+         //Display User info using UserDTO
 
-         //Generate password
-         String generatedPassword = PasswordGenerator.generateRandomPassword(8);
-         System.err.println(generatedPassword);
+         model.addAttribute("user", user);
+         model.addAttribute("userId", user.getUserID());
+         model.addAttribute("username", user.getUsername());
+         
+         model.addAttribute("userDTO", userDTO);
+         model.addAttribute("passwordDTO", new PasswordDTO());
+         
+         model.addAttribute("address", user.getAddresses().get(0));
+         model.addAttribute("profileError", "profile error");
 
-         userDTO.setFirstName(user.getFirstName());
-         userDTO.setPassword(generatedPassword);
+         logger.info(result.toString());
 
-         //Send Email
-         emailService.sendResetEmail(userDTO);
+         return "user/profile";
+      } else {
+         // Send email to new username
+         if (!(user.getUsername().equalsIgnoreCase(userDTO.getUsername()))) {
+            emailService.sendUsernameChangeEmail(userDTO);
+         }
+         updateSecurityContext(userDTO);
 
-         logger.info("\n Password reset for: " + userDTO.getUsername() +
-               "\n Reset email sent.");
+         // Update User details
+         user.setFirstName(userDTO.getFirstName());
+         user.setLastName(userDTO.getLastName());
+         user.setUsername(userDTO.getUsername());
+         user.setPhoneNumber(userDTO.getPhoneNumber());
+         user.setDriverLicense(userDTO.getDriverLicense());
 
-         //Save User
-         user.setPassword(pe.encode(generatedPassword));   
+         // Save User
          userRepo.save(user);
 
-         return "redirect:/";
-      }
-      else {
-         System.err.println("User not found");
-         return "forgot-password";
+         logger.info("\n Profile updated: " + user.getUsername());
+
+         // Notification Message
+         String success = "Success: Profile Updated";
+         redirectAttributes.addFlashAttribute("success", success);
+
+         return "redirect:/account/profile";
       }
    }
 
+   @GetMapping("/delete-account")
+   public String deleteAccount(Principal principal) {
+      // Find User by @PathVariable
+      //User user = userRepo.findById(userID);
+      User user = userRepo.findByUsername(principal.getName());
+
+      if (!(addressRepo.findAllByUser(user) == null)) {
+         // Delete the user's addresses
+         addressRepo.deleteAll(addressRepo.findAllByUser(user));
+      }
+      logger.info("\n User deleted account: " + user.getUsername());
+
+      // Drop User from database
+      userRepo.delete(user);
+
+      return "redirect:/logout";
+   }
+
+   // Re-authenticate user after changing username
+   private void updateSecurityContext(UserDTO userDTO) {
+      Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+      List<GrantedAuthority> updatedAuthorities = new ArrayList<>(auth.getAuthorities());
+      updatedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER_ROLE")); //add your role here [e.g., new SimpleGrantedAuthority("ROLE_NEW_ROLE")]
+
+      Authentication newAuth = new UsernamePasswordAuthenticationToken(userDTO.getUsername(),
+            auth.getCredentials(), updatedAuthorities);
+
+      SecurityContextHolder.getContext().setAuthentication(newAuth);
+   }
 }
 //AccountController
