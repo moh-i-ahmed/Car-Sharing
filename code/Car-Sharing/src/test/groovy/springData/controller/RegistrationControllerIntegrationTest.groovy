@@ -24,7 +24,9 @@ import static org.springframework.security.test.web.servlet.response.SecurityMoc
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import org.springframework.test.annotation.Rollback;
 
+@Rollback
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(locations="classpath:test.properties")
@@ -104,6 +106,24 @@ class RegistrationControllerIntegrationTest extends Specification {
                   .andExpect(view().name("register"))
                   .andDo(print())
    }
-   
+
+   def "forgot-password page loads"() {
+      when: "forgot-password is called"
+         result = mockMvc.perform(get("/register/forgot-password")
+                         .secure(true)
+                           .with(user(user)
+                              .roles(role)))
+      then: "expect model attributes exists"
+         result.andExpect(model().attributeExists("userDTO"))
+               .andExpect(model().size(1))
+      and: "status 200 & correct view"
+         result.andExpect(status().is2xxSuccessful())
+               .andExpect(view().name("forgot-password"))
+               .andDo(print())
+      where:
+           user | role
+            'bob@bobmail.com' | 'USER'
+   }
+
 }
 //RegistrationControllerIntegrationTest
