@@ -3,11 +3,15 @@ package springData.domain;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -52,10 +56,15 @@ public class Request {
    @Basic
    private String longitude;
 
-   @OneToOne
+   private String status;
+
+   //TODO fix this mapping,
+   //it causes errors when trying to get history,
+  // @OneToMany(mappedBy = "request", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+   @ManyToOne
    private Car car;
 
-   @OneToOne(mappedBy = "request")
+   @OneToOne(mappedBy = "request", fetch = FetchType.LAZY)
    private Invoice invoice;
 
    @ManyToOne
@@ -133,4 +142,13 @@ public class Request {
       this.user = user;
    }
 
+   public String getStatus() {
+      return status;
+   }
+
+   public void setStatus(String status) {
+      this.status = status;
+   }
+
 }
+//Request
