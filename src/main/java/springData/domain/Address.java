@@ -38,7 +38,6 @@ public class Address {
    @Basic
    private String country;
 
-   //@ManyToOne
    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
    @JoinColumn(name = "USER_ID")
    private User user;
@@ -105,6 +104,15 @@ public class Address {
 
    public void setUser(User user) {
       this.user = user;
+   }
+
+   @Override
+   public String toString() {
+      return line1
+             + ", \n" + line2
+             + ", \n" + city
+             + ", \n" + postcode
+             + ", \n" + country;
    }
 
 }

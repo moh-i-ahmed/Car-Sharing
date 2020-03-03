@@ -44,7 +44,7 @@ public class User {
 
    @Basic
    private LocalDate date_of_birth;
-   
+
    @Type(type = "yes_no")
    @Column(name = "isActive", nullable = false)
    private boolean isActive;
@@ -121,7 +121,7 @@ public class User {
    public void setDate_of_birth(LocalDate date_of_birth) {
       this.date_of_birth = date_of_birth;
    }
-   
+
    public boolean isActive() {
       return isActive;
    }
