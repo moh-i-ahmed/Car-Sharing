@@ -2,12 +2,12 @@ package springData.controller;
 
 import java.security.Principal;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Locale;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -20,24 +20,28 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import springData.DTO.RequestDTO;
-import springData.DTO.UserDTO;
 import springData.domain.Car;
 import springData.domain.CarAvailability;
 import springData.domain.Request;
 import springData.domain.User;
+import springData.exception.RequestNotFoundException;
 import springData.repository.AddressRepository;
 import springData.repository.CarAvailabilityRepository;
 import springData.repository.CarRepository;
 import springData.repository.RequestRepository;
 import springData.repository.UserRepository;
 import springData.utils.AccessCodeGenerator;
+import springData.constants.Constants;
+import springData.validator.RequestDTOValidator;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
+
+   private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
    BCryptPasswordEncoder pe = new  BCryptPasswordEncoder();
 
@@ -54,67 +58,153 @@ public class UserController {
       binder.addValidators(new RequestDTOValidator(requestRepo));
    }
 
-   @PostMapping(value = "/requestCar")
-   public String createUser(@Valid @ModelAttribute("requestDTO") RequestDTO requestDTO, BindingResult result,
-           Model model, Principal principal) {
+   @GetMapping ("/dashboard")
+   public String dashboard(Model model, Principal principal) {
+
+      //Get Logged in User
+      User user = userRepo.findByUsername(principal.getName());
+
+      //Active Request exists
+      if (user.isActive() == true) {
+         Request request = requestRepo.findByTopIdDesc();//findLatestByDate();
+         System.err.println(request);
+         logger.info("Request is currently In Progress");
+
+         return "redirect:/user/active-request/" + request.getRequestID();
+      }
+      else {
+         //Add Request form
+         RequestDTO requestDTO = new RequestDTO();
+         
+         model.addAttribute("requestDTO", requestDTO);
+         model.addAttribute("username", user.getFirstName() + " " + user.getLastName());
+
+         return "/user/dashboard";
+      }
+   }
+
+   @PostMapping("/requestCar")
+   public String requestCar(@Valid @ModelAttribute("requestDTO") RequestDTO requestDTO, BindingResult result,
+           Model model, Principal principal, RedirectAttributes redirectAttributes) {
 
       //Get Logged in User
       User user = userRepo.findByUsername(principal.getName());
       
       if (result.hasErrors()) {
          //Add Car Request form
-         //RequestDTO newRequestDTO = new RequestDTO();
          model.addAttribute("requestDTO", requestDTO);
          
-         System.err.println(result);
+         logger.info("RequestDTO Errors: " + result);
          return "redirect:/dashboard";
       }
       else {
          //Create new User using UserDTO details
-         Request newRequest = new Request();
+         Request request = new Request();
 
-/*         String time = "05:32 AM";
-         //time = time.split(" "); 
-         String result = time.substring(0, time.length() - 3);
-         
-        System.out.println(LocalTime.parse(result));*/
-         //String result = LocalTime.parse("03:30 PM" , DateTimeFormatter.ofPattern("hh:mm a" , Locale.US)).format(DateTimeFormatter.ofPattern("HH:mm"));
-         
-         newRequest.setStartTime(requestDTO.getStartTime());
-         newRequest.setEndTime(requestDTO.getEndTime());
-         newRequest.setRequestDate(requestDTO.getRequestDate());
-         newRequest.setLatitude(requestDTO.getLatitude());
-         newRequest.setLongitude(requestDTO.getLongitude());
-         newRequest.setUser(userRepo.findByUsername(principal.getName()));
-         user.setActive(true);
+         //Retrieve Request details from DTO
+         request.setRequestDate(requestDTO.getRequestDate());
+         request.setStartTime(LocalTime.parse(requestDTO.getStartTime()));
+         request.setEndTime(LocalTime.parse(requestDTO.getEndTime()));
+         request.setLatitude(requestDTO.getLatitude());
+         request.setLongitude(requestDTO.getLongitude());
+         request.setStatus(Constants.STATUS_IN_PROGRESS);
+         request.setUser(user);
 
          //Find available Car
-         newRequest.setCar(findCar(newRequest));
-         System.out.println("it is a dish");
-         //Save Request
-         requestRepo.save(newRequest);
-         userRepo.save(user);
-         
-         model.addAttribute("requestID", newRequest.getRequestID());
-         
-         return "redirect:/user/request";
+         Car car = findCar(request);
+         if (!(car.equals(null))) {
+            request.setCar(car);
+            
+            //Add Request to User's history
+            user.addRequest(request);
+            user.setActive(true);
+   
+            //Save Request
+            requestRepo.save(request);
+   
+            //Update User
+            userRepo.save(user);
+            
+            logger.info("Request created: ");
+   
+            return "redirect:/user/active-request/" + request.getRequestID();
+         }
+         //Unable to find car
+         else {
+            // Notification Message
+            String requestError = "Error: Unable to fulfil request";
+            model.addAttribute("requestError", requestError);
+
+            return "redirect:/user/dashboard";
+         }
       }
    }
 
-   @GetMapping("/request")
-   public String viewUser(@RequestParam(value = "requestID", required = true) int requestID, Model model) {
+   @GetMapping("/active-request/{requestID}")
+   public String activeRequest(@PathVariable int requestID, Model model)
+           throws NullPointerException{
+      
+      //Find Request by ID
+      Request request = requestRepo.findById(requestID);
+      
+      if (request == null) {
+         logger.info("Invalid request. Request Not found with ID: " + requestID);
+
+         throw new RequestNotFoundException("Invalid request. Request Not found with ID: " + requestID);
+      }
+      //Add details to model
+      model.addAttribute("request", request);
+      model.addAttribute("username", request.getUser().getFirstName() + " " + request.getUser().getLastName());
+
+      return "/user/active-Request";
+   }
+
+   @GetMapping("/view-request/{requestID}")
+   public String viewRequestDetails(@PathVariable int requestID, Model model) {
       //Find Request by ID
       Request request = requestRepo.findById(requestID);
 
-      //Add details to model
       model.addAttribute("request", request);
-      model.addAttribute("username", request.getUser().getUsername());
+      model.addAttribute("username", request.getUser().getFirstName() + " " + request.getUser().getLastName());
 
-      return "/user/requestCar";
+      return "/user/view-request";
    }
 
-   @RequestMapping("/history")
-   public String carHistory(Model model, Principal principal) {
+   @GetMapping("/cancel-request/{requestID}")
+   public String cancelRequest(@PathVariable int requestID, Model model, RedirectAttributes redirectAttributes) {
+      //Find Request by ID
+      Request request = requestRepo.findById(requestID);
+      
+      //Find User
+      User user = request.getUser();
+      user.setActive(false);
+
+      //Update Availability time
+      CarAvailability availability = carAvailabilityRepo.findById(request.getCar().getCarAvailability().getAvailabilityID());
+      availability.setAvailabilityTime(LocalTime.now());
+
+      //Update Request details
+      request.setStatus(Constants.STATUS_CANCELLED);
+      request.setEndTime(LocalTime.now());
+      request.getCar().setIsActive(false);
+      request.getCar().setCarAvailability(null);
+
+      //Save Changes
+      requestRepo.save(request);
+      userRepo.save(user);
+      carAvailabilityRepo.save(availability);
+
+      // Notification Message
+      String message = "Update: Request Cancelled";
+      redirectAttributes.addFlashAttribute("message", message);
+
+      logger.info("Request cancelled: " + requestID);
+
+      return "redirect:/user/dashboard";
+   }
+
+   @GetMapping("/history")
+   public String history(Model model, Principal principal) {
       //Get Logged in User
       User user = userRepo.findByUsername(principal.getName());
 
@@ -122,52 +212,35 @@ public class UserController {
       List<Request> requests = (List<Request>) requestRepo.findAllByUser(user);
 
       model.addAttribute("requests", requests);
-      model.addAttribute("username", principal.getName());
+      model.addAttribute("username", user.getFirstName() + " " + user.getLastName());
 
       return "/user/history";
    }
 
-   @GetMapping("/view-request/{requestID}")
-   public String viewRequest(@PathVariable int requestID, Model model) {
-      //Find Request by ID
-      Request request = requestRepo.findById(requestID);
-
-      //Add details to model
-      model.addAttribute("startTime", request.getStartTime());
-      model.addAttribute("endTime", request.getEndTime());
-      model.addAttribute("accessCode", request.getCar().getCarAvailability().getAccessCode());
-      model.addAttribute("carColor", request.getCar().getCarColor());
-      model.addAttribute("carName", request.getCar().getCarName());
-      model.addAttribute("registrationNumber", request.getCar().getRegistrationNumber());
-      model.addAttribute("username", request.getUser().getUsername());
-
-      return "/user/view-request";
-   }
-
    //Function that finds first available Car
    private Car findCar(Request request) {
-      Car car = new Car();
-      List<Car> availableCars = carRepo.findAllAvailable();
+      try {
+         Car car = new Car();
+         List<Car> availableCars = carRepo.findAllAvailable();
+         
+         car = availableCars.get(0);
+         car.setIsActive(true);
+         carRepo.save(car);
+
+         CarAvailability availability = new CarAvailability(request.getEndTime(),
+                 AccessCodeGenerator.generateAccessCode());
+
+         carAvailabilityRepo.save(availability);
+
+         car.setCarAvailability(availability);
+
+         carRepo.save(car);
+
+         return car;
+      } catch (Exception e) {
+         return null;
+      }
       
-      car = availableCars.get(0);
-      car.setIsActive(true);
-      carRepo.save(car);
-
-      CarAvailability availability = new CarAvailability(request.getEndTime(),
-              AccessCodeGenerator.generateAccessCode(6), car);
-
-      carAvailabilityRepo.save(availability);
-
-      car.setCarAvailability(availability);
-
-      carRepo.save(car);
-
-      return car;
-   }
-   
-   public LocalTime timeConverter(String time) {
-      String convert = LocalTime.parse(time, DateTimeFormatter.ofPattern("hh:mm a", Locale.US)).format(DateTimeFormatter.ofPattern("hh:mm"));
-      return LocalTime.parse(convert);
    }
 
 }
