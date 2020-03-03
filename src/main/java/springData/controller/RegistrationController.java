@@ -22,6 +22,9 @@ import springData.domain.User;
 import springData.repository.RoleRepository;
 import springData.repository.UserRepository;
 import springData.services.EmailServiceImpl;
+import springData.utils.PasswordGenerator;
+import springData.validator.PasswordDTOValidator;
+import springData.validator.UserDTOValidator;
 
 @Controller
 @RequestMapping("/register")
@@ -54,7 +57,7 @@ public class RegistrationController {
       return "register";
    }
 
-   @PostMapping(value = "/create")
+   @PostMapping("/create")
    public String createUser(@Valid @ModelAttribute("userDTO") UserDTO userDTO, BindingResult result, Model model) {
 
       //Check if username is already in use
@@ -90,6 +93,49 @@ public class RegistrationController {
          +"\n Registration email sent.");
 
          return "redirect:/";
+      }
+   }
+
+   @GetMapping("/forgot-password")
+   public String forgotPassword(Model model) {
+      UserDTO userDTO = new UserDTO();
+      model.addAttribute("userDTO", userDTO);
+
+      return "forgot-password";
+   }
+
+   //TODO change this to POST
+   //Update the view
+   @GetMapping("/forgot-password/submit")
+   public String resetPassword(@ModelAttribute("userDTO") UserDTO userDTO) {
+
+      // Find User using UserDTO details
+      User user = userRepo.findByUsername(userDTO.getUsername());
+
+      if (user != null) {
+
+         // Generate password
+         String generatedPassword = PasswordGenerator.generateRandomPassword(8);
+         System.err.println(generatedPassword);
+
+         userDTO.setFirstName(user.getFirstName());
+         userDTO.setPassword(generatedPassword);
+
+         // Send Email
+         emailService.sendResetEmail(userDTO);
+
+         logger.info("\n Password reset for: " + userDTO.getUsername()
+               + "\n Reset email sent.");
+
+         // Save User
+         user.setPassword(pe.encode(generatedPassword));   
+         userRepo.save(user);
+
+         return "redirect:/";
+      }
+      else {
+         System.err.println("User not found");
+         return "forgot-password";
       }
    }
 
