@@ -27,16 +27,24 @@ public class UserDTOValidator implements Validator {
       ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "", "Enter a Last Name");
       ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "", "Username is required");
 
-      //Ensure First Name is valid
+      //Ensure First Name is within minimum length
       if ((dto.getFirstName() != null) && (dto.getFirstName().length() > 0) && (dto.getFirstName().length() < 2)) {
          errors.rejectValue("firstName", "", "First name has less than 2 characters.");
       }
-      //Ensure Last Name is valid
+      //Ensure First Name is within maximum length
+      if ((dto.getFirstName() != null) && (dto.getFirstName().length() > 0) && (dto.getFirstName().length() > 255)) {
+         errors.rejectValue("firstName", "", "First name is too long. Maximum length 255.");
+      }
+      //Ensure Last Name is within minimum length
       if ((dto.getLastName() != null) && (dto.getLastName().length() > 0) && (dto.getLastName().length() < 2)) {
          errors.rejectValue("lastName", "", "Last name has less than 2 characters.");
       }
-      //Ensure Username is valid
-      if ((dto.getUsername() != null) && (dto.getUsername().length() > 0) && (dto.getUsername().length() < 4)) {
+      //Ensure Last Name is within maximum length
+      if ((dto.getLastName() != null) && (dto.getLastName().length() > 0) && (dto.getLastName().length() > 255)) {
+         errors.rejectValue("lastName", "", "Last name is too long. Maximum length 255.");
+      }
+      //Ensure Username is within minimum length
+      if ((dto.getUsername() != null) && (dto.getUsername().length() > 0) && (dto.getUsername().length() < 6)) {
          errors.rejectValue("username", "", "Username has less than 4 characters.");
       }
       //Ensure Password is entered
