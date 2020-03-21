@@ -33,12 +33,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       http
       //AUTHORIZATION
       .authorizeRequests()
-         //.antMatchers("/", "/index").permitAll()
-         .antMatchers("/account/**").permitAll()
-         .antMatchers("/register/**").permitAll()
+         .antMatchers("/", "/login", "/register/**").permitAll()
          .antMatchers("/", "/static/**", "/js/**", "/vendor/**", "/css/**").permitAll()
-         .antMatchers("/user/**").hasRole("USER")
-         .antMatchers("/admin/**").hasRole("ADMIN")
+         .antMatchers("/account/**").hasRole("USER")//.hasAnyRole("USER", "ADMIN")
+         .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+         .antMatchers("/admin/**", "/car/**").hasRole("ADMIN")
          .anyRequest().authenticated() // all requests ABOVE this statement require authentication
          .and() // to redirect the user when trying to access a resource to which access is not granted
            .exceptionHandling().accessDeniedPage("/access-denied")
@@ -57,11 +56,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
          .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
          .permitAll();
 
+      //Managing Session
+      http.sessionManagement()
+         .invalidSessionUrl("/login/form?expired")
+         .maximumSessions(1)
+         .expiredUrl("/login/form?expired");
+      
       http.authorizeRequests().and() //
          .rememberMe()
-         .key("uniqueAndSecret") //
-         .tokenRepository(this.persistentTokenRepository()) //
-         .tokenValiditySeconds(1 * 24 * 60); // * 60); // 24h
+            .key("uniqueAndSecret")
+            .rememberMeCookieName("rememberme")
+            .useSecureCookie(true) //
+            .tokenRepository(this.persistentTokenRepository()) //
+            .tokenValiditySeconds(1 * 24 * 60); // 30mins
    }
 
    @Autowired
@@ -69,7 +76,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       // Setting Service to find User in the database.
       // And Setting PassswordEncoder
       auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-      //auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(passwordEncoder());
    }
 
    @Bean
