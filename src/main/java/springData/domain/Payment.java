@@ -1,6 +1,7 @@
 package springData.domain;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,9 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 @Entity
 public class Payment {
@@ -20,8 +18,7 @@ public class Payment {
    private int paymentID;
 
    @Basic
-   @DateTimeFormat(iso = ISO.DATE)
-   private LocalDate paymentDate;
+   private LocalDateTime paymentTimestamp;
 
    @Basic
    private double paymentAmount;
@@ -40,12 +37,12 @@ public class Payment {
       this.paymentID = paymentID;
    }
 
-   public LocalDate getPaymentDate() {
-      return this.paymentDate;
+   public LocalDateTime getPaymentTimestamp() {
+      return this.paymentTimestamp;
    }
 
-   public void setPaymentDate(LocalDate paymentDate) {
-      this.paymentDate = paymentDate;
+   public void setPaymentTimestamp(LocalDateTime paymentTimestamp) {
+      this.paymentTimestamp = paymentTimestamp;
    }
 
    public double getPaymentAmount() {

@@ -11,12 +11,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.Type;
 
-/**
- * @author mia17
- */
 @Entity
 public class User {
 
@@ -51,6 +49,9 @@ public class User {
 
    @ManyToOne
    private Role role;
+
+   @OneToOne(mappedBy = "user")
+   private StripeCustomer stripeCustomer;
 
    @OneToMany(mappedBy = "user")
    private List<Request> requests;
@@ -137,6 +138,14 @@ public class User {
    public void setRole(Role role) {
       this.role = role;
    }
+
+   public StripeCustomer getStripeCustomer() {
+      return this.stripeCustomer;
+  }
+
+  public void setStripeCustomer(StripeCustomer customer) {
+      this.stripeCustomer = customer;
+  }
 
    public List<Request> getRequests() {
       if (requests == null) {

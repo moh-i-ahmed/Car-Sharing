@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 /**
  * @author mia17
@@ -16,46 +17,61 @@ import javax.persistence.Id;
 @Entity
 public class CarAvailability {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int availabilityID;
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   private int availabilityID;
 
-    @Basic
-    private LocalTime availabilityTime;
+   public CarAvailability() {
+      
+   }
 
-    @Basic
-    private String accessCode;
+   public CarAvailability(LocalTime availabilityTime, String accessCode, Car car) {
+      super();
+      this.availabilityTime = availabilityTime;
+      this.accessCode = accessCode;
+      this.car = car;
+   }
 
-    public CarAvailability() {
-    }
+   @Basic
+   private LocalTime availabilityTime;
 
-    public CarAvailability(LocalTime availabilityTime, String accessCode) {
+   @Basic
+   private String accessCode;
+
+   @ManyToOne
+   private Car car;
+
+   public int getAvailabilityID() {
+       return this.availabilityID;
+   }
+
+   public void setAvailabilityID(int availabilityID) {
+       this.availabilityID = availabilityID;
+   }
+
+   public LocalTime getAvailabilityTime() {
+       return this.availabilityTime;
+   }
+
+   public void setAvailabilityTime(LocalTime availabilityTime) {
        this.availabilityTime = availabilityTime;
+   }
+
+   public String getAccessCode() {
+       return this.accessCode;
+   }
+
+   public void setAccessCode(String accessCode) {
        this.accessCode = accessCode;
-    }
+   }
 
-    public int getAvailabilityID() {
-        return this.availabilityID;
-    }
+   public Car getCar() {
+       return this.car;
+   }
 
-    public void setAvailabilityID(int availabilityID) {
-        this.availabilityID = availabilityID;
-    }
-
-    public LocalTime getAvailabilityTime() {
-        return this.availabilityTime;
-    }
-
-    public void setAvailabilityTime(LocalTime availabilityTime) {
-        this.availabilityTime = availabilityTime;
-    }
-
-    public String getAccessCode() {
-        return this.accessCode;
-    }
-
-    public void setAccessCode(String accessCode) {
-        this.accessCode = accessCode;
-    }
+   public void setCar(Car car) {
+       this.car = car;
+   }
 
 }
+//CarAvailability
