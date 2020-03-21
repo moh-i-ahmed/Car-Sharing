@@ -3,6 +3,9 @@ package springData.controller;
 import java.security.Principal;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -22,26 +25,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import springData.DTO.CarDTO;
-import springData.DTO.UserDTO;
 import springData.domain.Car;
-import springData.domain.Request;
-import springData.domain.Role;
-import springData.domain.User;
+import springData.domain.Location;
 import springData.repository.AddressRepository;
 import springData.repository.RoleRepository;
 import springData.repository.CarRepository;
+import springData.repository.LocationRepository;
 import springData.repository.RequestRepository;
 import springData.repository.UserRepository;
 import springData.services.EmailServiceImpl;
 import springData.validator.CarDTOValidator;
 import springData.validator.PasswordDTOValidator;
-import springData.validator.UserDTOValidator;
 
 @Controller
 @RequestMapping("/car")
 public class CarController {
 
-   private final Logger logger = LoggerFactory.getLogger(CarController.class);
+   @PersistenceContext
+   EntityManager entityManager;
+
+   private static final Logger logger = LoggerFactory.getLogger(CarController.class);
 
    BCryptPasswordEncoder pe = new  BCryptPasswordEncoder();
 
@@ -50,6 +53,7 @@ public class CarController {
    @Autowired CarRepository carRepo;
    @Autowired RequestRepository requestRepo;
    @Autowired AddressRepository addressRepo;
+   @Autowired LocationRepository locationRepo;
    @Autowired private EmailServiceImpl emailService;
 
    @InitBinder("carDTO")
@@ -70,13 +74,15 @@ public class CarController {
    public String addCar(Model model, Principal principal) {
       CarDTO carDTO = new CarDTO();
 
+      model.addAttribute("true", true);
+      model.addAttribute("false", false);
       model.addAttribute("carDTO", carDTO);
       model.addAttribute("username", principal.getName());
 
       return "admin/car/add-Car";
    }
 
-   @PostMapping("/add-car")//create")
+   @PostMapping("/add-car")
    public String addCar(@Valid @ModelAttribute("carDTO") CarDTO carDTO, BindingResult result, Model model,
          Principal principal) {
 
@@ -89,9 +95,8 @@ public class CarController {
 
          return "admin/car/add-car";
       }
-
+      //DTO Validation Errors
       if (result.hasErrors()) {
-         //List of Roles
          model.addAttribute("carDTO", carDTO);
          model.addAttribute("username", principal.getName());
 
@@ -101,20 +106,25 @@ public class CarController {
       } else {
          //Create new Car using CarDTO details
          Car newCar = new Car();
+         newCar.setRegistrationNumber(carDTO.getRegistrationNumber().toUpperCase());
          newCar.setCarName(carDTO.getCarName());
          newCar.setCarMake(carDTO.getCarMake());
          newCar.setCarColor(carDTO.getCarColor());
          newCar.setIsActive(carDTO.getIsActive());
          newCar.setFuelLevel(carDTO.getFuelLevel());
-         newCar.setLatitude(carDTO.getLatitude());
-         newCar.setLongitude(carDTO.getLongitude());
+
+         Location requestLocation = new Location(carDTO.getLatitude(), carDTO.getLongitude());
+         locationRepo.save(requestLocation);
+
+         newCar.setLocation(requestLocation);
+         //newCar.setLongitude(carDTO.getLongitude());
 
          //Save Car
          carRepo.save(newCar);
 
-         logger.info("\n Admin Log: Car added with " + carDTO.getRegistrationNumber());
+         logger.info("\n Admin Log: Car added with " + carDTO.getRegistrationNumber().toUpperCase());
 
-         return "redirect:/admin/car/view-all-cars";
+         return "redirect:/car/view-all-cars";
       }
    }
 
@@ -125,16 +135,18 @@ public class CarController {
 
       //Add Car details to DTO
       CarDTO carDTO = new CarDTO();
-      carDTO.setRegistrationNumber(car.getRegistrationNumber());
+      carDTO.setRegistrationNumber(car.getRegistrationNumber().toUpperCase());
       carDTO.setCarName(car.getCarName());
       carDTO.setCarMake(car.getCarMake());
       carDTO.setCarName(car.getCarName());
       carDTO.setCarColor(car.getCarColor());
       carDTO.setActive(car.isIsActive());
       carDTO.setFuelLevel(car.getFuelLevel());
-      carDTO.setLatitude(car.getLatitude());
-      carDTO.setLongitude(car.getLongitude());
+     // carDTO.setLatitude(car.getLocation().getLatitude());
+     // carDTO.setLongitude(car.getLocation().getLongitude());
 
+      model.addAttribute("true", true);
+      model.addAttribute("false", false);
       model.addAttribute("regNumber", registrationNumber);
       model.addAttribute("carDTO", carDTO);
       model.addAttribute("username", principal.getName());
@@ -153,17 +165,6 @@ public class CarController {
       return "admin/car/view-car";
    }
 
-   @GetMapping("/view-request/{requestID}")
-   public String viewRequestDetails(@PathVariable int requestID, Model model) {
-      //Find Request by ID
-      Request request = requestRepo.findById(requestID);
-
-      model.addAttribute("request", request);
-      model.addAttribute("username", request.getUser().getFirstName() + " " + request.getUser().getLastName());
-
-      return "/user/view-request";
-   }
-
    @PostMapping("/update-car/{registrationNumber}")
    public String updateCar(@Valid @ModelAttribute("carDTO") CarDTO carDTO, BindingResult result,
          @PathVariable String registrationNumber, Model model, RedirectAttributes redirectAttributes) {
@@ -171,6 +172,16 @@ public class CarController {
       //Find Car by @PathVariable
       Car car = carRepo.findByRegistrationNumber(registrationNumber);
 
+      Car carExists = carRepo.findByRegistrationNumber(carDTO.getRegistrationNumber());
+      
+      //Registration Number is already in use
+      if (!(carDTO.getRegistrationNumber().equalsIgnoreCase(registrationNumber)) && (carExists != null)) {
+         result.rejectValue("registrationNumber", "", "Registration Number is already in use.");
+         model.addAttribute("carDTO", carDTO);
+
+         return "admin/car/edit-car";
+      }
+      //DTO Validation Errors
       if (result.hasErrors()) {
          model.addAttribute("carDTO", carDTO);
 
@@ -182,11 +193,22 @@ public class CarController {
          car.setCarName(carDTO.getCarName());
          car.setCarMake(carDTO.getCarMake());
          car.setCarColor(carDTO.getCarColor());
+         System.err.println("dasfa: " + carDTO.getIsActive());
          car.setIsActive(carDTO.getIsActive());
          car.setFuelLevel(carDTO.getFuelLevel());
-         car.setLatitude(carDTO.getLatitude());
-         car.setLongitude(carDTO.getLongitude());
 
+         //Update Location
+         if(!carDTO.getLatitude().isEmpty()) {
+            Location carLocation = car.getLocation();
+
+            if (carLocation == null) carLocation = new Location();
+
+            carLocation.setLatitude(carDTO.getLatitude());
+            carLocation.setLongitude(carDTO.getLongitude());
+            locationRepo.save(carLocation);
+
+            car.setLocation(carLocation);
+         }
          //Save Car
          carRepo.save(car);
 
@@ -194,10 +216,13 @@ public class CarController {
          String message = "Success: Car details updated";
          redirectAttributes.addFlashAttribute("message", message);
 
+         logger.info("\n Admin Log: Car details updated: " + car.getRegistrationNumber());
+
          return "redirect:/car/view-all-cars";
       }
    }
 
+   @Transactional
    @GetMapping("/delete-car/{registrationNumber}")
    public String deleteCar(@PathVariable String registrationNumber, RedirectAttributes redirectAttributes) {
       //Find Car by @PathVariable
@@ -208,10 +233,10 @@ public class CarController {
          addressRepo.deleteAll(addressRepo.findAllByUser(user));
       } */
       //Drop Car from database
-      carRepo.delete(car);
+      entityManager.remove(car);
+      //carRepo.delete(car);
 
-      logger.info("\n Car deleted: " + car.getRegistrationNumber() +
-            "\n by Admin.");
+      logger.info("\n Admin Log: Car deleted: " + car.getRegistrationNumber());
 
       String message = "Success: Car deleted from database";
       redirectAttributes.addFlashAttribute("message", message);
