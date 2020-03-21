@@ -1,7 +1,6 @@
 package springData.DTO;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -11,21 +10,21 @@ public class RequestDTO {
    @DateTimeFormat(iso = ISO.DATE)
    private LocalDate requestDate;
 
-   @DateTimeFormat(iso = ISO.TIME)
-   private LocalTime startTime;
+   private String startTime;
 
-   @DateTimeFormat(iso = ISO.TIME)
-   private LocalTime endTime;
+   private String endTime;
 
-   private String longitude;
+   private String pickupLatitude;
 
-   private String latitude;
+   private String pickupLongitude;
+
+   private String dropoffLatitude;
+
+   private String dropoffLongitude;
 
    // default and parameterized constructors
    public RequestDTO() {
       this.requestDate = LocalDate.now();
-      //this.startTime = LocalTime.of(9, 0);
-      //this.endTime = LocalTime.of(5, 0);
    }
 
    public LocalDate getRequestDate() {
@@ -36,36 +35,52 @@ public class RequestDTO {
       this.requestDate = requestDate;
    }
 
-   public LocalTime getStartTime() {
+   public String getStartTime() {
       return startTime;
    }
 
-   public void setStartTime(LocalTime startTime) {
+   public void setStartTime(String startTime) {
       this.startTime = startTime;
    }
 
-   public LocalTime getEndTime() {
+   public String getEndTime() {
       return endTime;
    }
 
-   public void setEndTime(LocalTime endTime) {
+   public void setEndTime(String endTime) {
       this.endTime = endTime;
    }
 
-   public String getLongitude() {
-      return longitude;
+   public String getPickupLongitude() {
+      return pickupLongitude;
    }
 
-   public void setLongitude(String longitude) {
-      this.longitude = longitude;
+   public void setPickupLongitude(String longitude) {
+      this.pickupLongitude = longitude;
    }
 
-   public String getLatitude() {
-      return latitude;
+   public String getPickupLatitude() {
+      return pickupLatitude;
    }
 
-   public void setLatitude(String latitude) {
-      this.latitude = latitude;
+   public void setPickupLatitude(String latitude) {
+      this.pickupLatitude = latitude;
+   }
+
+   public String getDropoffLatitude() {
+      return dropoffLatitude;
+   }
+
+   public void setDropoffLatitude(String dropoffLatitude) {
+      this.dropoffLatitude = dropoffLatitude;
+   }
+
+   public String getDropoffLongitude() {
+      return dropoffLongitude;
+   }
+
+   public void setDropoffLongitude(String dropoffLongitude) {
+      this.dropoffLongitude = dropoffLongitude;
    }
 
 }
