@@ -13,6 +13,7 @@
   <title>Admin - Edit User</title>
 
   <!-- Custom fonts for this template -->
+  <link rel="icon" href="/img/favicon.ico" />
   <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
@@ -33,7 +34,7 @@
   <div id="wrapper">
 
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/dashboard}">
@@ -47,7 +48,7 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" th:href="@{/dashboard}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
@@ -67,6 +68,13 @@
           <i class="fas fa-fw fa-plus"></i>
           <span>Add User</span></a>
       </li>
+      
+      <!-- Nav Item - Edit Car -->
+      <li class="nav-item active">
+        <a class="nav-link" th:href="@{/admin/edit-user/} + ${userID}">
+          <i class="fas fa-fw fa-edit"></i>
+          <span>Edit User</span></a>
+      </li>
 
       <!-- Nav Item - View Users -->
       <li class="nav-item">
@@ -75,6 +83,43 @@
           <span>View Users</span></a>
       </li>
 
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Car 
+      </div>
+
+      <!-- Nav Item - Add Car -->
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/car/add-car}">
+          <i class="fas fa-fw fa-plus"></i>
+          <span>Add Car</span></a>
+      </li>
+
+      <!-- Nav Item - View Users -->
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/car/view-all-cars}">
+          <i class="fas fa-car"></i>
+          <span>View Cars</span></a>
+      </li>
+      
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Request 
+      </div>
+
+      <!-- Nav Item - View Users -->
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/admin/view-all-requests}">
+          <i class="fas fa-list-ul"></i>
+          <span>View Requests</span></a>
+      </li>
+      
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
 
@@ -99,153 +144,22 @@
           <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
             <i class="fa fa-bars"></i>
           </button>
-
-          <!-- Topbar Search -->
-          <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-            <div class="input-group">
-              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-              <div class="input-group-append">
-                <button class="btn btn-primary" type="button">
-                  <i class="fas fa-search fa-sm"></i>
-                </button>
-              </div>
-            </div>
-          </form>
+          
+          <!-- Topbar Page Name -->
+          <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search input-group">
+            <h1 class="h3 mb-0 text-gray-800">Edit User Details</h1>
+          </div>
 
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
-
-            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-            <li class="nav-item dropdown no-arrow d-sm-none">
-              <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-search fa-fw"></i>
-              </a>
-              <!-- Dropdown - Messages -->
-              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
-                <form class="form-inline mr-auto w-100 navbar-search">
-                  <div class="input-group">
-                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                    <div class="input-group-append">
-                      <button class="btn btn-primary" type="button">
-                        <i class="fas fa-search fa-sm"></i>
-                      </button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </li>
-
-            <!-- Nav Item - Alerts -->
-            <li class="nav-item dropdown no-arrow mx-1">
-              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-bell fa-fw"></i>
-                <!-- Counter - Alerts -->
-                <span class="badge badge-danger badge-counter">3+</span>
-              </a>
-              <!-- Dropdown - Alerts -->
-              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
-                <h6 class="dropdown-header">
-                  Alerts Center
-                </h6>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="mr-3">
-                    <div class="icon-circle bg-primary">
-                      <i class="fas fa-file-alt text-white"></i>
-                    </div>
-                  </div>
-                  <div>
-                    <div class="small text-gray-500">December 12, 2019</div>
-                    <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                  </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="mr-3">
-                    <div class="icon-circle bg-success">
-                      <i class="fas fa-donate text-white"></i>
-                    </div>
-                  </div>
-                  <div>
-                    <div class="small text-gray-500">December 7, 2019</div>
-                    $290.29 has been deposited into your account!
-                  </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="mr-3">
-                    <div class="icon-circle bg-warning">
-                      <i class="fas fa-exclamation-triangle text-white"></i>
-                    </div>
-                  </div>
-                  <div>
-                    <div class="small text-gray-500">December 2, 2019</div>
-                    Spending Alert: We've noticed unusually high spending for your account.
-                  </div>
-                </a>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-              </div>
-            </li>
-
-            <!-- Nav Item - Messages -->
-            <li class="nav-item dropdown no-arrow mx-1">
-              <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-envelope fa-fw"></i>
-                <!-- Counter - Messages -->
-                <span class="badge badge-danger badge-counter">7</span>
-              </a>
-              <!-- Dropdown - Messages -->
-              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
-                <h6 class="dropdown-header">
-                  Message Center
-                </h6>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="https://source.unsplash.com/fn_BT9fwg_E/60x60" alt="">
-                    <div class="status-indicator bg-success"></div>
-                  </div>
-                  <div class="font-weight-bold">
-                    <div class="text-truncate">Hi there! I am wondering if you can help me with a problem I've been having.</div>
-                    <div class="small text-gray-500">Emily Fowler · 58m</div>
-                  </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="https://source.unsplash.com/AU4VPcFN4LE/60x60" alt="">
-                    <div class="status-indicator"></div>
-                  </div>
-                  <div>
-                    <div class="text-truncate">I have the photos that you ordered last month, how would you like them sent to you?</div>
-                    <div class="small text-gray-500">Jae Chun · 1d</div>
-                  </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="https://source.unsplash.com/CS2uCrpNzJY/60x60" alt="">
-                    <div class="status-indicator bg-warning"></div>
-                  </div>
-                  <div>
-                    <div class="text-truncate">Last month's report looks great, I am very happy with the progress so far, keep up the good work!</div>
-                    <div class="small text-gray-500">Morgan Alvarez · 2d</div>
-                  </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60" alt="">
-                    <div class="status-indicator bg-success"></div>
-                  </div>
-                  <div>
-                    <div class="text-truncate">Am I a good boy? The reason I ask is because someone told me that people say this to all dogs, even if they aren't good...</div>
-                    <div class="small text-gray-500">Chicken the Dog · 2w</div>
-                  </div>
-                </a>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
-              </div>
-            </li>
-
             <div class="topbar-divider d-none d-sm-block"></div>
 
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                  <td th:text="${username}"></td>
+                </span>
                 <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
               </a>
               <!-- Dropdown - User Information -->
@@ -263,7 +177,7 @@
                   Activity Log
                 </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                <a class="dropdown-item" th:href="@{/logout}">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                   Logout
                 </a>
@@ -274,105 +188,125 @@
 
         </nav>
         <!-- End of Topbar -->
-
-      <!-- Begin Page Content -->
-      <div class="container-fluid">
-
-         <!-- Page Heading -->
-         <h1 class="h3 mb-2 text-gray-800">User Profile </h1>
-         <p>Overview of this user's profile</p>
-         <div class="row">
-        
-            <!-- User Data -->
-            <div class="col-lg-8">
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">Overview</h6>
-                </div>
-                <div class="card-body">
-                
-                  <!-- User Form -->
-                  <form class="user" th:object="${userDTO}" th:action="@{/admin/update-user/} + ${userID}" method="post" id="form">
-                     <div class="form-group row">
-                        <div class="col-sm-3 mb-3 mb-sm-2">
-                           <strong><td>First Name</td></strong>
-                        </div>
-                        <div class="col-sm-6">
-                           <input type="text" class="form-control form-control-user" placeholder="First Name" id="firstName" th:field="*{firstName}">
-                        </div>
-                     </div>
-                     <div class="form-group row">
-                        <div class="col-sm-3 mb-3 mb-sm-0">
-                           <strong><td>Last Name</td></strong>
-                        </div>
-                        <div class="col-sm-6">
-                           <input type="text" class="form-control form-control-user" placeholder="Last Name" id="firstName" th:field="*{lastName}">
-                           <span class="icon is-small is-right is-invalid" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">
-                                 <i class="fas fa-exclamation-triangle"></i>
+         
+         <!-- Begin Page Content -->
+         <div class="container-fluid">
+         
+            <!-- Password Changed Notification -->
+             <div class="alert alert-success alert-dismissible fade show position-absolute" role="alert" th:if="${message != null}" style="right:20px">
+                <strong>
+                   <span class="col-sm-6 mx-auto" th:text="${message}"/>
+                </strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+                </button>
+             </div>
+   
+            <!-- Page Heading -->
+            <div class="row">
+           
+               <!-- Inner Content-->
+               <div class="col-xl-4 col-lg-6 col-md-6 mx-auto">
+                 <div class="card position-relative mb-3">            
+                   <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                      <h6 class="m-0 font-weight-bold text-primary">Edit User Details</h6>
+                   </div>
+                   
+                   <div class="card-body">
+                     <div class="justify-center">
+                       <!-- Car Form -->
+                       <form class="user" th:object="${userDTO}" th:action="@{/admin/update-user/} + ${userID}" method="post" id="form">
+                          <div class="form-row">
+                            <div class="col-md-6 mb-3">
+                              <label for="validationTooltip01">First Name</label>
+                              <input type="text" class="form-control" id="firstName" placeholder="First Name" th:field="*{firstName}" maxlength="255" required>
+                              <div class="valid-tooltip">
+                                Looks good!
+                              </div>
+                              <div class="invalid-tooltip">
+                                Please enter a first name.
+                              </div>
+                              <span class="icon is-small-danger is-right is-invalid" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">
+                                <i class="fas fa-exclamation-triangle"></i>
                               </span>
-                        </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                              <label for="validationTooltip01">Last Name</label>
+                              <input type="text" class="form-control" id="lastName" placeholder="Last Name" th:field="*{lastName}" required>
+                              <div class="invalid-tooltip">
+                                Please enter a last name
+                              </div>
+                              <span class="icon is-small-danger is-right is-invalid" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">
+                                <i class="fas fa-exclamation-triangle"></i>
+                              </span>
+                            </div>
+                          </div>
+                          <div class="form-row">
+                            <div class="col-md-6 mb-3">
+                              <label for="validationTooltip03">Email</label>
+                              <input type="text" class="form-control" id="username" placeholder="john@example.com" th:field="*{username}" required>
+                              <div class="invalid-tooltip">
+                                Please enter an email
+                              </div>
+                              <span class="icon is-small-danger is-right is-invalid" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">
+                                <i class="fas fa-exclamation-triangle"></i>
+                              </span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                              <label for="validationTooltip03">Phone Number</label>
+                              <input type="text" class="form-control" id="phoneNumber" placeholder="Phone Number" th:field="*{phoneNumber}" required>
+                              <div class="invalid-tooltip">
+                                Please enter a phone number
+                              </div>
+                              <span class="icon is-small-danger is-right is-invalid" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">
+                                <i class="fas fa-exclamation-triangle"></i>
+                              </span>
+                            </div>
+                          </div>
+                          <div class="form-row">
+                            <div class="col-md-6 mb-3">
+                              <label for="validationTooltip03">Driver's License</label>
+                              <input type="text" class="form-control" id="driverLicense" placeholder="Driver's License" th:field="*{driverLicense}" required>
+                              <div class="invalid-tooltip">
+                                Please enter a Driver's License
+                              </div>
+                              <span class="icon is-small-danger is-right is-invalid" th:if="${#fields.hasErrors('driverLicense')}" th:errors="*{driverLicense}">
+                                <i class="fas fa-exclamation-triangle"></i>
+                              </span>
+                            </div>
+                            <div class="col-md-6 mx-auto dropdown mb-3">
+                              <label for="validationTooltip03">Role</label>
+                              <select id="roleName" th:field="*{roleName}" class="form-control btn btn-outline-primary dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false" required>
+                                 <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
+                                    <option class="dropdown-item" th:value="true">Select Role</option>
+                                    <option class="dropdown-item" th:each="role : ${roles}" th:text="${role.role}" th:value="${role.role}"></option>
+                                 </div>
+                              </select>
+                              <span class="help is-danger" th:if="${#fields.hasErrors('roleName')}" th:errors="*{roleName}"></span>
+                           </div>
+                          </div>
+                          <hr>
+                          <div class="form-group row justify-content-around">
+                            <div class="col-sm-4 mb-3 mb-sm-0">
+                              <button class="btn btn-success btn-user btn-block" type="submit" name="action" value="submit" id="updateDetails">
+                                Add
+                              </button>
+                            </div>
+                            <div class="col-sm-4">
+                              <button class="btn btn-danger btn-user btn-block" type="reset">
+                                 Reset
+                              </button>
+                            </div>
+                          </div>
+
+                        </form>
                      </div>
-            
-                     <div class="form-group row">
-                        <div class="col-sm-3 mb-3 mb-sm-0">
-                           <strong><td>Username</td></strong>
-                        </div>
-                        <div class="col-sm-6">
-                           <input type="email" class="form-control form-control-user" placeholder="Email Address" id="username" th:field="*{username}">
-                        </div>
-                     </div>
-                     <div class="form-group row">
-                        <div class="col-sm-3 mb-3 mb-sm-0">
-                           <strong><td>Role</td></strong>
-                        </div>
-                        <div class="col-sm-6">
-                           <td th:text="${userDTO.roleName}"></td>
-                        </div>
-                     </div>
-                     <input class="btn btn-secondary btn-user" type="button" value="Warning" id="updateDetails" />
-                     <hr> 
-                     <div class="form-group row">
-                        <div class="col-sm-4 mb-3 mb-sm-0">
-                           <button class="btn btn-primary btn-user btn-block" type="submit" name="action" value="submit" id="updateDetails">
-                              Update
-                           </button>
-                        </div>
-                        <div class="col-sm-4">
-                           <a class="btn btn-warning btn-user btn-block" th:href="@{/admin/reset-password/} + ${userID}">
-                              Reset Password
-                           </a>
-                        </div>
-                        <div class="col-sm-4">
-                           <button class="btn btn-danger btn-user btn-block" type="reset" value="submit">
-                              Clear Form
-                           </button>
-                        </div>
-                     </div>
-                  </form>
-                  </div>
-                </div>
-              </div>
-                  
-            </div>    
+                   </div>
+                 </div>
                      
-            <!-- Delete User Modal-->
-            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-               <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                           <span aria-hidden="true">×</span>
-                        </button>
-                     </div>
-                     <div class="modal-body">Select "Delete" below if you are ready to remove this user from the system.</div>
-                        <div class="modal-footer">
-                           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                           <a class="btn btn-danger" th:href="@{/admin/delete-user/} + ${userID}">Delete</a>
-                        </div>
-                  </div>
-               </div>
-            </div>
+                </div>   
+               </div> 
+
          </div>
          <!-- /.container-fluid -->
          
@@ -400,24 +334,6 @@
     <i class="fas fa-angle-up"></i>
   </a>
 
-  <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" th:href="@{/logout}">Logout</a>
-        </div>
-      </div>
-    </div>
-  </div>
   
   <script>
   
