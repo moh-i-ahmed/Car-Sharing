@@ -1,5 +1,7 @@
 package springData.domain;
 
+import java.util.Optional;
+
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -42,6 +44,17 @@ public class Address {
    @JoinColumn(name = "USER_ID")
    private User user;
 
+   public Address(String line1, String line2, String city, String postcode, String country) {
+      this.line1 = line1;
+      this.line2 = line2;
+      this.city = city;
+      this.postcode = postcode;
+      this.country = country;
+   }
+
+   public Address() {
+   }
+
    public int getAddressID() {
       return this.addressID;
    }
@@ -66,8 +79,8 @@ public class Address {
       this.line2 = line2;
    }
 
-   public String getLine3() {
-      return this.line3;
+   public Optional<String> getLine3() {
+      return Optional.ofNullable(this.line3);
    }
 
    public void setLine3(String line3) {
@@ -109,10 +122,10 @@ public class Address {
    @Override
    public String toString() {
       return line1
-             + ", \n" + line2
-             + ", \n" + city
-             + ", \n" + postcode
-             + ", \n" + country;
+            + ", \n" + line2
+            + ", \n" + city
+            + ", \n" + postcode
+            + ", \n" + country;
    }
 
 }

@@ -1,17 +1,12 @@
 package springData.domain;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 @Entity
 public class Invoice {
@@ -21,21 +16,16 @@ public class Invoice {
    private int invoiceID;
 
    @Basic
-   @DateTimeFormat(iso = ISO.DATE)
-   private LocalDate invoiceDate;
-
-   @Basic
-   private LocalTime invoiceTime;
+   private LocalDateTime invoiceTimestamp;
 
    @Basic
    private String invoiceStatus;
 
    @OneToOne
-   @JoinColumn(name = "REQUESTID")
-   private Request request;
-
-   @OneToOne
    private Payment payment;
+
+   @OneToOne(mappedBy = "invoice")
+   private Request request;
 
    public int getInvoiceID() {
       return this.invoiceID;
@@ -45,20 +35,12 @@ public class Invoice {
       this.invoiceID = invoiceID;
    }
 
-   public LocalDate getInvoiceDate() {
-      return this.invoiceDate;
+   public LocalDateTime getInvoiceTimestamp() {
+      return this.invoiceTimestamp;
    }
 
-   public void setInvoiceDate(LocalDate invoiceDate) {
-      this.invoiceDate = invoiceDate;
-   }
-
-   public LocalTime getInvoiceTime() {
-      return this.invoiceTime;
-   }
-
-   public void setInvoiceTime(LocalTime invoiceTime) {
-      this.invoiceTime = invoiceTime;
+   public void setInvoiceTimestamp(LocalDateTime invoiceTimestamp) {
+      this.invoiceTimestamp = invoiceTimestamp;
    }
 
    public String getInvoiceStatus() {
@@ -69,20 +51,20 @@ public class Invoice {
       this.invoiceStatus = invoiceStatus;
    }
 
-   public Request getRequest() {
-      return this.request;
-   }
-
-   public void setRequest(Request request) {
-      this.request = request;
-   }
-
    public Payment getPayment() {
       return this.payment;
    }
 
    public void setPayment(Payment payment) {
       this.payment = payment;
+   }
+
+   public Request getRequest() {
+      return this.request;
+   }
+
+   public void setRequest(Request request) {
+      this.request = request;
    }
 
 }
