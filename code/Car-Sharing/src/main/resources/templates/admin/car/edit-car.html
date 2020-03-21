@@ -19,6 +19,7 @@
 
   <!-- Custom styles for this template -->
   <link th:href="@{/css/sb-admin-2.min.css}" type="text/css" rel="stylesheet"/> 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
   <!-- Custom styles for this page -->
   <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
@@ -104,6 +105,21 @@
           <i class="fas fa-car"></i>
           <span>View Cars</span></a>
       </li>
+      
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Request 
+      </div>
+
+      <!-- Nav Item - View Users -->
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/admin/view-all-requests}">
+          <i class="fas fa-list-ul"></i>
+          <span>View Requests</span></a>
+      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
@@ -132,7 +148,7 @@
           
           <!-- Topbar Page Name -->
           <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search input-group">
-            <h3 class="h4 mb-1 text-gray-600">Edit Car Details</h3>
+            <h1 class="h3 mb-0 text-gray-800">Edit Car Details</h1>
           </div>
 
           <!-- Topbar Navbar -->
@@ -200,118 +216,133 @@
                 <div class="card-body">
                   <div class="justify-center">
                     <!-- Car Form -->
-                    <form class="user" th:object="${carDTO}" th:action="@{/car/update-car/} + ${carDTO.registrationNumber}" method="post" id="form">
-                     <div class="form-group row">
-                        <div class="col-sm-3 mb-3 mb-sm-0">
-                           <strong><td>Registration Number</td></strong>
-                        </div>
-                        <div class="col-sm-6 mx-auto">
-                           <input type="text" class="form-control form-control-user" id="registrationNumber" th:field="*{registrationNumber}">
-                        </div>
-                     </div>
-                     <div class="form-group row">
-                        <div class="col-sm-3 mb-3 mb-sm-0">
-                           <strong><td>Brand/Make</td></strong>
-                        </div>
-                        <div class="col-sm-6 mx-auto">
-                           <input type="text" class="form-control form-control-user" id="carMake" th:field="*{carMake}">
-                        </div>
-                     </div>
-                     <div class="form-group row">
-                        <div class="col-sm-3 mb-3 mb-sm-0">
-                           <strong><td>Model/Name</td></strong>
-                        </div>
-                        <div class="col-sm-6 mx-auto">
-                           <input type="text" class="form-control form-control-user" id="carName" th:field="*{carName}">
-                        </div>
-                     </div>
-                     <div class="form-group row">
-                        <div class="col-sm-3 mb-3 mb-sm-0">
-                           <strong><td>Color</td></strong>
-                        </div>
-                        <div class="col-sm-6 mx-auto">
-                           <input type="text" class="form-control form-control-user" id="carColor" th:field="*{carColor}">
-                        </div>
-                     </div>
-                     <hr>
-                     <div class="form-group row">
-                        <div class="col-sm-3 mb-3 mb-sm-0">
-                           <strong><td>Status</td></strong>
-                        </div>
-                        <div class="col-sm-6 mx-auto dropdown mb-2">
-                           <select id="isActive" th:field="*{isActive}" class="btn btn-primary" type="button" aria-haspopup="true" aria-expanded="false" required>
+                    <form class="user" th:object="${carDTO}" th:action="@{/car/update-car/} + ${regNumber}" method="post" id="form">
+                       <div class="form-row">
+                         <div class="col-md-6 mb-3">
+                           <label for="validationTooltip01">Registration Number</label>
+                           <input type="text" class="form-control" id="registrationNumber" placeholder="Registration Number" th:field="*{registrationNumber}" maxlength="11" required>
+                           <div class="valid-tooltip">
+                             Looks good!
+                           </div>
+                           <div class="invalid-tooltip">
+                             Please provide a registration number
+                           </div>
+                           <span class="icon is-small-danger is-right is-invalid" th:if="${#fields.hasErrors('registrationNumber')}" th:errors="*{registrationNumber}">
+                             <i class="fas fa-exclamation-triangle"></i>
+                           </span>
+                         </div>
+                         <div class="col-md-6 mb-3">
+                           <label for="validationTooltip01">Brand/Make</label>
+                           <input type="text" class="form-control" id="carMake" placeholder="Toyota" th:field="*{carMake}" required>
+                           <div class="invalid-tooltip">
+                             Please provide a brand
+                           </div>
+                           <span class="icon is-small-danger is-right is-invalid" th:if="${#fields.hasErrors('carMake')}" th:errors="*{carMake}">
+                             <i class="fas fa-exclamation-triangle"></i>
+                           </span>
+                         </div>
+                       </div>
+                       <div class="form-row">
+                         <div class="col-md-6 mb-3">
+                           <label for="validationTooltip03">Model/Name</label>
+                           <input type="text" class="form-control" id="carName" placeholder="Prius" th:field="*{carName}" required>
+                           <div class="invalid-tooltip">
+                             Please provide a model
+                           </div>
+                           <span class="icon is-small-danger is-right is-invalid" th:if="${#fields.hasErrors('carName')}" th:errors="*{carName}">
+                             <i class="fas fa-exclamation-triangle"></i>
+                           </span>
+                         </div>
+                         <div class="col-md-6 mb-3">
+                           <label for="validationTooltip01">Color</label>
+                           <input type="text" class="form-control" id="carColor" placeholder="Black" th:field="*{carColor}" required>
+                           <div class="invalid-tooltip">
+                             Please provide a color
+                           </div>
+                           <span class="icon is-small-danger is-right is-invalid" th:if="${#fields.hasErrors('carColor')}" th:errors="*{carColor}">
+                             <i class="fas fa-exclamation-triangle"></i>
+                           </span>
+                         </div>
+                       </div>
+                       <hr>
+                       <div class="form-row">
+                          <div class="col-md-6 mb-3">
+                           <label for="validationTooltip03">Fuel Level</label>
+                           <input type="number" class="form-control" id="fuelLevel" placeholder="100%" th:field="*{fuelLevel}" th:min="0" th:max="100" onkeypress="return onlyNumberKey(event)" required>
+                           <div class="invalid-tooltip">
+                             Please provide a Fuel Level
+                           </div>
+                           <span class="icon is-small-danger is-right is-invalid" th:if="${#fields.hasErrors('fuelLevel')}" th:errors="*{fuelLevel}">
+                             <i class="fas fa-exclamation-triangle"></i>
+                           </span>
+                         </div>
+                         <div class="col-md-6 mx-auto dropdown mb-3">
+                           <label for="validationTooltip03">Status</label>
+                           <select id="isActive" th:field="*{isActive}" class="form-control btn btn-outline-primary dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false" required>
                               <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
-                                 <option th:value="*{isActive}">Set Status</option>
-                                 <option th:value="true">In Use</option>
-                                 <option th:value="false">Inactive</option>
+                                 <option class="dropdown-item" th:value="1">In Use</option>
+                                 <option class="dropdown-item" th:value="0">Inactive</option>
                               </div>
                            </select>
                            <span class="help is-danger" th:if="${#fields.hasErrors('isActive')}" th:errors="*{isActive}"></span>
-                        </div>
-                     </div>
-                     <div class="form-group row">
-                        <div class="col-sm-3 mb-3 mb-sm-0">
-                           <strong><td>Fuel Level</td></strong>
-                        </div>
-                        <div class="col-sm-6 mx-auto">
-                           <input type="number" class="form-control form-control-user" id="fuelLevel" th:field="*{fuelLevel}" min="0" max="100" onkeypress="return onlyNumberKey(event)">
-                        </div>
-                     </div>
-                     <div class="form-group row">
-                        <div class="col-sm-3 mb-3 mb-sm-0">
-                           <strong><td>Latitude</td></strong>
-                        </div>
-                        <div class="col-sm-6 mx-auto">
-                           <input type="text" class="form-control form-control-user" id="latitude" th:field="*{latitude}">
-                        </div>
-                     </div>
-                     <div class="form-group row">
-                        <div class="col-sm-3 mt-2 mb-sm-0">
-                           <strong><td>Longitude</td></strong>
-                        </div>
-                        <div class="col-sm-6 mx-auto">
-                           <input type="text" class="form-control form-control-user" id="longitude" th:field="*{longitude}">
-                        </div>
-                     </div>
-                     <hr>
-                     <div class="form-gorup row justify-content-around">
-                        <div class="col-sm-4 mb-3 mb-sm-0">
-                           <button class="btn btn-primary btn-user btn-block" type="submit" name="action" value="submit" id="updateDetails">
+                         </div>
+                       </div>
+                       <!-- div class="form-row">
+                         <div class="col-md-6 mb-3">
+                           <label for="validationTooltip03">Latitude</label>
+                           <input type="text" class="form-control" id="latitude" placeholder="45N" th:field="*{latitude}" th:min="-90" th:max="90" onkeypress="return onlyNumberKey(event)" required>
+                           <div class="invalid-tooltip">
+                             Please provide a latitude
+                           </div>
+                           <span class="icon is-small-danger is-right is-invalid" th:if="${#fields.hasErrors('latitude')}" th:errors="*{latitude}">
+                             <i class="fas fa-exclamation-triangle"></i>
+                           </span>
+                         </div>
+                         <div class="col-md-6 mb-3">
+                           <label for="validationTooltip03">Longitude</label>
+                           <input type="text" class="form-control" id="longitude" placeholder="90W" th:field="*{longitude}" th:min="-180" th:max="180" onkeypress="return onlyNumberKey(event)" required>
+                           <div class="invalid-tooltip">
+                             Please provide a longitude
+                           </div>
+                           <span class="icon is-small-danger is-right is-invalid" th:if="${#fields.hasErrors('longitude')}" th:errors="*{longitude}">
+                             <i class="fas fa-exclamation-triangle"></i>
+                           </span>
+                         </div>
+                       </div-->
+                       
+                       <!-- Google Autocomplete location  -->
+                       <div clas="form-row">
+                         <div class="mb-3 mb-sm-0">
+                           <label for="validationTooltip03">Location</label>
+                           <input type="text" class="form-control" placeholder="Location" id="search_input">
+                           <!-- button id="locator-button">
+                           <i class="far fa-dot-circle"></i>
+                           </button-->
+                           <input type="hidden" id="loc_lat" th:field="*{latitude}" />
+                           <input type="hidden" id="loc_long" th:field="*{longitude}"/>
+                         </div>
+                       </div>
+                       <hr>
+                       <div class="form-gorup row justify-content-around">
+                          <div class="col-sm-4 mb-3 mb-sm-0">
+                            <button class="btn btn-primary btn-user btn-block" type="submit" name="action" value="submit" id="updateDetails">
                               Update
-                           </button>
-                        </div>
-                        <div class="col-sm-4">
-                           <button class="btn btn-danger btn-user btn-block" type="reset">
+                            </button>
+                          </div>
+                          <div class="col-sm-4">
+                            <button class="btn btn-danger btn-user btn-block" type="reset">
                               Reset
-                           </button>
-                        </div>
-                     </div>
+                            </button>
+                          </div>
+                       </div>
                      </form>
                   </div>
                 </div>
               </div>
                   
-            </div>   
+             </div>   
             </div> 
-                     
-            <!-- Delete Car Modal-->
-            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-               <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                           <span aria-hidden="true">×</span>
-                        </button>
-                     </div>
-                     <div class="modal-body">Select "Delete" below if you are ready to remove this user from the system.</div>
-                        <div class="modal-footer">
-                           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                           <a class="btn btn-danger" th:href="@{/car/delete-car/} + ${regNumber}">Delete</a>
-                        </div>
-                  </div>
-               </div>
-            </div>
+
          </div>
          <!-- /.container-fluid -->
          
@@ -338,25 +369,6 @@
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
-
-  <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" th:href="@{/logout}">Logout</a>
-        </div>
-      </div>
-    </div>
-  </div>
   
   <script>
   
@@ -380,15 +392,53 @@
   
   <!-- Validate Phone Number -->
    <script> 
-       function onlyNumberKey(evt) { 
-             
-           // Only ASCII charactar in that range allowed 
-           var ASCIICode = (evt.which) ? evt.which : evt.keyCode 
-           if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57)) 
-               return false; 
-           return true; 
-       } 
+      function onlyNumberKey(evt) { 
+          
+          // Only ASCII charactar in that range allowed 
+          var ASCIICode = (evt.which) ? evt.which : evt.keyCode 
+          if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57) && (ASCIICode != 46)) 
+              return false;
+          return true; 
+      } 
    </script>
+   
+   <!-- Google Maps JS Library -->
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyAi9qsACSRpv-drbqKhofMzyVFf_Hr_fI0"></script>
+  
+  <!-- Google Maps Autocomplete Search -->
+  <script>
+  var searchInput = 'search_input';
+
+  $(document).ready(function () {
+      var autocomplete;
+      autocomplete = new google.maps.places.Autocomplete((document.getElementById(searchInput)), {
+          types: ['geocode'],
+          componentRestrictions: {
+              country: "UK"
+          }
+      });
+     
+      google.maps.event.addListener(autocomplete, 'place_changed', function () {
+          var near_place = autocomplete.getPlace();
+          document.getElementById('loc_lat').value = near_place.geometry.location.lat();
+          document.getElementById('loc_long').value = near_place.geometry.location.lng();
+        
+          document.getElementById('latitude_view').innerHTML = near_place.geometry.location.lat();
+          document.getElementById('longitude_view').innerHTML = near_place.geometry.location.lng();
+      });
+
+      
+  });
+  
+  //Update Latitude/Longitude
+  $(document).on('change', '#'+searchInput, function () {
+       document.getElementById('latitude_input').value = '';
+       document.getElementById('longitude_input').value = '';
+      
+       document.getElementById('latitude_view').innerHTML = '';
+       document.getElementById('longitude_view').innerHTML = '';
+   });
+  </script>
 
   <!-- Bootstrap core JavaScript-->
   <script src="/vendor/jquery/jquery.min.js"></script>

@@ -98,6 +98,21 @@
       </li>
       
       <!-- Divider -->
+      <hr class="sidebar-divider">
+
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Request 
+      </div>
+
+      <!-- Nav Item - View Users -->
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/admin/view-all-requests}">
+          <i class="fas fa-list-ul"></i>
+          <span>View Requests</span></a>
+      </li>
+      
+      <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
 
       <!-- Sidebar Toggler (Sidebar) -->
@@ -124,7 +139,7 @@
           
           <!-- Topbar Page Name -->
           <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search input-group">
-            <h3 class="h4 mb-1 text-gray-600">Car Management</h3>
+            <h1 class="h3 mb-0 text-gray-800">Car Management</h1>
           </div>
 
           <!-- Topbar Navbar -->
@@ -154,7 +169,7 @@
                   Activity Log
                 </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                <a class="dropdown-item" th:href="@{/logout}">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                   Logout
                 </a>
@@ -169,7 +184,7 @@
         <!-- Begin Page Content -->
         <div class="container-fluid"> 
         
-        <!-- Password Changed Notification -->
+          <!-- Notification -->
           <div class="alert alert-success alert-dismissible fade show position-absolute" role="alert" th:if="${message != null}" style="right:20px">
              <strong>
                 <span class="col-sm-6 mx-auto" th:text="${message}"/>
@@ -197,7 +212,7 @@
                       <th>Model</th>             
                       <th>Color</th>
                       <th>Status</th>
-                      <th>Fuel Level</th>
+                      <th>Requests Made</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
@@ -208,7 +223,7 @@
                       <th>Model</th>             
                       <th>Color</th>
                       <th>Status</th>
-                      <th>Fuel Level</th>
+                      <th>Requests Made</th>
                       <th>Actions</th>
                     </tr>
                   </tfoot>
@@ -220,7 +235,7 @@
                       <td th:text="${car.carColor}">
                       <td th:if="${car.isActive == true}">In Use</td>
                       <td th:if="${car.isActive == false}">Inactive</td>
-                      <td th:text="${car.fuelLevel} + '%'">
+                      <td th:text="${#lists.size(car.requests)}"></td>
                       <td>
                       <div class="dropdown mb-6">
                         <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -236,7 +251,7 @@
                               Edit
                            </a>
                            <div class="dropdown-divider"></div>
-                           <a class="dropdown-item" href="#" data-toggle="modal" data-target="#deleteModal">
+                           <a class="dropdown-item" href="#" data-toggle="modal" th:attr="data-target='#deleteModal'+${car.registrationNumber}">
                               <i class="fas fa-trash fa-sm fa-fw mr-2 text-gray-400"></i>
                               Delete
                            </a>         
@@ -245,7 +260,7 @@
                      </td>
                      
                      <!-- Delete User Modal-->
-                     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                     <div class="modal fade" th:id="deleteModal + ${car.registrationNumber}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                            <div class="modal-content">
                               <div class="modal-header">
@@ -280,7 +295,7 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; <strong> <a href="https://github.com/moa38">moa38</a> </strong> 2019 </span>
+            <span>Copyright &copy; <strong> <a href="https://github.com/moa38">moaz38</a> </strong> 2019 </span>
           </div>
         </div>
       </footer>
@@ -296,26 +311,6 @@
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
-
-  <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" th:href="@{/logout}">Logout</a>
-        </div>
-      </div>
-    </div>
-  </div>
-  
   
  <script>
   
