@@ -20,6 +20,15 @@ public interface RequestRepository extends JpaRepository<Request, Integer> {
                                  + "and (e.endTime = (Select MAX(s.endTime) from Request s where s.user = e.user))")
    Request findLatestByDate();
 
+/*   SELECT *
+   FROM permlog
+   ORDER BY id DESC
+   LIMIT 1
+   */
+   @Query("Select e from Request e where e.requestID = (Select MAX(e.requestID) from Request e)")
+   //@Query("Select MAX(e.requestID) from Request e")
+   Request findByTopIdDesc();
+
    @SuppressWarnings("unchecked")
    Request save(Request request);
 }

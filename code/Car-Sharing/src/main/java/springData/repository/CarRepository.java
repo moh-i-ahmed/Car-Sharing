@@ -16,6 +16,9 @@ public interface CarRepository extends JpaRepository<Car, Integer> {
    @Query("Select e from Car e where e.isActive = FALSE")
    List<Car> findAllAvailable();
 
+   @Query("Select e from Car e where e.isActive = TRUE")
+   List<Car> findAllInUse();
+
    @SuppressWarnings("unchecked")
    Car save(Car car);
 }
