@@ -18,7 +18,23 @@
 
   <!-- Custom styles for this template>
   <link href="css/sb-admin-2.min.css" rel="stylesheet"-->
-  <link th:href="@{/css/sb-admin-2.min.css}" type="text/css" rel="stylesheet"/> 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <link th:href="@{/css/sb-admin-2.min.css}" type="text/css" rel="stylesheet"/>
+  
+  <!-- Google Maps Style -->
+  <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style> 
 
 </head>
 
@@ -133,7 +149,7 @@
           </button>
           
           <!-- Topbar Page Name -->
-          <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search input-group">
+          <div class="d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search input-group">
             <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
           </div>
 
@@ -189,11 +205,6 @@
              </button>
           </div>
           
-          <!-- Page Heading -->
-          <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
-          </div>
 
           <!-- Content Row -->
           <div class="row">
@@ -291,9 +302,146 @@
           </div>
 
           <!-- Content Row -->
-
+         <div class="row">
+            
+         </div>
           <div class="row">
+            
+            <!-- Car Locations Google Map View -->
+            <div class="col-12">
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Car Locations</h6>
+                  <div class="dropdown no-arrow">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                      <div class="dropdown-header">Dropdown Header:</div>
+                      <a class="dropdown-item" href="#">Action</a>
+                      <a class="dropdown-item" href="#">Another action</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Card Body -->
+                <div class="card-body">
+                  <div class="col-xl-12 col-lg-12 col-md-10 mx-auto" style="height: 800px">
+                     <!-- Google Maps View -->
+                     <div class="card position-relative mb-5" id="map" style="position:absolute">
+                       <script type="text/javascript" th:inline="javascript">
+                         /*<![CDATA[*/
+                             var map;
+                             var infowindow;
+                             
+                             var lat_min = 52.0;
+                             var lat_max = 53.0;
+                             var lng_min = -1.0;
+                             var lng_max = -1.2;
+                             
+                             //Parse locations to JSON
+                             var carLocations = JSON.parse([[${locations}]]);
+                             
+                             var boundary = new google.maps.LatLng((lat_min + lat_max)/2, (lng_min + lng_max)/2);
 
+                             function initMap() {
+                                map = new google.maps.Map(document.getElementById('map'), {
+                                   //center: {lat: 52.6369, lng: -1.1398},
+                                   zoom: 14,
+                                   options: {
+                                	     minZoom: 7,
+                                	     maxZoom: 18,
+                                	     gestureHandling: 'greedy'
+                                	   }
+                                });
+                                
+                                map.setCenter(new google.maps.LatLng(
+                                		  ((lat_max + lat_min) / 2.0),
+                                		  ((lng_max + lng_min) / 2.0)
+                                		));
+                                
+                                var geocoder = new google.maps.Geocoder;
+                                infowindow = new google.maps.InfoWindow;
+                                
+                                //Geocode cars
+                                for (var m = 0; m < carLocations.length; m++) {
+                                   //Parse car's coordinates
+                                   var latlng = {
+                                       lat: parseFloat(carLocations[m][1]),
+                                       lng: parseFloat(carLocations[m][2])
+                                   };
+                                   //Geocode coordinates
+                                   geocodeLatLng(geocoder, map, infowindow, latlng, m);
+                                 }
+                             }
+                             gmarkers = [];
+                             
+                             //Geocode coordinates and add marker
+                             function geocodeLatLng(geocoder, map, infowindow, latlng, index) {   
+                            	 geocoder.geocode({'location': latlng}, function(results, status) {
+                                   if (status === 'OK') {
+                                      if (results[0]){
+                                         map.setCenter(results[0].geometry.location);
+                                         
+                                         //Create marker with info window
+                                         createMarker(results[0].geometry.location, results[0].formatted_address, index);
+                                           
+                                         return results[0].formatted_address;
+                                      } else {
+                                          window.alert('No results found');
+                                      }
+                                   } else {
+                                       window.alert('Geocoder failed due to: ' + status);
+                                   }
+                               });
+                             }
+                             
+                             var image="https://www.freepik.com/free-icon/car-icon_739336.htm";
+                             
+                             //Place Marker on coordinates  
+                             function createMarker(latlng, html, index){
+                                //Create marker & place on map
+                                var marker = new google.maps.Marker({
+                                      position: latlng,
+                                      draggable: false,
+                                      animation: google.maps.Animation.DROP,
+                                      map: map,
+                                      stopCoords: latlng,
+                                      icon: image
+                                });
+                                //Get car's registration number
+                                var registrationNumber = carLocations[index][0];
+                                
+                                //Marker infowindow text
+                                var contentString = '<a href="/car/view-car/' + registrationNumber + '">' + registrationNumber + '  (Details)</a><br>' + html ;
+                                    
+                                //Show information on marker click
+                                google.maps.event.addListener(marker, 'click', function() {    
+                                 	 map.panTo(marker.getPosition());
+                                   	 map.setZoom(16);
+                                     infowindow.setContent(contentString);
+                                     infowindow.open(map, marker);
+                                });
+                                       
+                                return marker;
+                             } 
+                           /*]]*/
+                       </script>
+                       <script async defer
+                         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAi9qsACSRpv-drbqKhofMzyVFf_Hr_fI0&callback=initMap">
+                       </script>
+                     </div>
+                    </div>
+                  <div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            
             <!-- Area Chart -->
             <div class="col-xl-8 col-lg-7">
               <div class="card shadow mb-4">
