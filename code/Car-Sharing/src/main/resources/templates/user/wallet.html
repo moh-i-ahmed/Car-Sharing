@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>User - Wallet</title>
+
+  <!-- Custom fonts for this template -->
+  <link rel="icon" href="/img/favicon.ico" />
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link th:href="@{/css/sb-admin-2.min.css}" type="text/css" rel="stylesheet"/> 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+  <!-- Custom styles for this page -->
+  <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  
+</head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
+
+      <!-- Sidebar - Brand -->
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/dashboard}">
+        <div class="sidebar-brand-icon rotate-n-15">
+          <i class="fas fa-laugh-wink"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">User <sup>2</sup></div>
+      </a>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0">
+
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/dashboard}">
+          <i class="fas fa-fw fa-tachometer-alt"></i>
+          <span>Find a Car</span></a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Profile
+      </div>
+
+      <!-- Nav Item - Pages Collapse Menu -->
+
+      <!-- Nav Item - Charts -->
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/user/history}">
+          <i class="fas fa-list fa-sm fa-fw mr-2"></i>
+          <span>History</span></a>
+      </li>
+
+      <!-- Nav Item - Tables -->
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/account/profile}">
+          <i class="fas fa-fw fa-cog"></i>
+          <span>Profile</span></a>
+      </li>
+
+      <!-- Nav Item - Charts -->
+      <li class="nav-item active">
+        <a class="nav-link" th:href="@{/payment/wallet}">
+          <i class="fas fa-credit-card"></i>
+          <span>Wallet</span></a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider d-none d-md-block">
+
+      <!-- Sidebar Toggler (Sidebar) -->
+      <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+      </div>
+
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+          <!-- Sidebar Toggle (Topbar) -->
+          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button>
+          
+          <!-- Topbar Page Name -->
+          <div class="d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search input-group">
+            <h1 class="h3 mb-0 text-gray-800">Wallet</h1>
+          </div>
+
+          <!-- Topbar Navbar -->
+          <ul class="navbar-nav ml-auto">
+            <div class="topbar-divider d-none d-sm-block"></div>
+
+            <!-- Nav Item - User Information -->
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                  <td th:text="${username}"></td>
+                </span>
+                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+              </a>
+              <!-- Dropdown - User Information -->
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" href="#">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Profile
+                </a>
+                <a class="dropdown-item" href="#">
+                  <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Settings
+                </a>
+                <a class="dropdown-item" href="#">
+                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Activity Log
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" th:href="@{/logout}">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Logout
+                </a>
+              </div>
+            </li>
+
+          </ul>
+
+        </nav>
+        <!-- End of Topbar -->
+
+      <!-- Begin Page Content -->
+      <div class="container-fluid">
+      
+         <!-- Password Changed Notification -->
+         <!-- Success Notification -->
+          <div class="alert alert-success alert-dismissible fade show position-absolute" role="alert" th:if="${message != null}" style="right:20px">
+             <strong>
+                <span class="col-sm-6 mx-auto" th:text="${message}"/>
+             </strong>
+             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+             </button>
+          </div>
+          <!-- Error Notification -->
+          <div class="alert alert-danger alert-dismissible fade show position-absolute" role="alert" th:if="${message != null and #strings.contains(message, 'Error:')}" style="right:20px">
+             <strong>
+                <span class="col-sm-6 mx-auto" th:text="${message}"/>
+             </strong>
+             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+             </button>
+          </div>
+          
+         <!-- Content Row -->
+         <div class="row">
+        
+            <!-- Inner Content-->
+            <div class="col-xl-4 col-lg-6 col-md-6 mx-auto">
+              <div class="card position-relative mb-3">            
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                   <h6 class="m-0 font-weight-bold text-primary">Payment Methods</h6>
+                   <div class="dropdown no-arrow">
+                         <a href="#" data-toggle="modal" data-target="#cardModal" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                         <i class="fas fa-credit-card fa-sm text-white-50 mr-2"></i>Add Card
+                      </a>
+                    </div>
+                </div>
+                
+                <div class="card-body mx-auto" th:if="${#lists.isEmpty(cards)}">
+                   <h6 class="m-0 font-weight-bold text-danger">No payment methods added.</h6>
+                </div>
+
+                <div class="card-body" th:if="${not #lists.isEmpty(cards)}">
+                   
+                   <div class="row" th:each="card: ${cards}">
+                     <div class="col-10 mb-2 mt-2 mx-auto">
+                      <!-- Number of Cars -->
+                         <div class="card border-left-success shadow h-100 py-1">
+                            <div class="card-body p-2">
+                                 <div class="text-primary row no-gutters align-items-center">
+                                   <div class="col-auto ml-3 mr-2">
+                                     <i th:if="${card.brand} == 'Visa'" class="fab fa-cc-visa fa-2x"></i>
+                                     <i th:if="${card.brand} == 'MasterCard'" class="fab fa-cc-mastercard fa-2x"></i>
+                                     <i th:if="${card.brand} == 'JCB'" class="fab fa-cc-jcb fa-2x"></i>
+                                     <i th:if="${card.brand} == 'Discover'" class="fab fa-cc-discover fa-2x"></i>
+                                     <i th:if="${card.brand} == 'American Express'" class="fab fa-cc-amex fa-2x"></i>
+                                   </div>
+                                   <div class="col mr-2">
+                                     <!--div class="text-xs font-weight-bold text-success text-uppercase mb-1">Cars in System</div-->
+                                     <div class="h5 mb-0 ml-3 font-weight-bold text-gray-800">
+                                       <td th:text="'•••• ' + ${card.last4}"></td>
+                                     </div>
+                                     <div class="col-sm-8 ml-2">
+                                       <td th:if="${card.expMonth} < 10" th:text="'Expires 0' + ${card.expMonth} + '/' + ${card.expYear}"></td>
+                                       <td th:if="${card.expMonth} >= 10" th:text="'Expires ' + ${card.expMonth} + '/' + ${card.expYear}"></td>
+                                     </div>
+                                     <div class="col-sm-5 ml-2">
+                                       <td th:text="${card.brand}"></td>
+                                     </div>
+                                   </div>
+                                   <div class="col-auto mr-4">
+                                     <a th:href="@{/payment/remove-card/} + ${card.id}">
+                                        <i class="fas fa-trash text-danger fa-2x" data-toggle="tooltip" data-placement="bottom" title="Remove Card"></i>
+                                     </a>
+                                   </div>
+                                 </div>
+                            </div>
+                         </div>
+                     </div>
+                     </div>
+                     <!-- div class="row">
+                     <div class="col-lg-10 col-md-6 mx-auto" th:each="card: ${cards}">
+                       <!-- Collapsable Card Example>
+                       <div class="card shadow mb-4">
+                       
+                         <!-- Card Header - Accordion >
+                         <a th:attr="data-target='#colla'+${card.id}" class="d-block card-header py-3" data-toggle="collapse" 
+                              role="button" aria-expanded="false" th:aria-controls="colla + ${card.id}">
+      
+                           <h6 class="m-0 text-primary">
+                              <i th:if="${card.brand} == 'Visa'" class="fab fa-cc-visa fa-2x mr-2"></i>
+                              <i th:if="${card.brand} == 'MasterCard'" class="fab fa-cc-mastercard fa-2x mr-2"></i>
+                              <i th:if="${card.brand} == 'JCB'" class="fab fa-cc-jcb fa-2x mr-2"></i>
+                              <i th:if="${card.brand} == 'Discover'" class="fab fa-cc-discover fa-2x mr-2"></i>
+                              <i th:if="${card.brand} == 'American Express'" class="fab fa-cc-amex fa-2x mr-2"></i>
+                              <td class="m-0 font-weight-bold"  th:text="${card.brand} + ' ending in •••• ' + ${card.last4}"></td>
+                           </h6>
+                         </a>
+                         
+                         <!-- Card Content - Collapse >
+                      
+                         <div class="collapse" th:id="colla + ${card.id}">
+                           <div class="card-body">   
+                              <div class="form-group row mx-auto">
+                                 <div class="col-sm-3 mb-3 mb-sm-0">
+                                    <strong><td>Name on Card</td></strong>
+                                 </div>
+                                 <div class="col-sm-3">
+                                  <td th:text="${card.name} + ' Insert name'"></td>
+                                 </div>
+                              </div>
+                              <div class="form-group row mx-auto">
+                                 <div class="col-sm-3 mb-3 mb-sm-0">
+                                    <strong><td>Expires </td></strong>
+                                    <td th:text="${card.expMonth} + '/' + ${card.expYear}"></td>
+                                 </div>
+                                 <!--div class="col-sm-3">
+                                  <td th:text="'Expires ' + ${card.expMonth} + '/' + ${card.expYear}"></td>
+                                 </div>
+                              </div>
+                              <hr>
+                              <div class="col-sm-3 mb-3 mb-sm-0 float-left">
+                                    <td th:text="${card.brand}"></td>
+                                 </div>
+                              <div class="form-group row float-right">
+                                 
+                                 <div class="col-sm-3 mb-3 mb-sm-0">
+                                    <a href="#" class="btn btn-danger btn-icon-split btn-sm" th:href="@{/payment/remove-card/} + ${card.id}">
+                                       <span class="icon text-white-50">
+                                          <i class="fas fa-trash"></i>
+                                       </span>
+                                       <span class="text">Remove</span>
+                                    </a>
+                                 </div>
+                              </div>
+                              
+                           </div>
+                         </div>
+                   
+                       </div>
+              </div>
+                   </div-->      
+                </div>
+              </div>
+            </div>
+                  
+            </div> 
+
+         </div>
+         <!-- /.container-fluid -->
+         
+      </div>
+      <!-- End of Main Content -->
+      
+      <!-- Add New Card Modal -->
+     <div class="modal fade" id="cardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+           <form th:action="@{/payment/add-card}" method="post" id="payment-form">
+             <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title text-gray-800" id="exampleModalLabel">Add New Card</h5>
+                  <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+                <div class="modal-body"> 
+                  <div class="form-group">
+                   <label for="card-element"><strong>Credit or debit card</strong></label>
+                     <div id="card-element" class="form-control" style='height: 2.4em; padding-top: .7em;'>
+                     <!-- A Stripe Element will be inserted here. -->
+                     </div>
+                     <!-- Used to display form errors. -->
+                     <div id="card-errors" class="mt-2" role="alert"></div>
+                     <button class="btn btn-primary btn-block mt-3" type="submit" value="submit">
+                        Save
+                     </button>
+                  </div>
+                  
+                </div>
+             </div>
+           </form>
+        </div>
+     </div>
+
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright &copy; <strong> <a href="https://github.com/moa38">moa38</a> </strong> 2019 </span>
+          </div>
+        </div>
+      </footer>
+      <!-- End of Footer -->
+      
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Show Notification -->
+  <script>
+     //Fade out alert after 5 seconds
+     $(document).ready(function() {
+         // show the alert
+         setTimeout(function() {
+             $(".alert").alert('close');
+         }, 5000);
+       });
+  </script>
+   
+  <script>
+
+  $('form').submit( function(event) {
+       var formId = this.id,
+           form = this;
+       mySpecialFunction(formId);
+
+       event.preventDefault();
+
+       setTimeout( function () { 
+           form.submit();
+       }, 3000);
+   });
+  
+  </script>
+  
+  <!-- Validate Phone Number -->
+  <script> 
+       function onlyNumberKey(evt) { 
+             
+           // ASCII character in that range allowed 
+           // ASCII character for minus(-)& dot ()
+           var ASCIICode = (evt.which) ? evt.which : evt.keyCode 
+           if (ASCIICode > 31) {
+        	   if ((ASCIICode < 45 || ASCIICode > 57) || ASCIICode == 47) {
+        		   return false;
+        	   }
+           }
+           return true; 
+       } 
+  </script>
+  
+
+  <script src="https://js.stripe.com/v3/"></script>
+  
+  <script>
+  var stripe = Stripe('pk_test_Tqib5EzPUVIvty1YFhOCSJL500iQIZp9T0');
+
+   //Create an instance of Elements.
+   var elements = stripe.elements();
+   
+   //Custom styling can be passed to options when creating an Element.
+   //(Note that this demo uses a wider set of styles than the guide below.)
+   var style = {
+    base: {
+      color: '#32325d',
+      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+      fontSmoothing: 'antialiased',
+      fontSize: '16px',
+      fontWeight: 300,
+      '::placeholder': {
+        color: '#aab7c4'
+      }
+    },
+    invalid: {
+      color: '#fa755a',
+      iconColor: '#CFD7E0'
+    }
+   };
+   
+   //Create an instance of the card Element.
+   var card = elements.create('card', {style: style});
+   
+   //Add an instance of the card Element into the `card-element` <div>.
+   card.mount('#card-element');
+   
+   //Handle real-time validation errors from the card Element.
+   card.addEventListener('change', function(event) {
+    var displayError = document.getElementById('card-errors');
+    if (event.error) {
+      displayError.textContent = event.error.message;
+    } else {
+      displayError.textContent = '';
+    }
+   });
+   
+   // Create a token or display an error when the form is submitted.
+   var form = document.getElementById('payment-form');
+   form.addEventListener('submit', function(event) {
+     event.preventDefault();
+
+     stripe.createToken(card).then(function(result) {
+       if (result.error) {
+         // Inform the customer that there was an error.
+         var errorElement = document.getElementById('card-errors');
+         errorElement.textContent = result.error.message;
+       } else {
+         // Send the token to your server.
+         stripeTokenHandler(result.token);
+       }
+     });
+   });
+   
+   function stripeTokenHandler(token) {
+	   // Insert the token ID into the form so it gets submitted to the server
+	   var form = document.getElementById('payment-form');
+	   var hiddenInput = document.createElement('input');
+	   hiddenInput.setAttribute('type', 'hidden');
+	   hiddenInput.setAttribute('name', 'stripeToken');
+	   hiddenInput.setAttribute('value', token.id);
+	   form.appendChild(hiddenInput);
+
+	   // Submit the form
+	   form.submit();
+	 }
+  
+  </script>
+  
+  <!-- Bootstrap core JavaScript-->
+  <script src="/vendor/jquery/jquery.min.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="/js/sb-admin-2.min.js"></script>
+
+  <!-- Page level plugins -->
+  <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="/js/demo/datatables-demo.js"></script>
+
+</body>
+
+</html>
