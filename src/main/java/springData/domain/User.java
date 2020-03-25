@@ -4,8 +4,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -50,14 +52,14 @@ public class User {
    @ManyToOne
    private Role role;
 
-   @OneToOne(mappedBy = "user")
+   @OneToOne(mappedBy = "user", fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
    private StripeCustomer stripeCustomer;
 
-   @OneToMany(mappedBy = "user")
+   @OneToMany(mappedBy = "user", fetch=FetchType.LAZY)
    private List<Request> requests;
 
-   @OneToMany(mappedBy = "user")
-   private List<Address> addresses;
+   @ManyToOne(fetch=FetchType.LAZY)
+   private Address address;
 
    public int getUserID() {
       return this.userID;
@@ -168,25 +170,12 @@ public class User {
       request.setUser(null);
    }
 
-   public List<Address> getAddresses() {
-      if (addresses == null) {
-         addresses = new ArrayList<>();
-      }
-      return this.addresses;
-   }
+   public Address getAddress() {
+      return this.address;
+  }
 
-   public void setAddresses(List<Address> addresses) {
-      this.addresses = addresses;
-   }
-
-   public void addAddress(Address address) {
-      getAddresses().add(address);
-      address.setUser(this);
-   }
-
-   public void removeAddress(Address address) {
-      getAddresses().remove(address);
-      address.setUser(null);
-   }
+  public void setAddress(Address address) {
+      this.address = address;
+  }
 
 }
