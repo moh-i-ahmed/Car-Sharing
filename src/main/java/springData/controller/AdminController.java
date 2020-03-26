@@ -21,6 +21,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.stripe.exception.StripeException;
+import com.stripe.model.Customer;
+
 import springData.DTO.UserDTO;
 import springData.domain.Request;
 import springData.domain.Role;
@@ -31,6 +36,7 @@ import springData.repository.CarRepository;
 import springData.repository.RequestRepository;
 import springData.repository.UserRepository;
 import springData.services.EmailServiceImpl;
+import springData.services.StripeService;
 import springData.utils.PasswordGenerator;
 import springData.validator.PasswordDTOValidator;
 import springData.validator.UserDTOValidator;
@@ -48,6 +54,8 @@ public class AdminController {
    @Autowired CarRepository carRepo;
    @Autowired RequestRepository requestRepo;
    @Autowired AddressRepository addressRepo;
+
+   @Autowired private StripeService stripeService;
    @Autowired private EmailServiceImpl emailService;
 
    @InitBinder("userDTO")
@@ -61,13 +69,20 @@ public class AdminController {
    }
 
    @GetMapping ("/dashboard")
-   public String dashboard1(Model model, Principal principal) {
-
+   public String dashboard(Model model, Principal principal) throws JsonProcessingException {
+      //Parse query result to JSON for Google Maps View
+      ObjectMapper mapper = new ObjectMapper();
+      String locations = mapper.writeValueAsString(carRepo.findAllCarLocations());
+      System.err.println("Listed " + locations);
+      
       model.addAttribute("username", principal.getName());
-      model.addAttribute("userCount", userRepo.findAll().size());
-      model.addAttribute("totalCars", carRepo.findAll().size());
-      model.addAttribute("activeCars", carRepo.findAllInUse().size());
-      model.addAttribute("requests", requestRepo.findAll().size());
+      model.addAttribute("userCount", userRepo.count());
+      
+      model.addAttribute("locations", locations);
+      //model.addAttribute("locations", carRepo.findAllCarLocations());
+      model.addAttribute("totalCars", carRepo.count());
+      model.addAttribute("activeCars", carRepo.findAllInUse());
+      model.addAttribute("requests", requestRepo.count());
 
       return "/admin/dashboard"; 
    }
@@ -100,9 +115,9 @@ public class AdminController {
          //List of Roles
          List<Role> roles = (List<Role>) roleRepo.findAll();
          model.addAttribute("roles", roles);
-         
+
          result.rejectValue("username", "", "Email is already in use.");
-         
+
          return "admin/createUser";
       }
 
@@ -199,7 +214,7 @@ public class AdminController {
          //List of Roles
          List<Role> roles = (List<Role>) roleRepo.findAll();
          model.addAttribute("roles", roles);
-         
+
          result.rejectValue("username", "", "Email is already in use.");
 
          return "admin/edit-user";
@@ -270,15 +285,28 @@ public class AdminController {
    }
 
    @GetMapping("/delete-user/{userID}")
-   public String deleteUser(@PathVariable int userID) {
+   public String deleteUser(@PathVariable int userID, RedirectAttributes redirectAttributes) {
       //Find User by @PathVariable
       User user = userRepo.findById(userID);
 
+      /*
       if (!(addressRepo.findAllByUser(user) == null)) {
          //Delete the user's addresses
          addressRepo.deleteAll(addressRepo.findAllByUser(user));
+      } */
+
+      //Delete user's payment methods
+      if (user.getRole().getRole().equalsIgnoreCase("user")) {
+         try {
+           // Customer deletedCustomer = stripeService.deleteStripeCustomer(user);
+         }
+         catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("message", e.toString());
+         }
       }
-      //Drop User from database
+      //Delete User from database
       userRepo.delete(user);
 
       logger.info("\n Admin Log: " + user.getUsername() + " deleted by Admin.");
