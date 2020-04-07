@@ -32,14 +32,13 @@
   <div id="wrapper">
 
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
+    <ul class="navbar-nav bg-gray-900 sidebar sidebar-dark accordion toggled" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/dashboard}">
-        <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-laugh-wink"></i>
+        <div class="sidebar-brand-icon">
+          <i class="fas fa-car"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">User <sup>2</sup></div>
       </a>
 
       <!-- Divider -->
@@ -57,7 +56,7 @@
 
       <!-- Heading -->
       <div class="sidebar-heading">
-        Profile
+        Menu
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
@@ -69,18 +68,18 @@
           <span>History</span></a>
       </li>
 
-      <!-- Nav Item - Tables -->
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/account/profile}">
-          <i class="fas fa-fw fa-cog"></i>
-          <span>Profile</span></a>
-      </li>
-
-      <!-- Nav Item - Charts -->
+      <!-- Nav Item - Wallet -->
       <li class="nav-item active">
         <a class="nav-link" th:href="@{/payment/wallet}">
           <i class="fas fa-credit-card"></i>
           <span>Wallet</span></a>
+      </li>
+      
+      <!-- Nav Item - Profile -->
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/account/profile}">
+          <i class="fas fa-fw fa-user"></i>
+          <span>Profile</span></a>
       </li>
 
       <!-- Divider -->
@@ -335,6 +334,30 @@
            </form>
         </div>
      </div>
+     
+     <!-- 
+     <form action="/payment/add-card" method="post" id="payment-form"><input type="hidden" name="_csrf" value="8e5ab90e-561f-4a0d-b9c0-e92f03c5cd35">
+             <div class="modal-content">
+                <div class="modal-header bg-gray-900 text-gray-100">
+                  <h5 class="modal-title text-gray-100" id="exampleModalLabel">Add New Card</h5>
+                  <button class="close text-gray-100" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+                <div class="modal-body"> 
+                  <div class="form-group">
+                   <label for="card-element"><strong>Credit or debit card</strong></label>
+                     <div id="card-element" class="form-control StripeElement StripeElement--invalid" style="height: 2.4em; padding-top: .7em;"><div class="__PrivateStripeElement" style="margin: 0px !important; padding: 0px !important; border: none !important; display: block !important; background: transparent !important; position: relative !important; opacity: 1 !important;"><iframe frameborder="0" allowtransparency="true" scrolling="no" name="__privateStripeFrame5" allowpaymentrequest="true" src="https://js.stripe.com/v3/elements-inner-card-71f61bfe036cc3e93baa3dedbfbde0a4.html#style[base][color]=%2332325d&amp;style[base][fontFamily]=%22Helvetica+Neue%22%2C+Helvetica%2C+sans-serif&amp;style[base][fontSmoothing]=antialiased&amp;style[base][fontSize]=16px&amp;style[base][fontWeight]=300&amp;style[base][::placeholder][color]=%23aab7c4&amp;style[invalid][color]=%23fa755a&amp;style[invalid][iconColor]=%23CFD7E0&amp;componentName=card&amp;wait=false&amp;rtl=false&amp;keyMode=test&amp;apiKey=pk_test_Tqib5EzPUVIvty1YFhOCSJL500iQIZp9T0&amp;origin=http%3A%2F%2Flocalhost%3A8080&amp;referrer=http%3A%2F%2Flocalhost%3A8080%2Fpayment%2Fwallet&amp;controllerId=__privateStripeController1" title="Secure payment input frame" style="border: none !important; margin: 0px !important; padding: 0px !important; width: 1px !important; min-width: 100% !important; overflow: hidden !important; display: block !important; user-select: none !important; height: 19.2px;"></iframe><input class="__PrivateStripeElement-input" aria-hidden="true" aria-label=" " autocomplete="false" maxlength="1" style="border: none !important; display: block !important; position: absolute !important; height: 1px !important; top: 0px !important; left: 0px !important; padding: 0px !important; margin: 0px !important; width: 100% !important; opacity: 0 !important; background: transparent !important; pointer-events: none !important; font-size: 16px !important;"></div></div>
+                     <!-- Used to display form errors. >
+                     <div id="card-errors" class="mt-2" role="alert">Your card number is invalid.</div>
+                     <button class="btn bg-gray-900 text-gray-100 btn-block mt-3" type="submit" value="submit">
+                        Save
+                     </button>
+                  </div>
+                  
+                </div>
+             </div>
+           </form-->
 
       <!-- Footer -->
       <footer class="sticky-footer bg-white">

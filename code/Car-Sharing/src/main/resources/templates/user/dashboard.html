@@ -9,17 +9,22 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title> User - Find a Car</title>
+  <title>Car Sharing - Find a Car</title>
 
   <!-- Custom fonts for this template-->
+  <link rel="icon" href="/img/favicon.ico" />
   <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  
+  <!-- Timepicker -->
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
   <!-- Custom styles for this template>
   <link href="css/sb-admin-2.min.css" rel="stylesheet"-->
   <link th:href="@{/css/sb-admin-2.min.css}" type="text/css" rel="stylesheet"/> 
+  <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
 
 </head>
 
@@ -29,14 +34,13 @@
   <div id="wrapper">
 
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <ul class="navbar-nav bg-gray-900 sidebar sidebar-dark accordion toggled" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/dashboard}">
-        <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-laugh-wink"></i>
+        <div class="sidebar-brand-icon">
+          <i class="fas fa-car"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">User <sup>2</sup></div>
       </a>
 
       <!-- Divider -->
@@ -54,7 +58,7 @@
 
       <!-- Heading -->
       <div class="sidebar-heading">
-        Profile
+        Menu
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
@@ -66,10 +70,17 @@
           <span>History</span></a>
       </li>
 
-      <!-- Nav Item - Tables -->
+      <!-- Nav Item - Wallet -->
       <li class="nav-item">
-        <a class="nav-link" th:href="@{/user/profile}">
-          <i class="fas fa-fw fa-cog"></i>
+        <a class="nav-link" th:href="@{/payment/wallet}">
+          <i class="fas fa-credit-card"></i>
+          <span>Wallet</span></a>
+      </li>
+      
+      <!-- Nav Item - Profile -->
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/account/profile}">
+          <i class="fas fa-fw fa-user"></i>
           <span>Profile</span></a>
       </li>
 
@@ -91,12 +102,17 @@
       <div id="content">
 
         <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+        <nav class="navbar navbar-expand navbar-light bg-white topbar static-top shadow">
 
           <!-- Sidebar Toggle (Topbar) -->
           <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
             <i class="fa fa-bars"></i>
           </button>
+          
+          <!-- Topbar Page Name -->
+          <div class="d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search input-group">
+            <h1 class="h3 mb-0 text-gray-800">Find a Car</h1>
+          </div>
 
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
@@ -121,124 +137,19 @@
               </div>
             </li>
 
-            <!-- Nav Item - Alerts -->
-            <li class="nav-item dropdown no-arrow mx-1">
-              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-bell fa-fw"></i>
-                <!-- Counter - Alerts -->
-                <span class="badge badge-danger badge-counter">3+</span>
-              </a>
-              <!-- Dropdown - Alerts -->
-              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
-                <h6 class="dropdown-header">
-                  Alerts Center
-                </h6>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="mr-3">
-                    <div class="icon-circle bg-primary">
-                      <i class="fas fa-file-alt text-white"></i>
-                    </div>
-                  </div>
-                  <div>
-                    <div class="small text-gray-500">December 12, 2019</div>
-                    <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                  </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="mr-3">
-                    <div class="icon-circle bg-success">
-                      <i class="fas fa-donate text-white"></i>
-                    </div>
-                  </div>
-                  <div>
-                    <div class="small text-gray-500">December 7, 2019</div>
-                    $290.29 has been deposited into your account!
-                  </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="mr-3">
-                    <div class="icon-circle bg-warning">
-                      <i class="fas fa-exclamation-triangle text-white"></i>
-                    </div>
-                  </div>
-                  <div>
-                    <div class="small text-gray-500">December 2, 2019</div>
-                    Spending Alert: We've noticed unusually high spending for your account.
-                  </div>
-                </a>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-              </div>
-            </li>
-
-            <!-- Nav Item - Messages -->
-            <li class="nav-item dropdown no-arrow mx-1">
-              <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-envelope fa-fw"></i>
-                <!-- Counter - Messages -->
-                <span class="badge badge-danger badge-counter">7</span>
-              </a>
-              <!-- Dropdown - Messages -->
-              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
-                <h6 class="dropdown-header">
-                  Message Center
-                </h6>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="https://source.unsplash.com/fn_BT9fwg_E/60x60" alt="">
-                    <div class="status-indicator bg-success"></div>
-                  </div>
-                  <div class="font-weight-bold">
-                    <div class="text-truncate">Hi there! I am wondering if you can help me with a problem I've been having.</div>
-                    <div class="small text-gray-500">Emily Fowler · 58m</div>
-                  </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="https://source.unsplash.com/AU4VPcFN4LE/60x60" alt="">
-                    <div class="status-indicator"></div>
-                  </div>
-                  <div>
-                    <div class="text-truncate">I have the photos that you ordered last month, how would you like them sent to you?</div>
-                    <div class="small text-gray-500">Jae Chun · 1d</div>
-                  </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="https://source.unsplash.com/CS2uCrpNzJY/60x60" alt="">
-                    <div class="status-indicator bg-warning"></div>
-                  </div>
-                  <div>
-                    <div class="text-truncate">Last month's report looks great, I am very happy with the progress so far, keep up the good work!</div>
-                    <div class="small text-gray-500">Morgan Alvarez · 2d</div>
-                  </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="dropdown-list-image mr-3">
-                    <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60" alt="">
-                    <div class="status-indicator bg-success"></div>
-                  </div>
-                  <div>
-                    <div class="text-truncate">Am I a good boy? The reason I ask is because someone told me that people say this to all dogs, even if they aren't good...</div>
-                    <div class="small text-gray-500">Chicken the Dog · 2w</div>
-                  </div>
-                </a>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
-              </div>
-            </li>
-
             <div class="topbar-divider d-none d-sm-block"></div>
 
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                  <td th:text="${firstName} + ' ' + ${lastName}"></td>
+                  <td th:text="${username}"></td>
                 </span>
                 <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" th:href="@{/user/profile}">
+                <a class="dropdown-item" th:href="@{/account/profile}">
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Profile
                 </a>
@@ -251,7 +162,7 @@
                   Activity Log
                 </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                <a class="dropdown-item" th:href="@{/logout}">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                   Logout
                 </a>
@@ -262,102 +173,216 @@
 
         </nav>
         <!-- End of Topbar -->
-
         <!-- Begin Page Content -->
-        <div class="container-fluid">
+        <div class="wrapper position-relative">
+        
 
-          <!-- Page Heading -->
-          <!-- div class="d-sm-flex align-items-center justify-content-center"-->
-          <div class="d-sm-flex align-items-center justify-content-between mb-4"> 
-            <h1 class="h3 mb-0 text-gray-800">Find a Car</h1>
+          <!-- Password Changed Notification -->
+          <div class="alert alert-warning alert-dismissible fade show position-absolute" role="alert" th:if="${message != null}" style="right:20px">
+             <strong>
+                <span class="col-sm-6 mx-auto" th:text="${message}"/>
+             </strong>
+             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+             </button>
           </div>
 
+          
           <!-- Content Row -->
-          <div class="row justify-content-center">
-            <!-- Area Chart -->
-            <div class="col-lg-4">
+          <div class="container-fluid justify-content-center col-10 col-sm-8 col-md-10 col-lg-8 mx-auto" style="position: absolute; top: 2vh; z-index: auto;">
+          <!-- =========================================REQUEST INPUT DROPDOWN BAR==============================================-->
+             <div class="container-fluid position-absolute" style="z-index:2;">
+                <form class="user" th:object="${requestDTO}" th:action="@{/user/requestCar}" method="post">
+                 <div class="row">
+                     <div class="col-4"></div>
+                     <div class="col-sm-12 col-lg-8">
+                         <div class="row">
+                             <div class="col-sm-12 col-lg-6">
+                             <div class="collapse show" id="places_sort">
+                             <div class="card card-body  text-gray-900">
+                                 <div class="form-group row">
+                                     <div class="col-sm-6 mb-3 mb-sm-0 text-center">
+                                         <label class="m-0 mb-2 font-weight-bold text-gray">Pickup Location</label>
+                                         <div class="input-group mb-1">
+                                         <input type="search" class="gj-textbox-md" placeholder="Pickup Location" id="search_input" required>
+                                         <input type="hidden" id="loc_lat" th:field="*{pickupLatitude}" />
+                                         <input type="hidden" id="loc_long" th:field="*{pickupLongitude}"/>
+                                         </div>
+                                     </div>
+                                     <div class="col-sm-6 mb-3 mb-sm-0 text-center">
+                                         <label class="m-0 mb-2 font-weight-bold text-gray">Dropoff Location</label>
+                                         <div class="input-group mb-1">
+                                         <input type="search" class="gj-textbox-md" placeholder="Dropoff Location" id="search_input2" required>
+                                         <input type="hidden" id="end_lat" th:field="*{dropoffLatitude}" />
+                                         <input type="hidden" id="end_long" th:field="*{dropoffLongitude}"/>
+                                         <input type="hidden" id="distance" th:field="*{distance}" />
+                                         </div>
+                                     </div>
+                                  </div>
+                                  <div class="form-group row">
+                                     <div class="col-sm-6 mb-2 mb-sm-0 text-center">
+                                       <!-- Start Time Input -->
+                                       <label class="m-0 mb-2 font-weight-bold text-gray">Start Time</label>
+                                       <input onclick="$startTimepicker.open()" id="startTime" value="" th:field="*{startTime}" required/>
+                                       <span class="icon is-small is-right" th:if="${#fields.hasErrors('startTime')}" th:errors="*{startTime}">
+                                          <i class="fas fa-exclamation-triangle"></i>
+                                       </span>
+                                     </div>
+                                     <!-- End Time Input -->
+                                     <div class="col-sm-6 text-center">
+                                        <label class="m-0 mb-2 font-weight-bold text-gray">End Time</label>
+                                        <input onclick="$endTimepicker.open()" placeholder="End Time" id="endTime" th:field="*{endTime}" required />
+                                        <span class="icon is-small is-right is-invalid" th:if="${#fields.hasErrors('endTime')}" th:errors="*{endTime}">
+                                          <i class="fas fa-exclamation-triangle"></i>
+                                        </span>
+                                     </div>        
+                                </div>
+                                <!-- Time Validation Error -->
+                                <div class="form-group row">
+                                 <!-- Validation Error Messages -->
+                                 <div class="mb-3 mb-sm-0 text-center mx-auto">
+                                    <span id="error_time"></span>
+                                 </div>
+                              </div>
+                              <!-- Submit Button -->
+                              <div class="col mx-auto row align-items-center">
+                                 <button id="request_car" class="btn btn-dark bg-gray-900 btn-block" type="submit" name="action">
+                                    Request Car
+                                 </button>
+                              </div>
+                             </div>
+                             </div>
+                             </div>
+                         </div>
+                         <div class="d-lg-none d-xl-none col-sm-2 col-lg-1 collapse-arrow">
+                            <a role="button" id="search_button" class="collapse-arrow btn btn-dark pt-2 pb-2 white" style="border-radius: 0px 0px 5px 5px; white-space:nowrap;" 
+                            data-toggle="collapse" data-target="#places_sort" aria-expanded="true" aria-controls="places_sort">         
+                              <small><i class="fas fa-chevron-down rotate-icon"></i></small> 
+                               <!--span if="search_expanded">
+                                  Find a Car
+                                  <i class="fas fa-search pl-2"></i> <!--small><i class="fas fa-chevron-up"></i></small->
+                               </span->
+                               <span v-if="search_expanded"><small><i class="fas fa-chevron-up"></i></small></span>
+                            <span v-else ><small><i class="fas fa-chevron-down"></i></small></span-->
+                            </a>
+                         </div>
+                     </div>
+         
+                     <div class="col-2"></div>
+                 </div>
+                 </form>
+                 <!-- Request Error Notification -->
+                 <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${requestError != null}">
+                    <strong>
+                       <span class="col-sm-6 mx-auto" th:text="${requestError}"/>
+                    </strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                       <span aria-hidden="true">&times;</span>
+                     </button>
+                 </div>
+             </div>
+            <!-- Area Chart >
+            <div class="col-lg-6 col-xl-4">
                <div class="card shadow mb-4">
                   <!-- Card Header - Dropdown -->
-                  <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <!--div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                      <h6 class="m-0 font-weight-bold text-primary">Find a Car</h6>
-                  </div>
+                  </div-->
+                  <!-- div class="collapse" id="places_sort">
+                  <!-- Card Body ->
+                  <div class="card-body text-gray-900">
                   
-                  <!-- Card Body -->
-                  <div class="card-body">
-                  
-                     <!-- Form Body -->
+                     <!-- Form Body >
                      <form class="user" th:object="${requestDTO}" th:action="@{/user/requestCar}" method="post">
-                        <div class="form-group">
-                        
-                           <!-- Google Autocomplete location  -->
-                           <div class="mb-3 mb-sm-0 text-center">
-                              <label class="m-0 font-weight-bold text-gray">Pickup Location</label>
-                              <input type="text" class="form-control form-control-user" placeholder="Pickup Location" id="search_input" required>
-                              <input type="hidden" id="loc_lat" th:field="*{latitude}" />
-                              <input type="hidden" id="loc_long" th:field="*{longitude}"/>
+                        <div class="form-group row">
+                           <!-- Google Autocomplete location  ->
+                           <div class="col-sm-6 mb-3 mb-sm-0 text-center">
+                              <label class="m-0 mb-2 font-weight-bold text-gray">Pickup Location</label>
+                              <input type="text" class="gj-textbox-md" placeholder="Pickup Location" id="search_input" required>
+                              <!-- button id="locator-button">
+                              <i class="far fa-dot-circle"></i>
+                              </button->
+                              <input type="hidden" id="loc_lat" th:field="*{pickupLatitude}" />
+                              <input type="hidden" id="loc_long" th:field="*{pickupLongitude}"/>
                            </div>
-                           
+                           <div class="col-sm-6 mb-3 mb-sm-0 text-center">
+                              <label class="m-0 mb-2 font-weight-bold text-gray">Dropoff Location</label>
+                              <input type="text" class="gj-textbox-md" placeholder="Dropoff Location" id="search_input2" required>
+                              <!-- button id="locator-button">
+                              <i class="far fa-dot-circle"></i>
+                              </button->
+                              <input type="hidden" id="end_lat" th:field="*{dropoffLatitude}" />
+                              <input type="hidden" id="end_long" th:field="*{dropoffLongitude}"/>
+                              <input type="hidden" id="distance" th:field="*{distance}" />
+                           </div>
                            <!--  Display latitude and longitude>
                            <div>
                               <p><b>Latitude:</b> <span id="latitude_view"></span></p>
                               <p><b>Longitude:</b> <span id="longitude_view"></span></p>
-                           </div-->
-
+                           </div->
                         </div>
                         <div class="form-group row">
-                           <div class="col-sm-6 mb-3 mb-sm-0 text-center">
-                              <!-- Start Time Input -->
-                              <label class="m-0 font-weight-bold text-gray">Start Time</label>
-                              <input type="time" class="form-control form-control-user" placeholder="Start Time" id="startTime" th:field="*{startTime}" required>
+                           <div class="col-sm-6 mb-2 mb-sm-0 text-center">
+                              <!-- Start Time Input ->
+                              <label class="m-0 mb-2 font-weight-bold text-gray">Start Time</label>
+                              <input onclick="$startTimepicker.open()" id="startTime" value="" th:field="*{startTime}" required/>
                               <span class="icon is-small is-right" th:if="${#fields.hasErrors('startTime')}" th:errors="*{startTime}">
                                  <i class="fas fa-exclamation-triangle"></i>
                               </span>
                               <span class="help is-danger" th:if="${#fields.hasErrors('startTime')}" th:errors="*{startTime}"></span>
                            </div>
                            
-                           <!-- End Time Input -->
+                           <!-- End Time Input ->
                            <div class="col-sm-6 text-center">
-                              <label class="m-0 font-weight-bold text-gray">End Time</label>
-                              <input type="time" class="form-control form-control-user" placeholder="End Time" id="endTime" th:field="*{endTime}" value='now' required/>
+                              <label class="m-0 mb-2 font-weight-bold text-gray">End Time</label>
+                              <input onclick="$endTimepicker.open()" placeholder="End Time" id="endTime" th:field="*{endTime}" required />
                               <span class="icon is-small is-right is-invalid" th:if="${#fields.hasErrors('endTime')}" th:errors="*{endTime}">
                                  <i class="fas fa-exclamation-triangle"></i>
                               </span>
                            </div>  
-                          </div>     
+                          </div>  
+                          <!-- Time Validation Error ->
                           <div class="form-group row">
-                           <!-- Validation Error Messages -->
-                           <div class="col-sm-4 mb-3 mb-sm-0 text-center">
+                           <!-- Validation Error Messages ->
+                           <div class="mb-3 mb-sm-0 text-center mx-auto">
                               <span id="error_time"></span>
                            </div>
-                           <div class="col-sm-4 mb-3 mb-sm-0 text-center">
-                              <span id="error_rent_time"></span>
-                           </div>
                         </div>
-                        <!-- Submit Button -->
-                        <hr>
-                        <!--div class="col-sm-6 align-items-center"-->
-                        <div class="col row align-items-center">
-                           <div class="col-sm-180">
-                           </div>
-                           <button id="request_car" class="btn btn-primary btn-user btn-block" type="submit" name="action">
-                              Request a Car
-                        </button>
+                        <!-- Submit Button ->
+                        <div class="col mx-auto row align-items-center">
+                           <button id="request_car" class="btn btn-dark bg-gray-900 btn-block" type="submit" name="action">
+                              Request Car
+                           </button>
                         </div>
+    
                      </form>
+                     <!-- Request Error Notification ->
+                     <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${requestError != null}">
+                        <strong>
+                            <span class="col-sm-6 mx-auto" th:text="${requestError}"/>
+                        </strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                           <span aria-hidden="true">&times;</span>
+                        </button>
+                     </div>
+                     <!-- div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                           <span aria-hidden="true">&times;</span>
+                        </button>
+                     </div->
+                     <div class="col-sm-2 col-lg-1">
+                            <button type="button" id="search_button" class="btn btn-orange-dark pt-2 pb-2 white" style="border-radius: 0px 0px 5px 5px; white-space:nowrap;" data-toggle="collapse" data-target="#places_sort" aria-expanded="true" aria-controls="places_sort" onclick="this.blur();">         
+                               <span v-if="search_expanded"><i class="fas fa-search"></i> <small><i class="fas fa-chevron-up"></i></small></span>
+                               <span v-else ><i class="fas fa-search"></i> <small><i class="fas fa-chevron-down"></i></small></span>
+                            </button>
+                         </div>
+                  </div>
                   </div>
                </div>
-            </div>
+            </div-->
           </div>
-
-          <!-- Content Row -->
-          <div class="row">
-
-            <!-- Content Column -->
-            <div class="col-lg-6 mb-4">
-
-            </div>
-
-          </div>
+          <div class="m-0" id="map" style="height: 94.7vh;"></div>
 
         </div>
         <!-- /.container-fluid -->
@@ -365,14 +390,6 @@
       </div>
       <!-- End of Main Content -->
 
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Copyright &copy; <strong> <a href="https://github.com/moa38">moa38</a> </strong> 2019 </span>
-          </div>
-        </div>
-      </footer>
       <!-- End of Footer -->
 
     </div>
@@ -385,40 +402,104 @@
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
-
-  <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" th:href="@{/logout}">Logout</a>
-        </div>
-      </div>
-    </div>
-  </div>
-   
-  <!-- Google Maps JS Library -->
-  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyAi9qsACSRpv-drbqKhofMzyVFf_Hr_fI0"></script>
   
+  <!-- Timepicker Input -->
+  <script>
+      // Timepicker Initialization
+      var today=new Date();
+      //var today=new Date(2020, 3, 14, 0, 19, 0, 0);
+      var h=today.getHours();
+      var m=today.getMinutes();
+      
+      // 0:00 to 9:00
+      if (h < 10){
+    	   if ((h < 9)){
+    		   // 1:09
+    		   if (m < 10){
+       		   $('#startTime').timepicker({}).val('0' + h +':0' + m);
+       	      $('#endTime').timepicker({}).val('0' + (h+1) +':0' + m);   
+    		   }
+    		   // 1:11
+    		   else if (m > 9){
+                $('#startTime').timepicker({}).val('0' + h +':' + m);
+                 $('#endTime').timepicker({}).val('0' + (h+1) +':' + m);   
+            }
+    	   }
+    	   else if (h == 9){
+    		   // 9:09
+    		   if (m < 10){
+               $('#startTime').timepicker({}).val('0' + h +':0' + m);
+               $('#endTime').timepicker({}).val((h+1) +':0' + m);
+    		   }
+    		   // 9:12
+    		   else if (m > 9){
+    			   $('#startTime').timepicker({}).val('0' + h +':' + m);
+               $('#endTime').timepicker({}).val((h+1) +':' + m);
+    		   }
+    	   }
+      }
+      // 23:00 - 23:09
+      else if ((h == 23) && (m < 10)){
+    	   $('#startTime').timepicker({}).val(h +':0' + m); //uiLibrary: 'bootstrap'
+         $('#endTime').timepicker({}).val('00:0' + m);
+      }
+      // 23:10 - 23:59
+      else if ((h == 23) && (m > 9)){
+         $('#startTime').timepicker({}).val(h +':' + m);
+         $('#endTime').timepicker({}).val('00:' + m);
+      }
+      // 10:00 - 22:59
+      else if ((h > 9) && (h != 23) ){
+         // 10:00 - 22:09
+         if (m < 10){
+            $('#startTime').timepicker({}).val( h +':0' + m);
+            $('#endTime').timepicker({}).val((h+1) +':0' + m);   
+         }
+         // 22:10 - 22:59
+         else if (m > 9){
+            $('#startTime').timepicker({}).val(h +':' + m);
+            $('#endTime').timepicker({}).val((h+1) +':' + m);   
+         }
+      }
+
+      //Button onclick loads Timepicker
+      var $startTimepicker = $('#startTime').timepicker({ modal: false, header: false, footer: false, mode: '12hr' });
+      var $endTimepicker = $('#endTime').timepicker({ modal: false, header: false, footer: false, mode: '12hr' });
+       
+      //Fade out alert after 5 seconds
+      $(document).ready(function() {
+          // show the alert
+          setTimeout(function() {
+              $(".alert").alert('close');
+          }, 3000);  
+      });
+  </script> 
+   
+  <!-- Google Maps JS Library >
+  <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyAi9qsACSRpv-drbqKhofMzyVFf_Hr_fI0"></script-->
+  
+  <!-- Google Maps Autocomplete Search>
   <script>
   var searchInput = 'search_input';
+  var searchInput2 = 'search_input2';
+  var defaultBounds = new google.maps.LatLngBounds(
+          new google.maps.LatLng(52.6369, -1.1398),
+  );
 
   $(document).ready(function () {
+
       var autocomplete;
-      autocomplete = new google.maps.places.Autocomplete((document.getElementById(searchInput)), {
+      //autocomplete = new google.maps.places.Autocomplete((document.getElementById(searchInput)), options);
+       autocomplete = new google.maps.places.Autocomplete((document.getElementById(searchInput)), {
           types: ['geocode'],
+          radius: 2000,
+          location: defaultBounds,
+          bounds: defaultBounds,
           componentRestrictions: {
+        	     //postal_code: "LE*",
               country: "UK"
           }
-      });
+      }); 
      
       google.maps.event.addListener(autocomplete, 'place_changed', function () {
           var near_place = autocomplete.getPlace();
@@ -432,6 +513,63 @@
       
   });
   
+  $(document).ready(function () {
+      var autocomplete;
+      autocomplete = new google.maps.places.Autocomplete((document.getElementById(searchInput2)), {
+          types: ['geocode'],
+          bounds: defaultBounds,
+          componentRestrictions: {
+              country: "UK"
+          }
+      });
+     
+      google.maps.event.addListener(autocomplete, 'place_changed', function () {
+          var near_place = autocomplete.getPlace();
+          document.getElementById('end_lat').value = near_place.geometry.location.lat();
+          document.getElementById('end_long').value = near_place.geometry.location.lng();
+        
+          document.getElementById('latitude_view').innerHTML = near_place.geometry.location.lat();
+          document.getElementById('longitude_view').innerHTML = near_place.geometry.location.lng();
+      });
+
+      
+  });
+  
+  (function () {
+	    var locatorSection = document.getElementById("search_input")
+	    function init() {
+	        var locatorButton = document.getElementById("locator-button");
+	        locatorButton.addEventListener("click", locatorButtonPressed)
+	    }
+	    function locatorButtonPressed() {
+	        locatorSection.classList.add("loading")
+	        navigator.geolocation.getCurrentPosition(function (position) {
+	                getUserAddressBy(position.coords.latitude, position.coords.longitude)
+	            },
+	            function (error) {
+	                locatorSection.classList.remove("loading")
+	                alert("The Locator was denied :( Please add your address manually")
+	            })
+	    }
+	    function getUserAddressBy(lat, long) {
+	        var xhttp = new XMLHttpRequest();
+	        xhttp.onreadystatechange = function () {
+	            if (this.readyState == 4 && this.status == 200) {
+	                var address = JSON.parse(this.responseText)
+	                setAddressToInputField(address.results[0].formatted_address)
+	            }
+	        };
+	        xhttp.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&key=AIzaSyAi9qsACSRpv-drbqKhofMzyVFf_Hr_fI0", true);
+	        xhttp.send();
+	    }
+	    function setAddressToInputField(address) {
+	        var input = document.getElementById("search_input");
+	        input.value = address;
+	    }
+	    init()
+	})();
+  
+  //Update Latitude/Longitude view
   $(document).on('change', '#'+searchInput, function () {
 	    document.getElementById('latitude_input').value = '';
 	    document.getElementById('longitude_input').value = '';
@@ -439,72 +577,212 @@
 	    document.getElementById('latitude_view').innerHTML = '';
 	    document.getElementById('longitude_view').innerHTML = '';
 	});
+  </script-->
+  
+  <!-- Google Maps Autocomplete & Directions -->
+  <script>
+
+    var map;
+    var distanceService;
+    
+    function initMap() {
+       map = new google.maps.Map(document.getElementById('map'), {
+          mapTypeControl: false,
+          center: {lat: 52.6369, lng: -1.1398},
+          zoom: 14,
+          options: {
+        	     clickableIcons: false,       // Disable map icons
+        	     streetViewControl: false,    // Disable street view
+        	     fullscreenControl: false,    // Disable fullscreen button
+              minZoom: 8,
+              maxZoom: 18,
+              gestureHandling: 'greedy'
+            }
+       });
+      
+       new AutocompleteDirectionsHandler(map);
+    }
+      
+      /**
+       * @constructor
+       */
+      function AutocompleteDirectionsHandler(map) {
+        this.map = map;
+        this.originPlaceId = null;
+        this.destinationPlaceId = null;
+        this.travelMode = 'DRIVING';
+        this.directionsService = new google.maps.DirectionsService;
+        this.directionsRenderer = new google.maps.DirectionsRenderer({
+        		  polylineOptions: {
+        			  strokeColor: "black"
+        		  }});
+        this.directionsRenderer.setMap(map);
+      
+        var originInput = document.getElementById('search_input');
+        var destinationInput = document.getElementById('search_input2');
+      
+        var originAutocomplete = new google.maps.places.Autocomplete(originInput, {
+            types: ['geocode'],
+            //bounds: defaultBounds,
+            componentRestrictions: {
+                country: "UK"
+            }
+        });
+        
+        // Specify just the place data fields that you need.
+        //originAutocomplete.setFields(['place_id']);
+      
+        var destinationAutocomplete = new google.maps.places.Autocomplete(destinationInput, {
+            types: ['geocode'],
+            //bounds: defaultBounds,
+            componentRestrictions: {
+                country: "UK"
+            }
+         });
+        // Specify just the place data fields that you need.
+        //destinationAutocomplete.setFields(['place_id']);
+      
+        //  Update map and coordinates
+        this.setupPlaceChangedListener(originAutocomplete, 'ORIG');
+        this.setupPlaceChangedListener(destinationAutocomplete, 'DEST');
+      
+      }
+      
+      // Sets a listener place change the filter type on Places Autocomplete.
+      AutocompleteDirectionsHandler.prototype.setupPlaceChangedListener = function(
+          autocomplete, mode) {
+        var me = this;
+        autocomplete.bindTo('bounds', this.map);
+      
+        autocomplete.addListener('place_changed', function() {
+        	 //Pan Map
+        	 map.panBy(250,100);
+          
+        	 var place = autocomplete.getPlace();
+          console.log("Place now is: " + place.geometry.location.lat());
+      
+          if (!place.place_id) {
+            window.alert('Please select an option from the dropdown list.');
+            return;
+          }
+          // Origin Changed
+          if (mode === 'ORIG') {
+            me.originPlaceId = place.place_id;
+            
+            // Update Origin lat/lng input fields
+            document.getElementById('loc_lat').value = place.geometry.location.lat();
+            document.getElementById('loc_long').value = place.geometry.location.lng(); 
+          } 
+          // Destination Changed
+          else {
+            me.destinationPlaceId = place.place_id;
+            
+            // Update Destination lat/lng input fields
+            document.getElementById('end_lat').value = place.geometry.location.lat();
+            document.getElementById('end_long').value = place.geometry.location.lng();
+          }
+          // Draw route
+          me.route();
+        });
+      };
+      
+      // Draw Route from Origin to Destination
+      AutocompleteDirectionsHandler.prototype.route = function() {
+        if (!this.originPlaceId || !this.destinationPlaceId) {
+          return;
+        }
+        var me = this;
+      
+        this.directionsService.route(
+            {
+              origin: {'placeId': this.originPlaceId},
+              destination: {'placeId': this.destinationPlaceId},
+              travelMode: this.travelMode
+            },
+            function(response, status) {
+              if (status === 'OK') {
+                me.directionsRenderer.setDirections(response);
+                console.log('distance is ' + (response.routes[0].legs[0].distance.value)/1000 + ' km');
+                //Set driving distance
+                document.getElementById('distance').value = response.routes[0].legs[0].distance.value;
+              } else {
+                window.alert('Directions request failed due to ' + status);
+              }
+            });
+      };
+
+  </script>
+  <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAi9qsACSRpv-drbqKhofMzyVFf_Hr_fI0&libraries=places&callback=initMap">
   </script>
   
-  
-  
-  <!-- Form Validation JavaScript -->
+  <!-- Request Form Validation JavaScript -->
   <script>
-  $( "#startTime" ).change(function() {
-      
-      var start_hour = $("#startTime").val().split(":");
-      var end_hour = $("#endTime").val().split(":");
-        
-      var result = end_hour[0] - start_hour[0];
-
-      if($("#startTime").val() == $("#endTime").val()){
-         $("#request_car").attr("disabled", true);
-         $( "#error_time" ).html( "<span class='text-danger float-right'>Choose different times</span>" );
-      }
-      else{
-         $( "#error_time" ).html( "" );
-         $('#request_car').removeAttr("disabled");
-      }
-    });
     
-    $( "#endTime" ).change(function() {
+    $( "#startTime, #endTime" ).change(function() {
       
       var start_hour = $("#startTime").val().split(":");
       var end_hour = $("#endTime").val().split(":");
         
-      console.log(end_hour[0] - start_hour[0]);
-      var result = end_hour[0] - start_hour[0];
+      console.log(start_hour[0] + " times " + end_hour[0]);
         
-      if(result <= 0){
-    	   $( "#error_rent_time" ).html( "<span class='text-danger float-right'>Minimum rent time is one hour</span>" );
+      //Time formatter
+      var startTime = $("#startTime").val();
+      var endTime = $("#endTime").val();
+      
+      //From stackoverflow: https://stackoverflow.com/questions/1787939/check-time-difference-in-javascript
+      var startHour = new Date("01/01/2020 " + startTime);
+      var endHour = new Date("01/01/2020 " + endTime);
+      
+      // End time is in next day
+      if (endHour < startHour){
+        endHour.setDate(endHour.getDate() + 1);
       }
-      else{
-    	   $( "#error_rent_time" ).html( "" );
-      }
-
-      if($("#startTime").val() == $("#endTime").val()){
-    	    $("#request_car").attr("disabled", true);
+      // Time difference in milliseconds
+      var diff = endHour - startHour;
+      
+      var msec = diff;
+      // Hour value
+      var hh = Math.floor(msec / 1000 / 60 / 60);
+      msec -= hh * 1000 * 60 * 60;
+      
+      // Minute value
+      var mm = Math.floor(msec / 1000 / 60);
+      
+      // Same times 
+      if((hh < 1) && (mm == 0)){
+      //if($("#startTime").val() == $("#endTime").val()){
+          $("#request_car").attr("disabled", true);
           $( "#error_time" ).html( "<span class='text-danger float-right'>Choose different times</span>" );
       }
+      // Less than 30 mins
+      else if((hh < 1) && (mm < 30)){
+      //else if(($("#endTime").val() - $("#startTime").val()) > 1){
+         $("#request_car").attr("disabled", true);
+         $( "#error_time" ).html( "<span class='text-danger float-right'>Minimum rent time is 30 minutes</span>" );
+      }
+      // More than 30 mins
+      else if((hh < 1) && (mm >= 30)){
+      //else if($("#startTime").val() > $("#endTime").val()){
+          $('#request_car').removeAttr("disabled");
+          $( "#error_time" ).html( "<span class='text-danger float-right'>" + mm + "mins" + "</span>" );
+       }
+      // Exactly 1 hour
+      else if((hh >= 1) && (mm == 0)){
+      //else if($("#startTime").val() > $("#endTime").val()){
+    	    //$("#request_car").attr("disabled", true);
+    	    $('#request_car').removeAttr("disabled");
+    	    $( "#error_time" ).html( "<span class='text-danger float-right'>" + hh + " hour" + "</span>" );
+      }
+      // More than 1 hour
       else{
     	   $( "#error_time" ).html( "" );
          $('#request_car').removeAttr("disabled");
+         $( "#error_time" ).html( "<span class='text-danger float-right'>" + hh + " hours, " + mm + "mins" + "</span>" );
          }
       });
   </script>
-  
-  <!-- script>
-  $(document).ready(function(){
-	  $('#startTime').timepicker({
-	       timeFormat: 'h:mm p',
-	       interval: 5,
-	       minTime: '0:00am',
-	       maxTime: '11:59pm',
-	       defaultTime: 'now',
-	       dynamic: false,
-	       dropdown: true,
-	       scrollbar: true
-	   });
-	});
-  
- 
-  </script-->
-  
+
   <!-- Bootstrap core JavaScript-->
   <script src="/vendor/jquery/jquery.min.js"></script>
   <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
