@@ -150,7 +150,7 @@
           
           <!-- Topbar Page Name -->
           <div class="d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search input-group">
-            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+            <h1 class="h5 mb-0 text-gray-800">Dashboard</h1>
           </div>
 
           <!-- Topbar Navbar -->
@@ -332,39 +332,46 @@
                   <div class="col-xl-12 col-lg-12 col-md-10 mx-auto" style="height: 800px">
                      <!-- Google Maps View -->
                      <div class="card position-relative mb-5" id="map" style="position:absolute">
+                       <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
+                       <script src="https://cdnjs.cloudflare.com/ajax/libs/OverlappingMarkerSpiderfier/1.0.3/oms.min.js"></script>
                        <script type="text/javascript" th:inline="javascript">
                          /*<![CDATA[*/
                              var map;
                              var infowindow;
+                             var oms;
                              
                              var lat_min = 52.0;
                              var lat_max = 53.0;
                              var lng_min = -1.0;
                              var lng_max = -1.2;
                              
+                             var markers = [];
+                             var markerCluster;
                              //Parse locations to JSON
                              var carLocations = JSON.parse([[${locations}]]);
                              
                              var boundary = new google.maps.LatLng((lat_min + lat_max)/2, (lng_min + lng_max)/2);
-
+                             
                              function initMap() {
                                 map = new google.maps.Map(document.getElementById('map'), {
-                                   //center: {lat: 52.6369, lng: -1.1398},
+                                   center: {lat: 52.6369, lng: -1.1398},
                                    zoom: 14,
                                    options: {
+                                	     clickableIcons: false,
                                 	     minZoom: 7,
                                 	     maxZoom: 18,
                                 	     gestureHandling: 'greedy'
                                 	   }
                                 });
-                                
-                                map.setCenter(new google.maps.LatLng(
-                                		  ((lat_max + lat_min) / 2.0),
-                                		  ((lng_max + lng_min) / 2.0)
-                                		));
-                                
+
                                 var geocoder = new google.maps.Geocoder;
                                 infowindow = new google.maps.InfoWindow;
+                                
+                                oms = new OverlappingMarkerSpiderfier(map, {
+                                	  markersWontMove: true,
+                                	  markersWontHide: true,
+                                	  basicFormatEvents: true
+                                	});
                                 
                                 //Geocode cars
                                 for (var m = 0; m < carLocations.length; m++) {
@@ -377,17 +384,17 @@
                                    geocodeLatLng(geocoder, map, infowindow, latlng, m);
                                  }
                              }
-                             gmarkers = [];
                              
                              //Geocode coordinates and add marker
-                             function geocodeLatLng(geocoder, map, infowindow, latlng, index) {   
+                             function geocodeLatLng(geocoder, map, infowindow, latlng, index) {
                             	 geocoder.geocode({'location': latlng}, function(results, status) {
                                    if (status === 'OK') {
                                       if (results[0]){
-                                         map.setCenter(results[0].geometry.location);
+                                         //map.setCenter(results[0].geometry.location);
                                          
                                          //Create marker with info window
-                                         createMarker(results[0].geometry.location, results[0].formatted_address, index);
+                                         var spiderM = createMarker(results[0].geometry.location, results[0].formatted_address, index);
+                                         oms.addMarker(spiderM);
                                            
                                          return results[0].formatted_address;
                                       } else {
@@ -419,17 +426,18 @@
                                 var contentString = '<a href="/car/view-car/' + registrationNumber + '">' + registrationNumber + '  (Details)</a><br>' + html ;
                                     
                                 //Show information on marker click
-                                google.maps.event.addListener(marker, 'click', function() {    
+                                google.maps.event.addListener(marker, 'spider_click', function() {
                                  	 map.panTo(marker.getPosition());
                                    	 map.setZoom(16);
                                      infowindow.setContent(contentString);
                                      infowindow.open(map, marker);
                                 });
-                                       
+                                
                                 return marker;
                              } 
                            /*]]*/
                        </script>
+                       
                        <script async defer
                          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAi9qsACSRpv-drbqKhofMzyVFf_Hr_fI0&callback=initMap">
                        </script>
