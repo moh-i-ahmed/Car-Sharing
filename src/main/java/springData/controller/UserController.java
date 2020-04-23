@@ -5,6 +5,8 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +29,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.stripe.exception.StripeException;
+
 import springData.DTO.RequestDTO;
 import springData.algorithm.CarAllocation;
 import springData.domain.Car;
@@ -39,6 +43,7 @@ import springData.repository.CarRepository;
 import springData.repository.LocationRepository;
 import springData.repository.RequestRepository;
 import springData.repository.UserRepository;
+import springData.services.InvoiceService;
 import springData.utils.AccessCodeGenerator;
 import springData.constants.Constants;
 import springData.validator.RequestDTOValidator;
@@ -50,12 +55,12 @@ public class UserController {
    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
    @Autowired private UserRepository userRepo;
-   // @Autowired private AddressRepository addressRepo;
    @Autowired private RequestRepository requestRepo;
    @Autowired private LocationRepository locationRepo;
    @Autowired private CarRepository carRepo;
    @Autowired private CarAvailabilityRepository carAvailabilityRepo;
    @Autowired private CarAllocation carAllocator;
+   @Autowired private InvoiceService invoiceService;
 
    @InitBinder("requestDTO")
    protected void initRequestDTOBinder(WebDataBinder binder) {
@@ -72,7 +77,7 @@ public class UserController {
       // Active Request exists
       if (user.isActive() == true) {
          Request request = requestRepo.findByTopIdDesc(user);//findLatestByDate();
-         System.err.println(request);
+
          logger.info("Request is currently In Progress");
 
          return "redirect:/user/active-request/" + request.getRequestID();
@@ -86,26 +91,6 @@ public class UserController {
 
          return "/user/dashboard";
       }
-   }
-
-   // Function to convert LocalTime to LocalDateTime
-   private HashMap<String, LocalDateTime> toDateTime(LocalTime startTime, LocalTime endTime) {
-      // HashMap to return
-      HashMap<String, LocalDateTime> dateTimes = new HashMap<String, LocalDateTime>();
-
-      // End time in next day (11:59 to 01:00)
-      if ((endTime.isBefore(startTime))) {
-         // Create LocalDateTime & add to HashMap
-         dateTimes.put("startTime", LocalDateTime.of(LocalDate.now(), startTime));
-         dateTimes.put("endTime", LocalDateTime.of(LocalDate.now().plusDays(1), endTime));
-      }
-      else {
-         // Create LocalDateTime & add to HashMap
-         dateTimes.put("startTime", LocalDateTime.of(LocalDate.now(), startTime));
-         dateTimes.put("endTime", LocalDateTime.of(LocalDate.now(), endTime));
-      }
-      System.err.println("Times are " + dateTimes.toString());
-      return dateTimes;
    }
 
    @PostMapping("/requestCar")
@@ -125,11 +110,16 @@ public class UserController {
          return "redirect:/dashboard";
       }
       else {
-         // Create new User using UserDTO details
+         // Create new Request using RequestDTO input
          Request request = new Request();
 
          HashMap<String, LocalDateTime> dateTimes = toDateTime(LocalTime.parse(requestDTO.getStartTime()), 
                LocalTime.parse(requestDTO.getEndTime()));
+
+         // Invalid startTime
+         if (dateTimes.get("startTime").isAfter(LocalDateTime.now())) {
+            result.reject("startTime", "Choose a future time");
+         }
          // Retrieve Request details from DTO
          request.setRequestDate(requestDTO.getRequestDate());
          request.setStartTime(dateTimes.get("startTime"));
@@ -182,16 +172,16 @@ public class UserController {
    public String selectCar(@PathVariable String registrationNumber, @PathVariable int requestID, Model model,
          Principal principal) {
 
+      // Find request
+      Request request = requestRepo.findById(requestID);
+
       // Get Logged in User
       User user = userRepo.findByUsername(principal.getName());
 
       // Active Request exists
-      if (user.isActive() == true) {
+      if (request == null || ((request != null) && (user.isActive() == true))) {
          return "redirect:/user/dashboard";
       }
-
-      // Find request
-      Request request = requestRepo.findById(requestID);
 
       // Find selected car
       Car car = carRepo.findByRegistrationNumber(registrationNumber);
@@ -204,6 +194,7 @@ public class UserController {
          carAvailabilityRepo.save(availability);
 
          // Add request history to car
+         car.setIsActive(true);
          car.addCarAvailability(availability);
          carRepo.save(car);
 
@@ -235,9 +226,71 @@ public class UserController {
       }
    }
 
+   /**
+    * Checks if time A is within range of time B
+    * 
+    * @param range
+    * @return - boolean
+    */
+   private boolean timeWithinRange(Request request, int range) {
+
+      // lower and upper limits
+      LocalDateTime lower = request.getStartTime().minusMinutes(range);
+      LocalDateTime upper = request.getEndTime().plusMinutes(range);
+      LocalDateTime startTime = request.getStartTime();
+
+      // also test if A is exactly 90 minutes before or after B
+      if ((startTime.isAfter(lower) || startTime.equals(lower))
+            && (startTime.isBefore(upper) || startTime.equals(upper))) {
+         return true;
+      }
+      return false;
+   }
+
+   @GetMapping("/unlock-car/{requestID}/{accessCode}")
+   public String unlockCar(@PathVariable int requestID, @PathVariable String accessCode, Model model,
+         Principal principal, RedirectAttributes redirectAttributes) {
+
+      // Find Request by ID
+      Request request = requestRepo.findById(requestID);
+
+      Car car = request.getCar();
+
+      if (request == null || !request.getAccessCode().equalsIgnoreCase(accessCode)) {
+         return "redirect:/dashboard";
+      }
+      LocalDateTime currentTime = LocalDateTime.now();
+
+      // Notification message
+      String message = "";
+
+      // Too early to unlock car
+      if (request.getStartTime().minusMinutes(1).isAfter(currentTime)) {
+         // Add error notification message
+         message = "Too early to unlock car";
+         redirectAttributes.addFlashAttribute("message", message);
+
+         logger.info("Too early to unlock " + car.getRegistrationNumber());
+
+         return "redirect:/user/active-request/" + requestID;
+      }
+      else {
+         // Unlock Car & update
+         car.setUnlocked(true);
+         carRepo.save(car);
+
+         // Add success notification message
+         message = "Car Unlocked";
+         redirectAttributes.addFlashAttribute("message", message);
+
+         logger.info("User unlocked " + car.getRegistrationNumber());
+
+         return "redirect:/user/active-request/" + requestID;
+      }
+   }
+
    @GetMapping("/active-request/{requestID}")
-   public String activeRequest(@PathVariable int requestID, Model model)
-         throws NullPointerException{
+   public String activeRequest(@PathVariable int requestID, Model model) throws NullPointerException {
 
       // Find Request by ID
       Request request = requestRepo.findById(requestID);
@@ -252,7 +305,7 @@ public class UserController {
       model.addAttribute("request", request);
       model.addAttribute("username", request.getUser().getFirstName() + " " + request.getUser().getLastName());
 
-      return "/user/active-Request";
+      return "/user/active-request";
    }
 
    @GetMapping("/view-request/{requestID}")
@@ -270,6 +323,7 @@ public class UserController {
       LocalTime duration = LocalTime.MIN.plus(Duration.ofMinutes
             (ChronoUnit.MINUTES.between(request.getStartTime(),request.getEndTime())));
 
+      model.addAttribute("baseCharge", Constants.PRICE_BASE_CHARGE/100);
       model.addAttribute("duration", duration);
       model.addAttribute("request", request);
       model.addAttribute("username", request.getUser().getFirstName() + " " + request.getUser().getLastName());
@@ -283,43 +337,52 @@ public class UserController {
       Request request = requestRepo.findById(requestID);
 
       // Request has ended
-      if (request == null || request.getUser().isActive() == false) {
+      if (request == null || !request.getStatus().equals(Constants.REQUEST_STATUS_IN_PROGRESS)) {
          logger.info("Invalid request. Request Not found with ID: " + requestID);
 
          return "redirect:/user/dashboard";
       }
+      else {
+         // Update User
+         User user = request.getUser();
+         user.setActive(false);
+         userRepo.save(user);
 
-      // Update User
-      User user = request.getUser();
-      user.setActive(false);
-      userRepo.save(user);
+         // Update Availability time slot
+         CarAvailability availability = carAvailabilityRepo.findByRequest(request);
 
-      // Update Availability time slot
-      CarAvailability availability = carAvailabilityRepo.findByRequest(request);
+         // Update Request
+         request.setStatus(Constants.REQUEST_STATUS_CANCELLED);
+         //request.setEndTime(LocalDateTime.now());
+         requestRepo.save(request);
 
-      // Update Request
-      request.setStatus(Constants.REQUEST_STATUS_CANCELLED);
-      request.setEndTime(LocalDateTime.now());
-      request.getCar().setIsActive(false);
-      requestRepo.save(request);
+         logger.info("pre Invoice generated");
+         // Generate Invoice for cancelled request
+         try {
+            invoiceService.generateInvoice(request);
+            logger.info("Invoice generated");
+         } catch (StripeException e) {
+            logger.info(e.toString());
+         }
 
-      // Update Car
-      Car car = request.getCar();
-      car.setIsActive(false);
-      car.removeCarAvailability(availability);
-      carRepo.save(car);
+         // Update Car
+         Car car = request.getCar();
+         car.setIsActive(false);
+         car.removeCarAvailability(availability);
+         carRepo.save(car);
 
-      // Remove time slot
-      //requestRepo.save(request);
-      carAvailabilityRepo.delete(availability);
+         // Remove time slot
+         //requestRepo.save(request);
+         carAvailabilityRepo.delete(availability);
 
-      // Notification Message
-      String message = "Update: Request Cancelled";
-      redirectAttributes.addFlashAttribute("message", message);
+         // Notification Message
+         String message = "Update: Request Cancelled";
+         redirectAttributes.addFlashAttribute("message", message);
 
-      logger.info("Request cancelled: " + requestID);
+         logger.info("Request cancelled: " + requestID);
 
-      return "redirect:/user/dashboard";
+         return "redirect:/user/dashboard";
+      }
    }
 
    @GetMapping("/history")
@@ -334,6 +397,44 @@ public class UserController {
       model.addAttribute("username", user.getFirstName() + " " + user.getLastName());
 
       return "/user/history";
+   }
+
+   /**
+    * Function to convert LocalDateTime input to millisecond value
+    * 
+    * @param time - LocalDateTime to be converted
+    * @return - millisecond value of LocalDateTime
+    */
+   private long toMilliSeconds(LocalDateTime time) {
+      ZonedDateTime zdt = ZonedDateTime.of(time, ZoneId.systemDefault());
+      return zdt.toInstant().toEpochMilli();
+   }
+
+   /**
+    * Function to convert two LocalTime objects to LocalDateTime
+    * 
+    * @param startTime - request start time (LocalTime)
+    * @param endTime - LocalTime end time (LocalTime)
+    * @return - HashMap containing two LocalDateTime objects
+    */
+   private HashMap<String, LocalDateTime> toDateTime(LocalTime startTime, LocalTime endTime) {
+      // HashMap to return
+      HashMap<String, LocalDateTime> dateTimes = new HashMap<String, LocalDateTime>();
+
+      // End time in next day (11:59 to 01:00)
+      if ((endTime.isBefore(startTime))) {
+         // Create LocalDateTime & add to HashMap
+         dateTimes.put("startTime", LocalDateTime.of(LocalDate.now(), startTime));
+         dateTimes.put("endTime", LocalDateTime.of(LocalDate.now().plusDays(1), endTime));
+      }
+      // TODO fix this
+      else {
+         // Create LocalDateTime & add to HashMap
+         dateTimes.put("startTime", LocalDateTime.of(LocalDate.now(), startTime));
+         dateTimes.put("endTime", LocalDateTime.of(LocalDate.now(), endTime));
+      }
+      System.err.println("Times are " + dateTimes.toString());
+      return dateTimes;
    }
 
 }
