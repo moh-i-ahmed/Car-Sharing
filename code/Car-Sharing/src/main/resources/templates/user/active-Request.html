@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 
 <head>
@@ -15,27 +16,18 @@
   <link rel="icon" href="/img/favicon.ico" />
   <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  
+  <!-- Custom styles for this template-->
+  <link type="text/css" rel="stylesheet" th:href="@{/css/sb-admin-2.min.css}"/> 
+  <link rel="stylesheet" type="text/css" href="/css/maps.css">
+  
+  <!-- Import Scripts -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/car-sharing/utilities.js"></script>
+  <script type="text/javascript" src="/js/car-sharing/sse-handler.js"></script>
+  <script type="text/javascript" src="/js/car-sharing/maps.js"></script>
 
-  <!-- Custom styles for this template>
-  <link href="css/sb-admin-2.min.css" rel="stylesheet"-->
-  <link th:href="@{/css/sb-admin-2.min.css}" type="text/css" rel="stylesheet"/> 
-
-  <!-- Google Maps Style -->
-  <style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      #map {
-        height: 100%;
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-  </style>
-   <!-- SSE Handler -->
+  <!-- SSE Handler -->
   <script>
      function initialize() {
     	  var requestID = [[${requestID}]]; 
@@ -43,81 +35,10 @@
     	  // Open connection
     	  // check if it's from a correct source https://www.html5rocks.com/en/tutorials/eventsource/basics/
     	  const eventSource = new EventSource('http://localhost:8080/sse/notification/' + requestID);
-        eventSource.onmessage = e => {
-            const msg = e.data;
-            const msgID = e.lastEventId;
-            
-            // Request hasn't started
-            if (msgID == 'unstarted') {
-            	//$('#time').text(msg);
-            	console.log("id: " + e.lastEventId  + ", data: " + e.data);
-            }
-            // Request is active
-            else if (msgID == 'active') {
-                $('#time').text(msg);
-                console.log("id: " + e.lastEventId  + ", data: " + e.data);   
-                //setTimeout(function() {
-                    //location.reload();
-                //}, 3000);
-            }
-            // Request has ended
-            else if (msgID == 'ended') {
-            	// Close connection
-            	eventSource.close();
-            	
-            	// Show timer modal
-            	$('#requestInfoModal').modal('show');
-
-            	// Change HTML text
-            	$('#time').text(msg);
-            	$('#status').text('Completed');
-            	
-            	// Remove Div  
-            	$('#timerGroup').remove();
-            	$('#buttonDiv').remove();
-            	//$('#cancelBtn').text("Ended");
-
-            	// Refresh page
-            	countdownTimer(15);
-            	setTimeout(function() {
-            	    //location.reload();
-            	    window.location.href='/user/dashboard';
-            	}, 150000);
-            }
-            else {
-            	$('#time').text(msg);
-            	
-               console.log("id: " + e.lastEventId  + ", data: " + e.data);
-            } 
-         };
-         eventSource.onopen = e => console.log('open');
-         eventSource.onerror = e => {
-            if (e.readyState == EventSource.CLOSED) {
-               console.log('close');
-            }
-            else {
-               console.log(e);
-            }
-         };
-         eventSource.addEventListener('second', function(e) {
-            console.log('second', e.data);
-         }, false);
+    	  
+    	  initializeSSE(eventSource);
       }
      window.onload = initialize;
-     
-     function countdownTimer(time) {
-        var seconds = time;
-        $("countdown").text(seconds);
-        
-        setInterval(function () {
-           seconds--;
-           //console.log("Seconds " + seconds);
-           document.getElementById("countdown").innerHTML = seconds;
-           if (seconds == 0) {
-              window.location.href='/user/dashboard';
-           }
-        }, 1000);
-     } 
   </script>
 </head>
 
@@ -176,6 +97,16 @@
           <i class="fas fa-fw fa-user"></i>
           <span>Profile</span></a>
       </li>
+      
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0">
+      
+      <!-- Nav Item - Profile -->
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/FAQ}">
+          <i class="fas fa-info-circle"></i>
+          <span>FAQ</span></a>
+      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
@@ -189,7 +120,7 @@
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
+    <div id="content-wrapper" class="d-flex flex-column text-gray-900">
 
       <!-- Main Content -->
       <div id="content">
@@ -270,16 +201,46 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
+          <!-- Notification -->
+          <div class="toast" role="alert" th:if="${message != null and messageCode != null}" style="position: absolute; right:20px; z-index: 5;"
+               aria-live="assertive" aria-atomic="true" data-delay="5000">
+             
+             <div class="toast-header bg-gradient-success text-gray-100" th:if="${#strings.contains(messageCode, 'Success')}">
+                <!-- Success -->
+                <i class="fas fa-check rounded mr-2"></i>
+                <strong class="mr-auto" th:text="${messageCode}"></strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+                </button>
+             </div>
+             <div class="toast-header bg-gradient-danger text-gray-100" th:if="${#strings.contains(messageCode, 'Error')}">
+                <!-- Error -->
+                <i class="fas fa-exclamation rounded mr-2"></i>
+                <strong class="mr-auto" th:text="${messageCode}"></strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+                </button>
+             </div>
+             <div class="toast-header bg-gradient-warning text-gray-100" th:if="${#strings.contains(messageCode, 'Warning')}">
+                <!-- Warning -->
+                <i class="fas fa-exclamation-triangle rounded mr-2"></i>
+                <strong class="mr-auto" th:text="${messageCode}"></strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+                </button>
+             </div>
+             <div class="toast-body font-weight-bold" th:text="${message}"></div>
+          </div>
+          
           <!-- Content Row -->
           <div class="row justify-content-center">
+          
             <!-- Area Chart -->
             <div class="col-xl-4 col-lg-6 col-md-5 mx-auto">
                <div class="card shadow mb-4">
                   <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                      <h6 class="m-0 font-weight-bold text-primary">Your Car is Ready</h6>
-                     <div id="status" class="dropdown no-arrow" th:text="${request.status}">
-
-                     </div>
+                     <div id="status" class="dropdown no-arrow" th:text="${request.status}"></div>
                   </div>
                   
                   <!-- Card Body -->
@@ -333,17 +294,15 @@
                            <i class="fas fa-info fa-sm m-1"></i>
                         </a>
                         <div class="float-right" role="group" th:if="${request.car.unlocked == false}">
-                           <a class="btn btn-dark btn-outline btn-md" th:href="@{/user/unlock-car/} + ${request.requestID} + '/' + ${request.accessCode}" id="unlockBtn">
-                              <span class="text">Unlock</span>
-                              <!-- i class="fas fa-key fas-sm"></i-->
+                           <a class="btn bg-gray-900 btn-outline btn-md" th:href="@{/user/unlock-car/} + ${request.requestID} + '/' + ${request.accessCode}" id="unlockBtn">
+                              <span class="text-gray-100">Unlock</span>
                            </a>
                            <a href="#" class="btn btn-danger btn-outline btn-md" id="cancelBtn" data-toggle="modal" data-target="#cancelModal">
                               <span class="text">Cancel</span>
                            </a>
                         </div>
                         <div class="float-right" role="group" th:if="${request.car.unlocked == true}">
-                           <a href="#" class="btn btn-danger btn-outline btn-md"  th:href="@{/user/end-request/} + ${request.requestID} " 
-                              id="endBtn" data-toggle="modal" data-target="#endModal">
+                           <a href="#" class="btn btn-danger btn-outline btn-md" id="endBtn" data-toggle="modal" data-target="#endModal">
                               <span class="text">End</span>
                            </a>
                         </div>
@@ -377,7 +336,6 @@
                          var map;
                          var directionsService;
                          var directionsRenderer;
-                         var travelMode = 'DRIVING';
                          
                          var startlatitude = [[${request.pickupLocation.latitude}]]; 
                          var startlongitude = [[${request.pickupLocation.longitude}]];
@@ -395,59 +353,8 @@
                          };
                
                          function initMap() {
-                            //var travelMode = 'DRIVING';
-                            directionsService = new google.maps.DirectionsService;
-                            directionsRenderer = new google.maps.DirectionsRenderer({
-                                label: 'Point',
-                                markerOptions: {
-                                      draggable: false,
-                                      animation: google.maps.Animation.DROP,
-                                      map: map,
-                                      //icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
-                                },
-                                polylineOptions: {
-                                      strokeColor: "black",
-                                      //suppressMarkers: true
-                                   }
-                            });
-                            
-                            map = new google.maps.Map(document.getElementById('map'), {
-                               mapTypeControl: false,
-                               center: {lat: 52.6369, lng: -1.1398},
-                               zoom: 18,
-                               options: {
-                                   clickableIcons: false,       // Disable map icons
-                                   streetViewControl: false,    // Disable street view
-                                   fullscreenControl: false,    // Disable fullscreen button
-                                   zoomControl: false,
-                                   gestureHandling: 'none',
-                                   draggable: false
-                                 }
-                            });
-                            directionsRenderer.setMap(map);
-                            
-                            calcRoute(originInput, destinationInput, directionsService, directionsRenderer);
+                        	 requestViewInitializer(map, directionsService, directionsRenderer);
                          }
-                         
-                         function calcRoute(originInput, destinationInput, directionsService, directionsRenderer) {
-                             var request = {
-                               origin: originInput,
-                               destination: destinationInput,
-                               travelMode: 'DRIVING'
-                             };
-                             directionsService.route(request, function(result, status) {
-                               if (status == 'OK') {
-                                 directionsRenderer.setDirections(result);
-                                 var leg = result.routes[0].legs[0];
-                                 
-                                 $("#pickup").text(leg.start_address);
-                                 $("#dropoff").text(leg.end_address);
-                                 
-                                 map.setZoom(16);
-                               }
-                             });
-                           }
-                        
                      </script>
                      <script async defer
                             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAi9qsACSRpv-drbqKhofMzyVFf_Hr_fI0&libraries=places&callback=initMap">
@@ -505,6 +412,29 @@
      </div>
   </div>
   
+  <!-- End Modal-->
+  <div class="modal fade" id="endModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+     <div class="modal-dialog modal-dialog-centered" role="document">
+       <div class="modal-content">
+         <div class="modal-header h5 mb-0 text-gray-800">
+           <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">×</span>
+           </button>
+         </div>
+         <div class="modal-body">
+           <span>
+             You will be completing your request earlier than your requested time. Select "yes" below if you are ready to end to proceed.
+           </span>
+         </div>
+         <div class="modal-footer">
+           <button class="btn btn-md btn-secondary" type="button" data-dismiss="modal">No</button>
+           <a class="btn btn-md btn-danger" th:href="@{/user/end-request/} + ${request.requestID}">Yes</a>
+         </div>
+       </div>
+     </div>
+  </div>
+  
   <!-- Time Modal-->
   <div class="modal fade" id="requestInfoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -534,18 +464,18 @@
           </button>
         </div>
         <div class="modal-body text-gray-800">
-          <p> Here's information on how to use the find and access the car, as well as how to complete/end the request.
+          <p> Here's information on how to find the car, access the car and begin your request, as well as how to complete/end the request.
            </p>
            <div id="accordion">
              <!-- Find the car -->
              <div class="card">
-               <div id="headingOne" class="card-header p-1">
-                 <h5 class="mb-0" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+               <a class="card-header p-1" role="button" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                 <h5 class="mb-0" >
                    <button class="btn btn-link">
                         How to find the car?
                    </button>
                  </h5>
-               </div>
+               </a>
                <div id="collapseOne" aria-labelledby="headingOne" data-parent="#accordion" class="collapse show" style="">
                  <div class="card-body">
                    <b class="">Step 1</b>
@@ -560,16 +490,16 @@
              </div>
              <!-- Use the car -->
              <div class="card">
-               <div id="headingTwo" class="card-header p-1">
-                 <h5 class="mb-0" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+               <a class="card-header p-1" role="button" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                 <h5 class="mb-0" >
                    <button class="btn btn-link collapsed">
                         How to use the car?
                    </button>
                  </h5>
-               </div>
+               </a>
                <div id="collapseTwo" aria-labelledby="headingTwo" data-parent="#accordion" class="collapse">
                  <div class="card-body">
-                   <p>     After following the steps of <i>"How to find the car?"</i></p>
+                   <p> After following the steps of <i>"How to find the car?"</i></p>
                    <b class="">Step 1</b>
                    <p> You can unlock the car by clicking the <i><strong>Unlock</strong></i> button one minute before your requested start time. 
                    </p>
@@ -584,21 +514,21 @@
              </div>
              <!-- End request -->
              <div class="card">
-               <div id="headingThree" class="card-header p-1">
-                 <h5 class="mb-0" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+               <a class="card-header p-1" role="button" id="headingThree" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                 <h5 class="mb-0" >
                    <button class="btn btn-link collapsed">
                      How to end the request?
                    </button>
                  </h5>
-               </div>
+               </a>
                <div id="collapseThree" aria-labelledby="headingThree" data-parent="#accordion" class="collapse">
                  <div class="card-body">
-                    Once you arrive at the dropoff location, simply exit the car and click the <i><strong>End</strong></i> button. 
+                    Once you arrive at the drop-off location, simply exit the car and click the <i><strong>End</strong></i> button. 
                     <br>
                     This will lock the car and complete your request. 
                     <br><br>
-                    If you don't end the request, it will end automatically after the requested ending time has passed and 
-                    you will have <strong>15 seconds</strong> to park and exit the car before it is locked automatically. 
+                    If you do not end the request, it will end automatically after the requested end time has passed and you will have 
+                    c<strong>1 minute</strong> to park, take your personal belongings and exit the car before it is locked automatically. 
                   </div>
                </div>
              </div>
@@ -608,6 +538,12 @@
      </div>
   </div>
   
+  <!-- Show Notification -->
+   <script>
+   //Show Notification
+   notificationAlert();
+   
+   </script>
   
   <!-- Bootstrap core JavaScript-->
   <script src="/vendor/jquery/jquery.min.js"></script>
