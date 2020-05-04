@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Car Sharing - FAQ</title>
+
+    <!-- Custom fonts for this template-->
+  <link rel="icon" href="/img/favicon.ico" />
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="/css/sb-admin-2.min.css" type="text/css" rel="stylesheet"/> 
+
+</head>
+
+<body id="page-top" class="sidebar-toggled">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gray-900 sidebar sidebar-dark accordion toggled" id="accordionSidebar">
+
+      <!-- Sidebar - Brand -->
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/dashboard}">
+        <div class="sidebar-brand-icon">
+          <i class="fas fa-car"></i>
+        </div>
+      </a>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0">
+
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/dashboard}">
+          <i class="fas fa-fw fa-tachometer-alt"></i>
+          <span>Find a Car</span></a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Menu
+      </div>
+
+      <!-- Nav Item - Pages Collapse Menu -->
+
+      <!-- Nav Item - Charts -->
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/user/history}">
+          <i class="fas fa-list fa-sm fa-fw mr-2"></i>
+          <span>History</span></a>
+      </li>
+
+      <!-- Nav Item - Wallet -->
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/payment/wallet}">
+          <i class="fas fa-credit-card"></i>
+          <span>Wallet</span></a>
+      </li>
+      
+      <!-- Nav Item - Profile -->
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/account/profile}">
+          <i class="fas fa-fw fa-user"></i>
+          <span>Profile</span></a>
+      </li>
+      
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0">
+      
+      <!-- Nav Item - Profile -->
+      <li class="nav-item active">
+        <a class="nav-link" th:href="@{/FAQ}">
+          <i class="fas fa-info-circle"></i>
+          <span>FAQ</span></a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider d-none d-md-block">
+
+      <!-- Sidebar Toggler (Sidebar) -->
+      <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+      </div>
+
+    </ul>
+    <!-- End of Sidebar -->
+    
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+          <!-- Sidebar Toggle (Topbar) -->
+          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button>
+
+          <!-- Topbar Page Name -->
+          <div class="d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search input-group">
+            <h1 class="h5 mb-0 text-gray-800">Frequently Asked Questions</h1>
+          </div>
+
+          <!-- Topbar Navbar -->
+          <ul class="navbar-nav ml-auto">
+
+            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+            <li class="nav-item dropdown no-arrow d-sm-none">
+              <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-search fa-fw"></i>
+              </a>
+              <!-- Dropdown - Messages -->
+              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
+                <form class="form-inline mr-auto w-100 navbar-search">
+                  <div class="input-group">
+                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                      <button class="btn btn-primary" type="button">
+                        <i class="fas fa-search fa-sm"></i>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </li>
+
+            <div class="topbar-divider d-none d-sm-block"></div>
+
+            <!-- Nav Item - User Information -->
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                  <td th:text="${username}"></td>
+                </span>
+                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+              </a>
+              <!-- Dropdown - User Information -->
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                <a class="dropdown-item" th:href="@{/account/profile}">
+                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Profile
+                </a>
+                <a class="dropdown-item" th:href="@{/user/history}">
+                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                  History
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" th:href="@{/logout}">
+                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                  Logout
+                </a>
+              </div>
+            </li>
+
+          </ul>
+
+        </nav>
+        <!-- End of Topbar --> 
+        
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+             
+          <!-- Password Changed Notification -->
+          <div class="alert alert-success alert-dismissible fade show position-absolute" role="alert" th:if="${message != null}" style="right:20px; z-index: 5;">
+             <strong>
+                <span class="col-sm-6 mx-auto" th:text="${message}"/>
+             </strong>
+             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+             </button>
+          </div>
+
+          <!-- Content Row -->
+          <div class="row">
+            <!-- Inner Content -->
+            <div class="col-xl-4 col-lg-6 col-md-6 mx-auto">
+              <div class="card position-relative mb-3">            
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                   <h6 class="m-0 font-weight-bold text-primary">Overview</h6>
+                </div>
+                
+                <div class="card-body">
+                  <div class="justify-center text-gray-800">
+                   <p> Car Sharing or carsharing is a model of car rental where people rent cars for short periods of time. 
+                   It is designed as an extension of the transportation network.</p>
+                   <p> This application simulates the car sharing model in the city of Leicester, UK. This application allows a user to pick up a car at one location 
+                   and drive it to a drop-off location. You sign up and login to access the service, add a payment card in <a th:href="@{/payment/wallet/}"><strong><i>Wallet</i></strong></a> and you're ready to go.</p>
+                   <p> Here's information on how to use this car sharing service.</p>
+                    <div id="accordion">
+                      <!-- Request the car -->
+                      <span><i class="fas fa-question-circle m-1"></i>Using the service</span>
+                      <div class="card">
+                        <a class="card-header p-1" role="button" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                          <h5 class="mb-0" >
+                            <button class="btn btn-link">
+                                 How to request a car?
+                            </button>
+                          </h5>
+                        </a>
+                        <div id="collapseOne" aria-labelledby="headingOne" data-parent="#accordion" class="collapse">
+                          <div class="card-body">
+                            <b class="">Step 1</b>
+                            <p> Ensure you have verified your account using the link in the registration email. If your account is verified, <strong>proceed to Step 3</strong>, 
+                                otherwise take a moment to verify your account. </p>
+                            <b class="">Step 2</b>
+                            <p> If the link has expired, you can send another by navigating to Profile, then click more and "Send Verification Email". </p>
+                            <b class="">Step 3</b>
+                            <p> Navigate to "Wallet" and add a valid payment card. </p>
+                            <b class="">Step 4</b>
+                            <p> Navigate to "Find a Car" and enter the pickup & drop-off locations & the times of your request. 
+                            </p>
+                            <b class="">Rules</b>
+                            <p> Car usage times are between 30 minutes and 24 hours. </p>
+                            <p> Requests must be made at least 30 minutes before the desired start time. This is to ensure the car is ready to be used.
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Find the car -->
+                      <div class="card">
+                        <a class="card-header p-1" role="button" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                          <h5 class="mb-0" >
+                            <button class="btn btn-link">
+                                 How to find the car?
+                            </button>
+                          </h5>
+                        </a>
+                        <div id="collapseTwo" aria-labelledby="headingTwo" data-parent="#accordion" class="collapse">
+                          <div class="card-body">
+                            <b class="">Step 1</b>
+                            <p> Go to the pickup location by clicking the <i><strong>Show Directions</strong></i> button which 
+                                 will automatically open directions in Google Maps.
+                            </p>
+                            <b class="">Step 2</b>
+                            <p> Identify the car using the registration number and description.       
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Use the car -->
+                      <div class="card">
+                        <a class="card-header p-1" role="button" id="headingThree" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                          <h5 class="mb-0" >
+                            <button class="btn btn-link collapsed">
+                                 How to use the car?
+                            </button>
+                          </h5>
+                        </a>
+                        <div id="collapseThree" aria-labelledby="headingThree" data-parent="#accordion" class="collapse">
+                          <div class="card-body">
+                            <p> After following the steps of <i>"How to find the car?"</i></p>
+                            <b class="">Step 1</b>
+                            <p> You can unlock the car by clicking the <i><strong>Unlock</strong></i> button one minute before your requested start time. 
+                            </p>
+                            <b class="">Step 2</b>
+                            <p> Type your access code into the number pad on the car handle to enter the car. 
+                            </p>
+                            <b class="">Step 3</b>
+                            <p> Drive safely   &#128578
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- End request -->
+                      <div class="card">
+                        <a class="card-header p-1" role="button" id="headingFour" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                          <h5 class="mb-0" >
+                            <button class="btn btn-link collapsed">
+                              Ending the request
+                            </button>
+                          </h5>
+                        </a>
+                        <div id="collapseFour" aria-labelledby="headingFour" data-parent="#accordion" class="collapse">
+                          <div class="card-body">
+                             Once you arrive at the drop-off location, ensure you have all your personal belongings, simply exit the car and click the <i><strong class="text-danger">End</strong></i> button. 
+                             <br>
+                             This will lock the car and complete your request. 
+                             <br><br>
+                             If you don't end the request, it will end automatically after the requested ending time has passed and 
+                             you will have <strong>15 seconds</strong> to park and exit the car before it is locked automatically. 
+                           </div>
+                        </div>
+                      </div>
+                      <!-- Fee Overview -->
+                      <div class="card">
+                        <a class="card-header p-1" role="button" id="headingFive" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                          <h5 class="mb-0" >
+                            <button class="btn btn-link collapsed">
+                              Fee Overview
+                            </button>
+                          </h5>
+                        </a>
+                        <div id="collapseFive" aria-labelledby="headingFive" data-parent="#accordion" class="collapse">
+                          <div class="card-body">
+                             <strong>Base Charge: </strong>£5 is the minimum request charge. 
+                             <br><br>
+                             <strong>Request Pricing: </strong>This is calculated as the base charge, plus 30p times request duration, plus 20p times the distance covered.
+                             <br><br>
+                             <strong>Cancellation Fee: </strong>£8 for canceling a request. If you cancel a request within 10 minutes of the start time, 
+                             you will be charged for full amount for the request.
+                             <br><br>
+                             <strong>Damage Fee: </strong>This will be assessed based on the extent of the damage.
+                           </div>
+                        </div>
+                      </div>
+                      <!-- Fee Overview -->
+                      <div class="card">
+                        <a class="card-header p-1" role="button" id="headingSeven" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                          <h5 class="mb-0" >
+                            <button class="btn btn-link collapsed">
+                              Payment Methods
+                            </button>
+                          </h5>
+                        </a>
+                        <div id="collapseSeven" aria-labelledby="headingSeven" data-parent="#accordion" class="collapse">
+                          <div class="card-body">
+                             <a th:href="@{/payment/wallet}"><strong>Wallet</strong></a> contains all your payment methods. Here, you can see, add, and remove the payment cards you have linked with your account. 
+                             <br><br>
+                             <strong>Add Card: </strong>You can securely and safely add your card information by clicking the <a th:href="@{/payment/wallet/}"><strong><i>Add Card </i></strong></a> button.
+                             <br><br>
+                             <strong>Remove Card: </strong>You can remove your card from your account by clicking the <strong>trash can icon <i class="fas fa-trash text-danger"></i></strong>.
+                             
+                           </div>
+                        </div>
+                      </div>
+                      <!-- Managing your account -->
+                      <br>
+                      <span><i class="fas fa-question-circle m-1"></i>Your account</span>
+                      <div class="card">
+                        <a class="card-header p-1" role="button" id="headingSix" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix" >
+                          <h5 class="mb-0" >
+                            <button class="btn btn-link collapsed">
+                              Managing your account
+                            </button>
+                          </h5>
+                        </a>
+                        <div id="collapseSix" aria-labelledby="headingSix" data-parent="#accordion" class="collapse">
+                          <div class="card-body">
+                             <strong>Updating personal information: </strong>You can change your account details in the <a th:href="@{/account/profile}"><strong><i>Profile</i></strong></a> page by clicking the <strong>Edit icon <i class="far fa-edit"></i></strong>. 
+                             <br><br>
+                             <strong>Changing your password: </strong>You can change your password by clicking <strong><i>More</i></strong>. Then click the <strong><i>Change Password</i></strong> 
+                             button and enter your new password.
+                             <br><br>
+                             <strong>Closing your account: </strong>Navigate to <a th:href="@{/account/profile}"><strong><i>Profile</i></strong></a> and click <strong><i>More</i></strong>. 
+                             Then click the <strong><i>Delete Account</i></strong> button and follow the prompts.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                     
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+            <!-- End of Inner Content -->
+
+          </div>
+
+        </div>
+        <!-- /.container-fluid -->
+        
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright &copy; <strong> <a href="https://github.com/moa38">moa38</a> </strong> 2019 </span>
+          </div>
+        </div>
+      </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="/vendor/jquery/jquery.min.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="/js/sb-admin-2.min.js"></script>
+
+</body>
+
+</html>
