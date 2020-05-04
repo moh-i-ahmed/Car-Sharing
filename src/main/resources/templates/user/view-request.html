@@ -19,10 +19,14 @@
 
   <!-- Custom styles for this template -->
   <link th:href="@{/css/sb-admin-2.min.css}" type="text/css" rel="stylesheet"/> 
-
-  <!-- Custom styles for this page -->
+  <link rel="stylesheet" type="text/css" href="/css/maps.css">
   <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
+  
+  <!-- Import Scripts -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/car-sharing/utilities.js"></script>
+  <script type="text/javascript" src="/js/car-sharing/maps.js"></script>
+  
 </head>
 
 <body id="page-top">
@@ -87,6 +91,16 @@
           <i class="fas fa-fw fa-user"></i>
           <span>Profile</span></a>
       </li>
+      
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0">
+      
+      <!-- Nav Item - Profile -->
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/FAQ}">
+          <i class="fas fa-info-circle"></i>
+          <span>FAQ</span></a>
+      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
@@ -114,8 +128,8 @@
           </button>
           
           <!-- Topbar Page Name -->
-          <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search input-group">
-            <h3 class="h4 mb-1 text-gray-600">Request Details</h3>
+          <div class="d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search input-group">
+            <h1 class="h5 mb-0 text-gray-800">Request Details</h1>
           </div>
 
           <!-- Topbar Navbar -->
@@ -147,23 +161,19 @@
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                  <td th:text="${request.user.username}"></td>
+                  <td th:text="${username}"></td>
                 </span>
                 <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" th:href="@{/account/profile}">
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Profile
                 </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Settings
-                </a>
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" th:href="@{/user/history}">
                   <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Activity Log
+                  History
                 </a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" th:href="@{/logout}">
@@ -185,78 +195,108 @@
          <div class="row">
         
             <!-- User Data -->
-            <div class="col-xl-4 col-lg-6 col-md-5 mx-auto">
-           
-              <div class="card shadow mb-4">
+            <!--div class="col-xl-4 col-lg-6 col-md-5 mx-auto"-->
+            <div class="col-xl-4 col-lg-10 col-md-10 mx-auto">
+              <div class="card shadow mb-3" th:with="startTime=${request.startTime},endTime=${request.endTime},date=${request.requestDate},duration=${duration}">
                 
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Overview</h6>
-                  <div class="dropdown no-arrow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" th:if="${request.status} != 'Cancelled'">
+                  <h6 class="m-0 font-weight-bold text-primary" th:text="${#temporals.format(startTime, 'dd MMM yyyy')}"></h6>
+                  <div class="dropdown no-arrow font-weight-bold text-primary" >
+                    <td th:text="${request.status}"></td>
+                  </div>
+                </div>
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" th:if="${request.status} == 'Cancelled'">
+                  <h6 class="m-0 font-weight-bold text-primary" th:text="${#temporals.format(startTime, 'dd MMM yyyy h:mm a')}"></h6>
+                  <div class="dropdown no-arrow font-weight-bold text-danger"  >
                     <td th:text="${request.status}"></td>
                   </div>
                 </div>
 
-                <div class="card-body">
-                   <div class="form-group row">
-                        <div class="col-sm-3 mb-3 mb-sm-0 ml-3">
-                           <strong><td>From</td></strong>
-                        </div>
-                        <div class="col-sm-6 mx-auto">
-                         <td th:text="${request.startTime}"></td>
+                <div class="card-body text-nowrap">
+                  <div class="card-body">
+                      <div class="form-group row" >
+                           <div class="col-sm-3 mb-3 mb-sm-0">
+                              <strong><td>Time</td></strong>
+                           </div>
+                           <div class="col-sm-6 mx-auto">
+                            <td th:text="${#temporals.format(startTime, 'h:mm a')} + ' - ' + ${#temporals.format(endTime, 'h:mm a')}"></td>
+                         </div>
                       </div>
-                   </div>
-                   <div class="form-group row">
-                        <div class="col-sm-3 mb-3 mb-sm-0 ml-3">
-                           <strong><td>To</td></strong>
-                        </div>
-                        <div class="col-sm-6 mx-auto">
-                         <td th:text="${request.endTime}"></td>
+                      <div class="form-group row" th:if="${request.status} != 'Cancelled'">
+                           <div class="col-sm-3 mb-3 mb-sm-0">
+                              <strong><td>Duration</td></strong>
+                           </div>
+                           <div class="col-sm-6 mx-auto">
+                            <td th:text="${#temporals.format(duration, 'hh:mm:ss')}"></td>
+                         </div>
                       </div>
-                   </div>
-                   <div class="form-group row">
-                        <div class="col-sm-3 mb-3 mb-sm-0 ml-3">
-                           <strong><td>Car Description</td></strong>
-                        </div>
-                        <div class="col-sm-6 mx-auto">
-                         <td th:text="${request.car.carColor}+ ' ' + ${request.car.carName}"></td>
+                      <div class="form-group row" th:if="${request.status} != 'Cancelled'">
+                           <div class="col-sm-3 mb-3 mb-sm-0">
+                              <strong><td>Distance</td></strong>
+                           </div>
+                           <div class="col-sm-6 mx-auto">
+                            <td th:text="${request.distance/1000} + 'km'"></td>
+                         </div>
                       </div>
-                   </div>
-                   <div class="form-group row">
-                        <div class="col-sm-3 mb-3 mb-sm-0 ml-3">
-                           <strong><td>Car Registration No.</td></strong>
-                        </div>
-                        <div class="col-sm-6 mx-auto">
-                         <td th:text="${request.car.registrationNumber}"></td>
+                      <div class="form-group row" th:if="${request.status} != 'Cancelled'">
+                           <div class="col-sm-3 mb-3 mb-sm-0">
+                              <strong><td>Car</td></strong>
+                           </div>
+                           <div class="col-sm-6 mx-auto">
+                            <td th:text="${request.car.carMake} + ' ' + ${request.car.carName} + ' - ' + ${request.car.carColor}"></td>
+                         </div>
                       </div>
-                   </div>
-                   <hr>
-                   <div class="form-group row">
-                        <div class="col-sm-3 mb-3 mb-sm-0 ml-3">
-                           <strong><td>Receipt</td></strong>
-                        </div>
-                   </div>
-                   <div class="form-group row">
-                        <div class="col-sm-3 mb-3 mb-sm-0 ml-3">
-                           <strong><td>Base Charge</td></strong>
-                        </div>
-                        <div class="col-sm-6 mx-auto">
-                         <td th:text="'£'+${request.car.registrationNumber}"></td>
+                      <div class="form-group row" th:if="${request.status} != 'Cancelled'">
+                           <div class="col-sm-3 mb-3 mb-sm-0">
+                              <strong><td>Registration No.</td></strong>
+                           </div>
+                           <div class="col-sm-6 mx-auto">
+                            <td th:text="${request.car.registrationNumber}"></td>
+                         </div>
                       </div>
-                   </div>
-                   <div class="form-group row">
-                        <div class="col-sm-3 mb-3 mb-sm-0 ml-3">
-                           <strong><td>Ride Time</td></strong>
-                        </div>
-                        <div class="col-sm-6 mx-auto">
-                         <td th:text="'£'+${request.car.registrationNumber}"></td>
+                      <hr>
+                      <div th:if="${request?.invoice?.invoiceID != null}">
+                      <div class="form-group row">
+                           <div class="col-sm-3 mb-3 mb-sm-0">
+                              <strong><td>Receipt</td></strong>
+                              <i class="fas fa-receipt ml-2"></i>
+                           </div>
                       </div>
-                   </div>
-                   <div class="form-group row">
-                        <div class="col-sm-3 mb-3 mb-sm-0 ml-3">
-                           <strong><td>Total</td></strong>
-                        </div>
-                        <div class="col-sm-6 mx-auto">
-                         <td th:text="'£'+${request.car.registrationNumber}"></td>
+                      <div class="form-group row" th:if="${request.status} != 'Cancelled'">
+                           <div class="col-sm-3 mb-3 mb-sm-0">
+                              <strong><td>Base Charge</td></strong>
+                           </div>
+                           <div class="col-sm-6 mx-auto">
+                            <td th:text="'£'+${#numbers.formatDecimal(baseCharge, 1, 'DEFAULT', 2, 'POINT')}"></td>
+                         </div>
+                      </div>
+                      <div class="form-group row" th:if="${request.status} != 'Cancelled'">
+                           <div class="col-sm-3 mb-3 mb-sm-0">
+                              <strong><td>Time Charge</td></strong>
+                           </div>
+                           <div class="col-sm-6 mx-auto">
+                            <td th:text="'£'+${#numbers.formatDecimal(request?.invoice?.timeCharge, 1, 'DEFAULT', 2, 'POINT')}"></td>
+                         </div>
+                      </div>
+                      <div class="form-group row" th:if="${request.status} != 'Cancelled'">
+                           <div class="col-sm-3 mb-3 mb-sm-0">
+                              <strong><td>Distance Charge</td></strong>
+                           </div>
+                           <div class="col-sm-6 mx-auto" th:if="${request.invoice} != null">
+                            <td th:text="'£'+${#numbers.formatDecimal(request?.invoice?.distanceCharge, 1, 'DEFAULT', 2, 'POINT')}"></td>
+                         </div>
+                      </div>
+                      <div class="form-group row">
+                           <div class="col-sm-3 mb-3 mb-sm-0" th:if="${request.status} != 'Cancelled'">
+                              <strong><td>Total</td></strong>
+                           </div>
+                           <div class="col-sm-3 mb-3 mb-sm-0" th:if="${request.status} == 'Cancelled'">
+                              <strong><td>Cancellation Fee</td></strong>
+                           </div>
+                           <div class="col-sm-6 mx-auto">
+                            <td th:text="'£'+${#numbers.formatDecimal(request?.invoice?.totalAmount, 1, 'DEFAULT', 2, 'POINT')}"></td>
+                         </div>
+                      </div>
                       </div>
                    </div>
                 </div>
@@ -266,6 +306,55 @@
         
          <!-- /.container-fluid -->
          </div>
+         
+         <!-- Map View -->
+            <div class="row pb-5" th:if="${request.status != null and not #strings.contains(request.status, 'Cancelled')}">
+              <!-- Card Body -->
+                <div class="card-body">
+                  <div class="col-xl-4 col-lg-10 col-md-10 mx-auto" style="height: 500px">
+                    <label class="text-primary">
+                       <span id="pickup"></span> 
+                       <i class="fas fa-long-arrow-alt-right ml-1 mr-1"></i>
+                       <span id="dropoff"></span>
+                    </label>
+                    <div class="card position-relative" id="map" style="position:absolute">
+                       <!-- Google Maps Autocomplete & Directions -->
+                       <script>
+                     
+                         var map;
+                         var directionsService;
+                         var directionsRenderer;
+                         var travelMode = 'DRIVING';
+                         
+                         var startlatitude = [[${request.pickupLocation.latitude}]]; 
+                         var startlongitude = [[${request.pickupLocation.longitude}]];
+                         
+                         var endlatitude = [[${request.dropoffLocation.latitude}]]; 
+                         var endlongitude = [[${request.dropoffLocation.longitude}]];
+                         
+                         var originInput = {
+                                 lat: startlatitude, 
+                                 lng: startlongitude
+                         };
+                         var destinationInput = {
+                                 lat: endlatitude, 
+                                 lng: endlongitude
+                         };
+               
+                         function initMap() {
+                        	 requestViewInitializer(map, directionsService, directionsRenderer);
+                         }
+                       </script>
+                       <script async defer
+                             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAi9qsACSRpv-drbqKhofMzyVFf_Hr_fI0&libraries=places&callback=initMap">
+                       </script>
+                    
+                    </div>
+                 </div>
+              </div>
+              <!-- End of Map View -->
+            </div>
+            
       </div>
       </div>
       <!-- End of Main Content -->
