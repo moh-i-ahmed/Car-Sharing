@@ -1,8 +1,12 @@
 package springData.controller;
 
 import java.security.Principal;
+import java.time.Duration;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -23,20 +27,22 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.stripe.exception.StripeException;
-import com.stripe.model.Customer;
 
 import springData.DTO.UserDTO;
+import springData.constants.Constants;
 import springData.domain.Request;
 import springData.domain.Role;
+import springData.domain.StripeCustomer;
 import springData.domain.User;
+import springData.domain.VerificationToken;
 import springData.repository.AddressRepository;
 import springData.repository.RoleRepository;
+import springData.repository.StripeCustomerRepository;
 import springData.repository.CarRepository;
 import springData.repository.RequestRepository;
 import springData.repository.UserRepository;
+import springData.repository.VerificationTokenRepository;
 import springData.services.EmailServiceImpl;
-import springData.services.StripeService;
 import springData.utils.PasswordGenerator;
 import springData.validator.PasswordDTOValidator;
 import springData.validator.UserDTOValidator;
@@ -49,18 +55,19 @@ public class AdminController {
 
    BCryptPasswordEncoder pe = new  BCryptPasswordEncoder();
 
-   @Autowired UserRepository userRepo;
-   @Autowired RoleRepository roleRepo;
-   @Autowired CarRepository carRepo;
-   @Autowired RequestRepository requestRepo;
-   @Autowired AddressRepository addressRepo;
+   @Autowired private UserRepository userRepo;
+   @Autowired private RoleRepository roleRepo;
+   @Autowired private CarRepository carRepo;
+   @Autowired private RequestRepository requestRepo;
+   @Autowired private AddressRepository addressRepo;
+   @Autowired private VerificationTokenRepository verificationTokenRepo;
+   @Autowired private StripeCustomerRepository stripeCustomerRepo;
 
-   @Autowired private StripeService stripeService;
    @Autowired private EmailServiceImpl emailService;
 
    @InitBinder("userDTO")
    protected void initUserDTOBinder(WebDataBinder binder) {
-      binder.addValidators(new UserDTOValidator(userRepo));
+      binder.addValidators(new UserDTOValidator());
    }
 
    @InitBinder("passwordDTO")
@@ -72,19 +79,23 @@ public class AdminController {
    public String dashboard(Model model, Principal principal) throws JsonProcessingException {
       //Parse query result to JSON for Google Maps View
       ObjectMapper mapper = new ObjectMapper();
-      String locations = mapper.writeValueAsString(carRepo.findAllCarLocations());
-      System.err.println("Listed " + locations);
-      
+      String carLocations = mapper.writeValueAsString(carRepo.findAllCarLocations());
+
       model.addAttribute("username", principal.getName());
       model.addAttribute("userCount", userRepo.count());
-      
-      model.addAttribute("locations", locations);
-      //model.addAttribute("locations", carRepo.findAllCarLocations());
+
+      model.addAttribute("verifiedUsers", userRepo.findAllVerified());
+      model.addAttribute("activeRequests", requestRepo.countByStatus(Constants.REQUEST_STATUS_IN_PROGRESS));
+      model.addAttribute("completedRequests", requestRepo.countByStatus(Constants.REQUEST_STATUS_COMPLETE));
+      model.addAttribute("cancelledRequests", requestRepo.countByStatus(Constants.REQUEST_STATUS_CANCELLED));
+      model.addAttribute("unfulfilledRequests", requestRepo.countByStatus(null));
+
+      model.addAttribute("locations", carLocations);
       model.addAttribute("totalCars", carRepo.count());
       model.addAttribute("activeCars", carRepo.findAllInUse());
       model.addAttribute("requests", requestRepo.count());
 
-      return "/admin/dashboard"; 
+      return "/admin/dashboard";
    }
 
    /* ----------------------------------------------------------
@@ -93,7 +104,7 @@ public class AdminController {
 
    @GetMapping("/createUser")
    public String createUser(Model model, Principal principal) {
-      //List of Roles
+      // List of Roles
       List<Role> roles = (List<Role>) roleRepo.findAll();
       UserDTO userDTO = new UserDTO();
 
@@ -106,13 +117,13 @@ public class AdminController {
 
    @PostMapping("/createUser")
    public String createUser(@Valid @ModelAttribute("userDTO") UserDTO userDTO, BindingResult result, Model model,
-         Principal principal) {
+         HttpServletRequest request, Principal principal) {
 
       User userExists = userRepo.findByUsername(userDTO.getUsername());
 
-      //Username is already in use
+      // Username is already in use
       if (userExists != null) {
-         //List of Roles
+         // List of Roles
          List<Role> roles = (List<Role>) roleRepo.findAll();
          model.addAttribute("roles", roles);
 
@@ -122,7 +133,7 @@ public class AdminController {
       }
 
       if (result.hasErrors()) {
-         //List of Roles
+         // List of Roles
          List<Role> roles = (List<Role>) roleRepo.findAll();
          model.addAttribute("roles", roles);
          model.addAttribute("username", principal.getName());
@@ -131,10 +142,10 @@ public class AdminController {
 
          return "admin/createUser";
       } else {
-         //Generate password
+         // Generate password
          String generatedPassword = PasswordGenerator.generateRandomPassword(8);
 
-         //Create new User using UserDTO details
+         // Create new User using UserDTO details
          User newUser = new User();
          newUser.setFirstName(userDTO.getFirstName());
          newUser.setLastName(userDTO.getLastName());
@@ -142,11 +153,15 @@ public class AdminController {
          newUser.setPassword(pe.encode(generatedPassword));
          newUser.setRole(roleRepo.findByRoleName(userDTO.getRoleName()));
 
-         //Save User
+         // Save User
          userRepo.save(newUser);
 
-         //Send Email
-         emailService.sendRegistrationEmail(userDTO);
+         try {
+            // Send Email
+            emailService.sendRegistrationEmail(newUser, request);
+         } catch (Exception e) {
+            logger.info("Error: " + e);
+         }
 
          logger.info("\n Admin Log: Account added for " + userDTO.getUsername() +
                "\n Account creation email sent.");
@@ -157,12 +172,12 @@ public class AdminController {
 
    @GetMapping("/edit-user/{userID}")
    public String editUser(@PathVariable int userID, Model model, Principal principal) {
-      //Find User by ID
+      // Find User by ID
       User user = userRepo.findById(userID);
-      //List of Roles
+      // List of Roles
       List<Role> roles = (List<Role>) roleRepo.findAll();
 
-      //Add User details to DTO
+      // Add User details to DTO
       UserDTO userDTO = new UserDTO();
       userDTO.setFirstName(user.getFirstName());
       userDTO.setLastName(user.getLastName());
@@ -181,10 +196,10 @@ public class AdminController {
 
    @GetMapping("/view-user/{userID}")
    public String viewUser(@PathVariable int userID, Model model, Principal principal) {
-      //Find User by ID
+      // Find User by ID
       User user = userRepo.findById(userID);
 
-      //Add User details to DTO
+      // Add User details to DTO
       UserDTO userDTO = new UserDTO();
       userDTO.setFirstName(user.getFirstName());
       userDTO.setLastName(user.getLastName());
@@ -194,6 +209,7 @@ public class AdminController {
       userDTO.setPhoneNumber(user.getPhoneNumber());
 
       model.addAttribute("userID", userID);
+      model.addAttribute("stripeCustomerID", user.getStripeCustomer().getTokenID());
       model.addAttribute("userDTO", userDTO);
       model.addAttribute("username", principal.getName());
 
@@ -204,18 +220,18 @@ public class AdminController {
    public String updateUser(@Valid @ModelAttribute("userDTO") UserDTO userDTO, BindingResult result,
          @PathVariable int userID, Model model, RedirectAttributes redirectAttributes) {
 
-      //Find User using UserDTO details
+      // Find User using UserDTO details
       User user = userRepo.findById(userID);
 
       User userExists = userRepo.findByUsername(userDTO.getUsername());
 
-      //Username is already in use
+      // Username is already in use
       if (!(userDTO.getUsername().equalsIgnoreCase(user.getUsername())) && (userExists != null)) {
-         //List of Roles
+         // List of Roles
          List<Role> roles = (List<Role>) roleRepo.findAll();
          model.addAttribute("roles", roles);
 
-         result.rejectValue("username", "", "Email is already in use.");
+         result.rejectValue("username", "", "Email already in use.");
 
          return "admin/edit-user";
       }
@@ -223,19 +239,21 @@ public class AdminController {
       if (result.hasErrors()) {
          System.err.println(result);
          return "admin/edit-user";
-      } 
-      else {
-         //Update User using UserDTO details
+      } else {
+         // Update User using UserDTO details
          user.setFirstName(userDTO.getFirstName());
          user.setLastName(userDTO.getLastName());
          user.setUsername(userDTO.getUsername());
          user.setRole(roleRepo.findByRoleName(userDTO.getRoleName()));
 
-         //Save User
+         // Save User
          userRepo.save(user);
 
          // Notification Message
-         String message = "Success: Car Updated";
+         String messageCode = Constants.NOTIFICATION_SUCCESS;
+         String message = "Car Updated";
+
+         redirectAttributes.addFlashAttribute("messageCode", messageCode);
          redirectAttributes.addFlashAttribute("message", message);
 
          logger.info("\n Admin Log: Account updated for " + userDTO.getUsername() +
@@ -246,36 +264,42 @@ public class AdminController {
    }
 
    @GetMapping("/reset-password/{userID}")
-   public String resetPassword(@PathVariable int userID, Model model) {
-      //Generate password
-      String generatedPassword = PasswordGenerator.generateRandomPassword(8);
-
-      //Find User by ID
+   public String resetPassword(@PathVariable int userID, Model model, HttpServletRequest request) {
+      // Find User by ID
       User user = userRepo.findById(userID);
 
       UserDTO userDTO = new UserDTO();
       userDTO.setFirstName(user.getFirstName());
-      userDTO.setPassword(generatedPassword);
       userDTO.setUsername(user.getUsername());
 
-      //Send Email
-      // try {
-      emailService.sendResetEmail(userDTO);
-      // }finally {
+      // Generate token & send email
+      try {
+         VerificationToken token = new VerificationToken(user);
+         verificationTokenRepo.save(token);
+
+         String appUrl = request.getScheme() + Constants.SERVER_URL + "register/confirm/" + token.getToken();
+
+         // Send Email
+         emailService.sendResetEmail(userDTO, appUrl);
+
+         logger.info("\n Reset email sent to " + userDTO.getUsername());
+
+      } catch (Exception e) {
+         logger.info("Error: " + e.toString());
+      }
 
       //Save User
-      user.setPassword(pe.encode(generatedPassword));   
       userRepo.save(user);
 
-      logger.info("\n Admin Log: Password reset for: " + user.getUsername() +
-            "\n Reset email sent.");
+      logger.info("\n Admin Log: Password reset for: " + user.getUsername()
+      + "\n Reset email sent.");
 
       return "redirect:/admin/view-all-users";
    }
 
    @GetMapping("/view-all-users")
    public String viewAllUsers(Model model, Principal principal) {
-      //List of Users
+      // List of Users
       List<User> users = (List<User>) userRepo.findAll();
 
       model.addAttribute("users", users);
@@ -286,7 +310,7 @@ public class AdminController {
 
    @GetMapping("/delete-user/{userID}")
    public String deleteUser(@PathVariable int userID, RedirectAttributes redirectAttributes) {
-      //Find User by @PathVariable
+      // Find User by @PathVariable
       User user = userRepo.findById(userID);
 
       /*
@@ -295,18 +319,17 @@ public class AdminController {
          addressRepo.deleteAll(addressRepo.findAllByUser(user));
       } */
 
-      //Delete user's payment methods
+      // Delete user's payment methods
       if (user.getRole().getRole().equalsIgnoreCase("user")) {
          try {
-           // Customer deletedCustomer = stripeService.deleteStripeCustomer(user);
+            // Customer deletedCustomer = stripeService.deleteStripeCustomer(user);
          }
          catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.info(e.toString());
             redirectAttributes.addFlashAttribute("message", e.toString());
          }
       }
-      //Delete User from database
+      // Delete User from database
       userRepo.delete(user);
 
       logger.info("\n Admin Log: " + user.getUsername() + " deleted by Admin.");
@@ -320,9 +343,15 @@ public class AdminController {
 
    @GetMapping("/view-request/{requestID}")
    public String viewRequestDetails(@PathVariable int requestID, Model model, Principal principal) {
-      //Find Request by ID
+      // Find Request by ID
       Request request = requestRepo.findById(requestID);
 
+      // Request Duration
+      LocalTime duration = LocalTime.MIN.plus(Duration.ofMinutes
+            (ChronoUnit.MINUTES.between(request.getStartTime(), request.getEndTime())));
+
+      model.addAttribute("baseCharge", Constants.PRICE_BASE_CHARGE / 100);
+      model.addAttribute("duration", duration);
       model.addAttribute("request", request);
       model.addAttribute("username", principal.getName());
 
@@ -331,7 +360,7 @@ public class AdminController {
 
    @GetMapping("/view-all-requests")
    public String viewAllRequests(Model model, Principal principal) {
-      //List of Requests
+      // List of Requests
       List<Request> requests = (List<Request>) requestRepo.findAll();
 
       model.addAttribute("requests", requests);
@@ -340,5 +369,22 @@ public class AdminController {
       return "admin/view-all-requests";
    }
 
+   /* ----------------------------------------------------------
+    *          STRIPE DASHBOARD CONTROLLERS
+    * ----------------------------------------------------------*/
+
+   @GetMapping("/stripe-dashboard")
+   public String stripedashboard(Model model, Principal principal) {
+      // List of Requests
+      List<Request> requests = (List<Request>) requestRepo.findAll();
+      List<StripeCustomer> stripeCustomers = (List<StripeCustomer>) stripeCustomerRepo.findAll();
+
+      model.addAttribute("requests", requests);
+      model.addAttribute("stripeCustomers", stripeCustomers);
+      model.addAttribute("username", principal.getName());
+
+      return "admin/stripe-dashboard";
+   }
+
 }
-//AdminController
+// AdminController
