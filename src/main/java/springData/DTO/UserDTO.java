@@ -3,7 +3,7 @@ package springData.DTO;
 public class UserDTO {
 
    private int userID;
-   
+
    private String firstName;
 
    private String lastName;
@@ -15,7 +15,7 @@ public class UserDTO {
    private String matchingPassword;
 
    private String phoneNumber;
-   
+
    private String roleName;
 
    private String driverLicense;
@@ -99,4 +99,4 @@ public class UserDTO {
 
 
 }
-//UserDTO
+// UserDTO

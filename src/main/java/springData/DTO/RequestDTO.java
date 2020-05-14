@@ -1,18 +1,23 @@
 package springData.DTO;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 public class RequestDTO {
 
+   //Format of time input
+   final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("hh:mm a dd/MM/yyyy");
+
    @DateTimeFormat(iso = ISO.DATE)
    private LocalDate requestDate;
 
-   private String startTime;
+   private LocalDateTime startTime;
 
-   private String endTime;
+   private LocalDateTime endTime;
 
    private String pickupLatitude;
 
@@ -21,6 +26,8 @@ public class RequestDTO {
    private String dropoffLatitude;
 
    private String dropoffLongitude;
+
+   private double distance;
 
    // default and parameterized constructors
    public RequestDTO() {
@@ -35,20 +42,24 @@ public class RequestDTO {
       this.requestDate = requestDate;
    }
 
-   public String getStartTime() {
+   public LocalDateTime getStartTime() {
       return startTime;
    }
 
    public void setStartTime(String startTime) {
-      this.startTime = startTime;
+      if (!startTime.isEmpty()) {
+         this.startTime = LocalDateTime.parse(startTime, DATE_FORMATTER);
+      }
    }
 
-   public String getEndTime() {
+   public LocalDateTime getEndTime() {
       return endTime;
    }
 
    public void setEndTime(String endTime) {
-      this.endTime = endTime;
+      if (!endTime.isEmpty()) {
+         this.endTime = LocalDateTime.parse(endTime, DATE_FORMATTER);
+      }
    }
 
    public String getPickupLongitude() {
@@ -83,5 +94,13 @@ public class RequestDTO {
       this.dropoffLongitude = dropoffLongitude;
    }
 
+   public double getDistance() {
+      return distance;
+   }
+
+   public void setDistance(double distance) {
+      this.distance = distance;
+   }
+
 }
-//RequestDTO
+// RequestDTO

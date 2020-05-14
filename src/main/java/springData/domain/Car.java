@@ -36,9 +36,6 @@ public class Car {
    @Basic
    private String carColor;
 
-   /**
-    * Is the car active or not?
-    */
    @Basic
    @Type(type = "yes_no")
    @Column(name = "isActive", nullable = false)
@@ -46,6 +43,11 @@ public class Car {
 
    @Basic(optional = false)
    private int fuelLevel;
+
+   @Basic
+   @Type(type = "yes_no")
+   @Column(name = "unlocked", nullable = false)
+   private boolean unlocked = false;
 
    @ManyToOne
    private Location location;
@@ -56,10 +58,11 @@ public class Car {
    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "car")
    private List<CarAvailability> carAvailabilities;
 
-   public Car(String registrationNumber, String carColor, String carName, boolean isActive) {
+   public Car(String registrationNumber, String carColor, String carMake, String carName, boolean isActive) {
       super();
       this.registrationNumber = registrationNumber;
       this.carColor = carColor;
+      this.carMake = carMake;
       this.carName = carName;
       this.isActive = isActive;
    }
@@ -115,6 +118,14 @@ public class Car {
       this.fuelLevel = fuelLevel;
    }
 
+   public boolean isUnlocked() {
+      return unlocked;
+   }
+
+   public void setUnlocked(boolean unlocked) {
+      this.unlocked = unlocked;
+   }
+
    public Location getLocation() {
       return this.location;
    }
@@ -124,7 +135,7 @@ public class Car {
    }
 
    public Set<Request> getRequests() {
-      if(requests == null) {
+      if (requests == null) {
          requests = new HashSet<>();
       }
       return this.requests;
@@ -145,7 +156,7 @@ public class Car {
    }
 
    public List<CarAvailability> getCarAvailabilities() {
-      if(carAvailabilities == null) {
+      if (carAvailabilities == null) {
          carAvailabilities = new ArrayList<>();
       }
       return this.carAvailabilities;
@@ -166,4 +177,4 @@ public class Car {
    }
 
 }
-//CarAvailability
+// CarAvailability

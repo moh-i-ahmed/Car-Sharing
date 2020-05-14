@@ -34,14 +34,11 @@ import springData.domain.Request;
 import springData.domain.Role;
 import springData.domain.StripeCustomer;
 import springData.domain.User;
-import springData.domain.VerificationToken;
-import springData.repository.AddressRepository;
 import springData.repository.RoleRepository;
 import springData.repository.StripeCustomerRepository;
 import springData.repository.CarRepository;
 import springData.repository.RequestRepository;
 import springData.repository.UserRepository;
-import springData.repository.VerificationTokenRepository;
 import springData.services.EmailServiceImpl;
 import springData.utils.PasswordGenerator;
 import springData.validator.PasswordDTOValidator;
@@ -51,7 +48,7 @@ import springData.validator.UserDTOValidator;
 @RequestMapping("/admin")
 public class AdminController {
 
-   private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
+   private static final Logger LOGGER = LoggerFactory.getLogger(AdminController.class);
 
    BCryptPasswordEncoder pe = new  BCryptPasswordEncoder();
 
@@ -59,8 +56,6 @@ public class AdminController {
    @Autowired private RoleRepository roleRepo;
    @Autowired private CarRepository carRepo;
    @Autowired private RequestRepository requestRepo;
-   @Autowired private AddressRepository addressRepo;
-   @Autowired private VerificationTokenRepository verificationTokenRepo;
    @Autowired private StripeCustomerRepository stripeCustomerRepo;
 
    @Autowired private EmailServiceImpl emailService;
@@ -77,7 +72,7 @@ public class AdminController {
 
    @GetMapping ("/dashboard")
    public String dashboard(Model model, Principal principal) throws JsonProcessingException {
-      //Parse query result to JSON for Google Maps View
+      // Parse query result to JSON
       ObjectMapper mapper = new ObjectMapper();
       String carLocations = mapper.writeValueAsString(carRepo.findAllCarLocations());
 
@@ -119,9 +114,9 @@ public class AdminController {
    public String createUser(@Valid @ModelAttribute("userDTO") UserDTO userDTO, BindingResult result, Model model,
          HttpServletRequest request, Principal principal) {
 
+      // Email is already in use
       User userExists = userRepo.findByUsername(userDTO.getUsername());
 
-      // Username is already in use
       if (userExists != null) {
          // List of Roles
          List<Role> roles = (List<Role>) roleRepo.findAll();
@@ -137,8 +132,6 @@ public class AdminController {
          List<Role> roles = (List<Role>) roleRepo.findAll();
          model.addAttribute("roles", roles);
          model.addAttribute("username", principal.getName());
-
-         System.err.println(result);
 
          return "admin/createUser";
       } else {
@@ -160,10 +153,10 @@ public class AdminController {
             // Send Email
             emailService.sendRegistrationEmail(newUser, request);
          } catch (Exception e) {
-            logger.info("Error: " + e);
+            LOGGER.info("Error: " + e);
          }
 
-         logger.info("\n Admin Log: Account added for " + userDTO.getUsername() +
+         LOGGER.info("\n Admin Log: Account added for " + userDTO.getUsername() +
                "\n Account creation email sent.");
 
          return "redirect:/admin/view-all-users";
@@ -174,6 +167,7 @@ public class AdminController {
    public String editUser(@PathVariable int userID, Model model, Principal principal) {
       // Find User by ID
       User user = userRepo.findById(userID);
+
       // List of Roles
       List<Role> roles = (List<Role>) roleRepo.findAll();
 
@@ -223,21 +217,24 @@ public class AdminController {
       // Find User using UserDTO details
       User user = userRepo.findById(userID);
 
+      // Email is already in use
       User userExists = userRepo.findByUsername(userDTO.getUsername());
 
-      // Username is already in use
       if (!(userDTO.getUsername().equalsIgnoreCase(user.getUsername())) && (userExists != null)) {
+         result.rejectValue("username", "", "Email already in use.");
+
          // List of Roles
          List<Role> roles = (List<Role>) roleRepo.findAll();
          model.addAttribute("roles", roles);
-
-         result.rejectValue("username", "", "Email already in use.");
 
          return "admin/edit-user";
       }
 
       if (result.hasErrors()) {
-         System.err.println(result);
+         // List of Roles
+         List<Role> roles = (List<Role>) roleRepo.findAll();
+         model.addAttribute("roles", roles);
+
          return "admin/edit-user";
       } else {
          // Update User using UserDTO details
@@ -245,8 +242,6 @@ public class AdminController {
          user.setLastName(userDTO.getLastName());
          user.setUsername(userDTO.getUsername());
          user.setRole(roleRepo.findByRoleName(userDTO.getRoleName()));
-
-         // Save User
          userRepo.save(user);
 
          // Notification Message
@@ -256,7 +251,7 @@ public class AdminController {
          redirectAttributes.addFlashAttribute("messageCode", messageCode);
          redirectAttributes.addFlashAttribute("message", message);
 
-         logger.info("\n Admin Log: Account updated for " + userDTO.getUsername() +
+         LOGGER.info("\n Admin Log: Account updated for " + userDTO.getUsername() +
                "\n Email sent.");
 
          return "redirect:/admin/view-all-users";
@@ -272,26 +267,19 @@ public class AdminController {
       userDTO.setFirstName(user.getFirstName());
       userDTO.setUsername(user.getUsername());
 
-      // Generate token & send email
       try {
-         VerificationToken token = new VerificationToken(user);
-         verificationTokenRepo.save(token);
-
-         String appUrl = request.getScheme() + Constants.SERVER_URL + "register/confirm/" + token.getToken();
-
          // Send Email
-         emailService.sendResetEmail(userDTO, appUrl);
+         emailService.sendResetEmail(user, request);
 
-         logger.info("\n Reset email sent to " + userDTO.getUsername());
-
+         LOGGER.info("\n Reset email sent to " + userDTO.getUsername());
       } catch (Exception e) {
-         logger.info("Error: " + e.toString());
+         LOGGER.info("Error: " + e.toString());
       }
 
       //Save User
       userRepo.save(user);
 
-      logger.info("\n Admin Log: Password reset for: " + user.getUsername()
+      LOGGER.info("\n Admin Log: Password reset for: " + user.getUsername()
       + "\n Reset email sent.");
 
       return "redirect:/admin/view-all-users";
@@ -313,26 +301,10 @@ public class AdminController {
       // Find User by @PathVariable
       User user = userRepo.findById(userID);
 
-      /*
-      if (!(addressRepo.findAllByUser(user) == null)) {
-         //Delete the user's addresses
-         addressRepo.deleteAll(addressRepo.findAllByUser(user));
-      } */
-
-      // Delete user's payment methods
-      if (user.getRole().getRole().equalsIgnoreCase("user")) {
-         try {
-            // Customer deletedCustomer = stripeService.deleteStripeCustomer(user);
-         }
-         catch (Exception e) {
-            logger.info(e.toString());
-            redirectAttributes.addFlashAttribute("message", e.toString());
-         }
-      }
       // Delete User from database
       userRepo.delete(user);
 
-      logger.info("\n Admin Log: " + user.getUsername() + " deleted by Admin.");
+      LOGGER.info("\n Admin Log: " + user.getUsername() + " deleted by Admin.");
 
       return "redirect:/admin/view-all-users";
    }
@@ -370,7 +342,7 @@ public class AdminController {
    }
 
    /* ----------------------------------------------------------
-    *          STRIPE DASHBOARD CONTROLLERS
+    *          STRIPE DASHBOARD CONTROLLER
     * ----------------------------------------------------------*/
 
    @GetMapping("/stripe-dashboard")

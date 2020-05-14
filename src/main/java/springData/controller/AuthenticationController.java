@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import springData.domain.User;
-import springData.repository.CarRepository;
-import springData.repository.RequestRepository;
 import springData.repository.UserRepository;
 
 import java.security.Principal;
@@ -17,16 +15,13 @@ import java.security.Principal;
 @Controller
 public class AuthenticationController {
 
-   @Autowired UserRepository userRepo;
-   @Autowired CarRepository carRepo;
-   @Autowired RequestRepository requestRepo;
+   @Autowired private UserRepository userRepo;
 
    @GetMapping("/")
    public String landing() {
       return "login";
    }
 
-   //TODO   add cookies
    @GetMapping("/success-login")
    public String successLogin() {
       return "redirect:/dashboard";
@@ -47,16 +42,21 @@ public class AuthenticationController {
       }
    }
 
-   @GetMapping("/help")
-   public String help() {
-      return "help";
+   @GetMapping("/FAQ")
+   public String faq(Model model, Principal principal) {
+     // Get Logged in User
+      User user = userRepo.findByUsername(principal.getName());
+
+      model.addAttribute("username", user.getFirstName() + " " + user.getLastName());
+
+      return "FAQ";
    }
 
    @ResponseStatus(HttpStatus.FORBIDDEN)
    @GetMapping("/access-denied")
    public String accessDenied(Model model, Principal principal) {
       model.addAttribute("username", principal.getName());
-      
+
       return "access-denied";
    }
 
@@ -69,10 +69,8 @@ public class AuthenticationController {
    @ResponseStatus(HttpStatus.NOT_FOUND)
    @GetMapping(value = "/error")
    public String error(Model model, Principal principal) {
-      model.addAttribute("username", principal.getName());
-
       return "404";
    }
 
 }
-//AuthenticationController
+// AuthenticationController

@@ -1,9 +1,11 @@
 package springData.domain;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,11 +27,13 @@ public class Request {
    @Basic
    private LocalDate requestDate;
 
+   @Column(nullable = false)
    @Basic
-   private LocalTime startTime;
+   private LocalDateTime startTime;
 
+   @Column(nullable = false)
    @Basic
-   private LocalTime endTime;
+   private LocalDateTime endTime;
 
    @Basic
    private String accessCode;
@@ -37,7 +41,10 @@ public class Request {
    @Basic
    private String status;
 
-   @OneToOne
+   @Basic
+   private double distance;
+
+   @OneToOne(fetch = FetchType.LAZY)
    private Invoice invoice;
 
    @ManyToOne
@@ -52,92 +59,115 @@ public class Request {
    @ManyToOne
    private Car car;
 
+   public Request() {      
+   }
+
+   public Request(LocalDate requestDate, LocalDateTime startTime, LocalDateTime endTime, String status,
+         Location dropoffLocation, User user, Car car) {
+      super();
+      this.requestDate = requestDate;
+      this.startTime = startTime;
+      this.endTime = endTime;
+      this.status = status;
+      this.dropoffLocation = dropoffLocation;
+      this.user = user;
+      this.car = car;
+   }
+
    public int getRequestID() {
-       return this.requestID;
+      return this.requestID;
    }
 
    public void setRequestID(int requestID) {
-       this.requestID = requestID;
+      this.requestID = requestID;
    }
 
    public LocalDate getRequestDate() {
-       return this.requestDate;
+      return this.requestDate;
    }
 
    public void setRequestDate(LocalDate requestDate) {
-       this.requestDate = requestDate;
+      this.requestDate = requestDate;
    }
 
-   public LocalTime getStartTime() {
-       return this.startTime;
+   public LocalDateTime getStartTime() {
+      return this.startTime;
    }
 
-   public void setStartTime(LocalTime startTime) {
-       this.startTime = startTime;
+   public void setStartTime(LocalDateTime startTime) {
+      this.startTime = startTime;
    }
 
-   public LocalTime getEndTime() {
-       return this.endTime;
+   public LocalDateTime getEndTime() {
+      return this.endTime;
    }
 
-   public void setEndTime(LocalTime endTime) {
-       this.endTime = endTime;
+   public void setEndTime(LocalDateTime endTime) {
+      this.endTime = endTime;
    }
 
    public String getAccessCode() {
-       return this.accessCode;
+      return this.accessCode;
    }
 
    public void setAccessCode(String accessCode) {
-       this.accessCode = accessCode;
+      this.accessCode = accessCode;
    }
 
    public String getStatus() {
-       return this.status;
+      return this.status;
    }
 
    public void setStatus(String status) {
-       this.status = status;
+      this.status = status;
+   }
+
+   public double getDistance() {
+      return distance;
+   }
+
+   public void setDistance(double distance) {
+      this.distance = distance;
    }
 
    public Invoice getInvoice() {
-       return this.invoice;
+      return this.invoice;
    }
 
    public void setInvoice(Invoice invoice) {
-       this.invoice = invoice;
+      this.invoice = invoice;
    }
 
    public Location getPickupLocation() {
-       return this.pickupLocation;
+      return this.pickupLocation;
    }
 
    public void setPickupLocation(Location pickupLocation) {
-       this.pickupLocation = pickupLocation;
+      this.pickupLocation = pickupLocation;
    }
 
    public Location getDropoffLocation() {
-       return this.dropoffLocation;
+      return this.dropoffLocation;
    }
 
    public void setDropoffLocation(Location dropoffLocation) {
-       this.dropoffLocation = dropoffLocation;
+      this.dropoffLocation = dropoffLocation;
    }
 
    public User getUser() {
-       return this.user;
+      return this.user;
    }
 
    public void setUser(User user) {
-       this.user = user;
+      this.user = user;
    }
 
    public Car getCar() {
-       return this.car;
+      return this.car;
    }
 
    public void setCar(Car car) {
-       this.car = car;
+      this.car = car;
    }
 
 }

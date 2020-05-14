@@ -20,7 +20,7 @@ import springData.repository.UserRepository;
 @Service
 public class InvoiceService {
 
-   private static final Logger logger = LoggerFactory.getLogger(InvoiceService.class);
+   private static final Logger LOGGER = LoggerFactory.getLogger(InvoiceService.class);
 
    @Autowired private StripeService stripeService;
 
@@ -31,7 +31,7 @@ public class InvoiceService {
 
    /**
     * Generates a Stripe invoice using StripeService & and stores the ID in the database
-    * 
+    *
     * @param request - contains user request details
     * @throws StripeException
     */
@@ -43,7 +43,7 @@ public class InvoiceService {
       String invoiceID = stripeService.createInvoice(request.getUser(), paymentAmount);
 
       if (invoiceID.isEmpty()) {
-         logger.info("Error creating Invoice for " + request.getUser().getUsername());
+         LOGGER.info("Error creating Invoice for " + request.getUser().getUsername());
       }
       // Invoice entity
       Invoice invoice = new Invoice();
@@ -55,20 +55,20 @@ public class InvoiceService {
       if (!request.getStatus().equalsIgnoreCase(Constants.REQUEST_STATUS_CANCELLED)) {
          invoice.setDistanceCharge((request.getDistance()/1000 * Constants.PRICE_PER_KILOMETER)/100);
          invoice.setTimeCharge((ChronoUnit.MINUTES.between(request.getStartTime(), request.getEndTime())
-               * Constants.PRICE_PER_MINUTE)/100);
+                 * Constants.PRICE_PER_MINUTE)/100);
       }
 
-      invoice.setTotalAmount(paymentAmount/100);
+      invoice.setTotalAmount(paymentAmount / 100);
       invoiceRepo.save(invoice);
 
       // Update request
       request.setInvoice(invoice);
       requestRepo.save(request);
-      
+
       invoice.setRequest(request);
       invoiceRepo.save(invoice);
 
-      logger.info("Invoice Created for " + request.getUser().getUsername());
+      LOGGER.info("Invoice Created for " + request.getUser().getUsername());
    }
 
    /**
@@ -83,13 +83,13 @@ public class InvoiceService {
          return (int) Constants.PRICE_CANCELLATION;
       }
       // Minutes between Start & End time
-      long timeDifference = ChronoUnit.MINUTES.between(request.getStartTime(), request.getEndTime()); 
+      long timeDifference = ChronoUnit.MINUTES.between(request.getStartTime(), request.getEndTime());
 
       // BASE_CHARGE + (DISTANCE *  0.2) + (Time * 0.1)
-      double amount = Constants.PRICE_BASE_CHARGE + (request.getDistance()/1000 * Constants.PRICE_PER_KILOMETER)
-            + (timeDifference * Constants.PRICE_PER_MINUTE);
+      double amount = Constants.PRICE_BASE_CHARGE + (request.getDistance() / 1000 * Constants.PRICE_PER_KILOMETER)
+              + (timeDifference * Constants.PRICE_PER_MINUTE);
 
-      logger.info("Amount is " + amount);
+      LOGGER.info("Amount is " + amount);
       return amount;
    }
 

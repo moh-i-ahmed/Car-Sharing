@@ -49,7 +49,7 @@ public class Location {
        this.latitude = latitude;
    }
 
-   public String getLongitude() {
+   public String  getLongitude() {
        return this.longitude;
    }
 

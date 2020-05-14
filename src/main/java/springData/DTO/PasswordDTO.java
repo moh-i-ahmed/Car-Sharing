@@ -3,7 +3,7 @@ package springData.DTO;
 public class PasswordDTO {
 
    private String currentPassword;
-   
+
    private String newPassword;
 
    private String confirmPassword;
@@ -38,4 +38,4 @@ public class PasswordDTO {
    }
 
 }
-//UserFormDTO
+// PasswordDTO
