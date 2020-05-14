@@ -232,7 +232,7 @@
           <div class="row justify-content-center">
           
             <!-- Area Chart -->
-            <div class="col-xl-4 col-lg-6 col-md-5 mx-auto">
+            <div class="col-xl-4 col-lg-10 col-md-10 mx-auto">
                <div class="card shadow mb-4">
                   <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                      <h6 class="m-0 font-weight-bold text-primary">Your Car is Ready</h6>
@@ -241,7 +241,7 @@
                   
                   <!-- Card Body -->
                   <div class="card-body">
-                  <div class="card-body" th:with="startTime=${request.startTime},endTime=${request.endTime}">
+                  <div class="card-body text-nowrap" th:with="startTime=${request.startTime},endTime=${request.endTime}">
                      <div class="form-group row">
                         <div class="col-sm-3 mb-3 mb-sm-0">
                            <strong><td>Time</td></strong>
@@ -250,16 +250,16 @@
                            <td th:text="${#temporals.format(startTime, 'h:mm a')} + ' - ' + ${#temporals.format(endTime, 'h:mm a')}"></td>
                         </div>
                      </div>
-                     <div class="d-none d-md-block d-lg-block d-xl-block">
+                     <!--div class="d-none d-md-block d-lg-block d-xl-block">
                         <div class="form-group row" id="timerGroup">
                            <div class="col-sm-3 mb-3 mb-sm-0">
-                              <strong><td>Time</td></strong>
+                              <strong><td>Current Time</td></strong>
                            </div>
                            <div class="col-sm-6 mx-auto">
                               <span id="time"></span>
                            </div>
                         </div>
-                     </div>
+                     </div-->
                      <div class="form-group row">
                         <div class="col-sm-3 mb-3 mb-sm-0">
                            <strong><td>Car</td></strong>
@@ -276,22 +276,24 @@
                            <td th:text="${request.car.registrationNumber}"></td>
                         </div>
                      </div>
-                     <div class="form-group row">
+                     <!--div class="form-group row">
                         <div class="col-sm-3 mb-3 mb-sm-0">
                            <strong><td>Access Code</td></strong>
                         </div>
                         <div class="col-sm-6 mx-auto">
                            <td th:text="${request.accessCode}"></td>
                         </div>
-                     </div>
+                     </div-->
                      <div id="buttonDiv">
                         <hr>
-                        <a href="#" id="infoBtn" class="btn btn-dark btn-outline btn-md float-left" data-toggle="modal" data-target="#infoModal">
+                        <div class="float-left">
+                        <a href="#" id="infoBtn" class="btn btn-dark btn-outline btn-md" data-toggle="modal" data-target="#infoModal">
                            <i class="fas fa-info fa-sm m-1"></i>
                         </a>
+                        </div>
                         <div class="float-right" role="group" th:if="${request.car.unlocked == false}">
                            <a class="btn bg-gray-900 btn-outline btn-md" th:href="@{/user/unlock-car/} + ${request.requestID} + '/' + ${request.accessCode}" id="unlockBtn">
-                              <span class="text-gray-100">Unlock</span>
+                              <span class="text-gray-100">Unlock Car</span>
                            </a>
                            <a href="#" class="btn btn-danger btn-outline btn-md" id="cancelBtn" data-toggle="modal" data-target="#cancelModal">
                               <span class="text">Cancel</span>
@@ -323,7 +325,7 @@
                        <i class="fas fa-long-arrow-alt-right ml-1 mr-1"></i>
                     <span id="dropoff"></span>
                     <a class="badge badge-dark mt-2 text-gray-100" th:href="@{https://www.google.co.uk/maps?saddr=My+Location&daddr=} + 
-                       ${request.pickupLocation.latitude} + ',' + ${request.pickupLocation.longitude}">Show Directions</a>
+                       ${request?.pickupLocation?.latitude} + ',' + ${request?.pickupLocation?.longitude}">Show Directions</a>
                  </label>
                  <div class="card position-relative" id="map" style="position:absolute">
                     <!-- Google Maps Autocomplete & Directions -->
@@ -524,7 +526,7 @@
                     This will lock the car and complete your request. 
                     <br><br>
                     If you do not end the request, it will end automatically after the requested end time has passed and you will have 
-                    c<strong>1 minute</strong> to park, take your personal belongings and exit the car before it is locked automatically. 
+                    <strong>5 minute</strong> to park, take your personal belongings and exit the car before it is locked automatically. 
                   </div>
                </div>
              </div>

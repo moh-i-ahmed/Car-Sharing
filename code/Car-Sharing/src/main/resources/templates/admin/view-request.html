@@ -10,7 +10,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Car Sharing - View Request </title>
+  <title>Admin - View Request </title>
    
   <!-- Custom fonts for this template -->
   <link rel="icon" href="/img/favicon.ico" />
@@ -19,9 +19,15 @@
 
   <!-- Custom styles for this template -->
   <link th:href="@{/css/sb-admin-2.min.css}" type="text/css" rel="stylesheet"/> 
+  <link rel="stylesheet" type="text/css" href="/css/maps.css">
 
   <!-- Custom styles for this page -->
   <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  
+  <!-- Import Scripts -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/car-sharing/utilities.js"></script>
+  <script type="text/javascript" src="/js/car-sharing/maps.js"></script>
 
 </head>
 
@@ -118,6 +124,21 @@
       </li>
       
       <!-- Divider -->
+      <hr class="sidebar-divider">
+
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Payment 
+      </div>
+
+      <!-- Nav Item - Stripe -->
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/admin/stripe-dashboard}">
+          <i class="fab fa-cc-stripe fa-2x"></i>
+          <span>Stripe Dashboard</span></a>
+      </li>
+      
+      <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
 
       <!-- Sidebar Toggler (Sidebar) -->
@@ -143,8 +164,8 @@
           </button>
           
           <!-- Topbar Page Name -->
-          <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search input-group">
-            <h3 class="h4 mb-1 text-gray-600">Request Details</h3>
+          <div class="d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search input-group">
+            <h1 class="h5 mb-0 text-gray-800">Request Details</h1>
           </div>
 
           <!-- Topbar Navbar -->
@@ -176,7 +197,7 @@
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                  <td th:text="${request.user.username}"></td>
+                  <td th:text="${username}"></td>
                 </span>
                 <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
               </a>
@@ -209,83 +230,150 @@
 
       <!-- Begin Page Content -->
       <div class="container-fluid">
+      
+          <!-- Notification -->
+          <div class="toast position-absolute" role="alert" th:if="${message != null and messageCode != null}" style="right:20px; z-index: 5;"
+               aria-live="polite" aria-atomic="true" data-delay="5000">
+             
+             <div class="toast-header bg-gradient-success text-gray-100" th:if="${#strings.contains(messageCode, 'Success')}" th:text="${messageCode}">
+                <!-- Success -->
+                <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
+                     preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
+                <rect fill="#007aff" width="100%" height="100%" /></svg>
+                <strong class="mr-auto"></strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+                </button>
+             </div>
+             <div class="toast-header bg-gradient-danger text-gray-100" th:if="${#strings.contains(messageCode, 'Error')}" th:text="${messageCode}">
+                <!-- Error -->
+                <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
+                     preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
+                <rect fill="#007aff" width="100%" height="100%" /></svg>
+                <strong class="mr-auto"></strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+                </button>
+             </div>
+             <div class="toast-header bg-gradient-warning text-gray-100" th:if="${#strings.contains(messageCode, 'Warning')}" th:text="${messageCode}">
+                <!-- Warning -->
+                <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
+                     preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
+                <rect fill="#007aff" width="100%" height="100%" /></svg>
+                <strong class="mr-auto"></strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+                </button>
+             </div>
+             <div class="toast-body" th:text="${message}"></div>
+          </div>
 
          <!-- Page Heading -->
          <div class="row">
         
             <!-- User Data -->
-            <div class="col-xl-4 col-lg-6 col-md-5 mx-auto">
-           
-              <div class="card shadow mb-4">
+            <!--div class="col-xl-4 col-lg-6 col-md-5 mx-auto"-->
+            <div class="col-xl-4 col-lg-10 col-md-10 mx-auto">
+              <div class="card shadow mb-3" th:with="startTime=${request.startTime},endTime=${request.endTime},date=${request.requestDate},duration=${duration}">
                 
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Overview</h6>
-                  <div class="dropdown no-arrow">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" th:if="${request.status} != 'Cancelled'">
+                  <h6 class="m-0 font-weight-bold text-primary" th:text="${#temporals.format(startTime, 'dd MMM yyyy')}"></h6>
+                  <div class="dropdown no-arrow font-weight-bold text-primary" >
+                    <td th:text="${request.status}"></td>
+                  </div>
+                </div>
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" th:if="${request.status} == 'Cancelled'">
+                  <h6 class="m-0 font-weight-bold text-primary" th:text="${#temporals.format(startTime, 'dd MMM yyyy h:mm a')}"></h6>
+                  <div class="dropdown no-arrow font-weight-bold text-danger"  >
                     <td th:text="${request.status}"></td>
                   </div>
                 </div>
 
                 <div class="card-body">
-                   <div class="form-group row">
-                        <div class="col-sm-3 mb-3 mb-sm-0 ml-3">
-                           <strong><td>From</td></strong>
-                        </div>
-                        <div class="col-sm-6 mx-auto">
-                         <td th:text="${request.startTime}"></td>
+                  <div class="card-body">
+                      <div class="form-group row" >
+                           <div class="col-sm-3 mb-3 mb-sm-0">
+                              <strong><td>Time</td></strong>
+                           </div>
+                           <div class="col-sm-6 mx-auto">
+                            <td th:text="${#temporals.format(startTime, 'h:mm a dd MMM')} + ' - ' + ${#temporals.format(endTime, 'h:mm a dd MMM')}"></td>
+                         </div>
                       </div>
-                   </div>
-                   <div class="form-group row">
-                        <div class="col-sm-3 mb-3 mb-sm-0 ml-3">
-                           <strong><td>To</td></strong>
-                        </div>
-                        <div class="col-sm-6 mx-auto">
-                         <td th:text="${request.endTime}"></td>
+                      <div class="form-group row" th:if="${request.status} != 'Cancelled'">
+                           <div class="col-sm-3 mb-3 mb-sm-0">
+                              <strong><td>Duration</td></strong>
+                           </div>
+                           <div class="col-sm-6 mx-auto">
+                            <td th:text="${#temporals.format(duration, 'hh:mm:ss')}"></td>
+                         </div>
                       </div>
-                   </div>
-                   <div class="form-group row">
-                        <div class="col-sm-3 mb-3 mb-sm-0 ml-3">
-                           <strong><td>Car Description</td></strong>
-                        </div>
-                        <div class="col-sm-6 mx-auto">
-                         <td th:text="${request.car.carColor}+ ' ' + ${request.car.carName}"></td>
+                      <div class="form-group row" th:if="${request.status} != 'Cancelled'">
+                           <div class="col-sm-3 mb-3 mb-sm-0">
+                              <strong><td>Distance</td></strong>
+                           </div>
+                           <div class="col-sm-6 mx-auto">
+                            <td th:text="${request.distance/1000} + 'km'"></td>
+                         </div>
                       </div>
-                   </div>
-                   <div class="form-group row">
-                        <div class="col-sm-3 mb-3 mb-sm-0 ml-3">
-                           <strong><td>Car Registration No.</td></strong>
-                        </div>
-                        <div class="col-sm-6 mx-auto">
-                         <td th:text="${request.car.registrationNumber}"></td>
+                      <div class="form-group row" th:if="${request.status} != 'Cancelled'">
+                           <div class="col-sm-3 mb-3 mb-sm-0">
+                              <strong><td>Car</td></strong>
+                           </div>
+                           <div class="col-sm-6 mx-auto">
+                            <td th:text="${request?.car?.carMake} + ' ' + ${request?.car?.carName} + ' - ' + ${request?.car?.carColor}"></td>
+                         </div>
                       </div>
-                   </div>
-                   <hr>
-                   <div class="form-group row">
-                        <div class="col-sm-3 mb-3 mb-sm-0 ml-3">
-                           <strong><td>Receipt</td></strong>
-                        </div>
-                   </div>
-                   <div class="form-group row">
-                        <div class="col-sm-3 mb-3 mb-sm-0 ml-3">
-                           <strong><td>Base Charge</td></strong>
-                        </div>
-                        <div class="col-sm-6 mx-auto">
-                         <td th:text="'£'+${request.car.registrationNumber}"></td>
+                      <div class="form-group row" th:if="${request.status} != 'Cancelled'">
+                           <div class="col-sm-3 mb-3 mb-sm-0">
+                              <strong><td>Registration No.</td></strong>
+                           </div>
+                           <div class="col-sm-6 mx-auto">
+                            <td th:text="${request?.car?.registrationNumber}"></td>
+                         </div>
                       </div>
-                   </div>
-                   <div class="form-group row">
-                        <div class="col-sm-3 mb-3 mb-sm-0 ml-3">
-                           <strong><td>Ride Time</td></strong>
-                        </div>
-                        <div class="col-sm-6 mx-auto">
-                         <td th:text="'£'+${request.car.registrationNumber}"></td>
+                      <hr>
+                      <div th:if="${request?.invoice?.invoiceID != null}">
+                      <div class="form-group row">
+                           <div class="col-sm-3 mb-3 mb-sm-0">
+                              <strong><td>Receipt</td></strong>
+                              <i class="fas fa-receipt ml-2"></i>
+                           </div>
                       </div>
-                   </div>
-                   <div class="form-group row">
-                        <div class="col-sm-3 mb-3 mb-sm-0 ml-3">
-                           <strong><td>Total</td></strong>
-                        </div>
-                        <div class="col-sm-6 mx-auto">
-                         <td th:text="'£'+${request.car.registrationNumber}"></td>
+                      <div class="form-group row" th:if="${request.status} != 'Cancelled'">
+                           <div class="col-sm-3 mb-3 mb-sm-0">
+                              <strong><td>Base Charge</td></strong>
+                           </div>
+                           <div class="col-sm-6 mx-auto">
+                            <td th:text="'£'+${#numbers.formatDecimal(baseCharge, 1, 'DEFAULT', 2, 'POINT')}"></td>
+                         </div>
+                      </div>
+                      <div class="form-group row" th:if="${request.status} != 'Cancelled'">
+                           <div class="col-sm-3 mb-3 mb-sm-0">
+                              <strong><td>Time Charge</td></strong>
+                           </div>
+                           <div class="col-sm-6 mx-auto">
+                            <td th:text="'£'+${#numbers.formatDecimal(request?.invoice?.timeCharge, 1, 'DEFAULT', 2, 'POINT')}"></td>
+                         </div>
+                      </div>
+                      <div class="form-group row" th:if="${request.status} != 'Cancelled'">
+                           <div class="col-sm-3 mb-3 mb-sm-0">
+                              <strong><td>Distance Charge</td></strong>
+                           </div>
+                           <div class="col-sm-6 mx-auto" th:if="${request.invoice} != null">
+                            <td th:text="'£'+${#numbers.formatDecimal(request?.invoice?.distanceCharge, 1, 'DEFAULT', 2, 'POINT')}"></td>
+                         </div>
+                      </div>
+                      <div class="form-group row">
+                           <div class="col-sm-3 mb-3 mb-sm-0" th:if="${request.status} != 'Cancelled'">
+                              <strong><td>Total</td></strong>
+                           </div>
+                           <div class="col-sm-3 mb-3 mb-sm-0" th:if="${request.status} == 'Cancelled'">
+                              <strong><td>Cancellation Fee</td></strong>
+                           </div>
+                           <div class="col-sm-6 mx-auto">
+                            <td th:text="'£'+${#numbers.formatDecimal(request?.invoice?.totalAmount, 1, 'DEFAULT', 2, 'POINT')}"></td>
+                         </div>
+                      </div>
                       </div>
                    </div>
                 </div>
@@ -295,6 +383,54 @@
         
          <!-- /.container-fluid -->
          </div>
+         
+         <!-- Map View -->
+            <div class="row pb-5" th:if="${request.status != null and not #strings.contains(request.status, 'Cancelled')}">
+              <!-- Card Body -->
+                <div class="card-body">
+                  <div class="col-xl-4 col-lg-10 col-md-10 mx-auto" style="height: 500px">
+                    <label class="text-primary">
+                       <span id="pickup"></span> 
+                       <i class="fas fa-long-arrow-alt-right ml-1 mr-1"></i>
+                       <span id="dropoff"></span>
+                    </label>
+                    <div class="card position-relative" id="map" style="position:absolute">
+                       <!-- Google Maps Autocomplete & Directions -->
+                       <script>
+                     
+                         var map;
+                         var directionsService;
+                         var directionsRenderer;
+                         
+                         var startlatitude = [[${request.pickupLocation.latitude}]]; 
+                         var startlongitude = [[${request.pickupLocation.longitude}]];
+                         
+                         var endlatitude = [[${request.dropoffLocation.latitude}]]; 
+                         var endlongitude = [[${request.dropoffLocation.longitude}]];
+                         
+                         var originInput = {
+                                 lat: startlatitude, 
+                                 lng: startlongitude
+                         };
+                         var destinationInput = {
+                                 lat: endlatitude, 
+                                 lng: endlongitude
+                         };
+               
+                         function initMap() {
+                            requestViewInitializer(map, directionsService, directionsRenderer);
+                         }
+                       </script>
+                       <script async defer
+                             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAi9qsACSRpv-drbqKhofMzyVFf_Hr_fI0&libraries=places&callback=initMap">
+                       </script>
+                    
+                    </div>
+                 </div>
+              </div>
+              <!-- End of Map View -->
+            </div>
+            
       </div>
       </div>
       <!-- End of Main Content -->

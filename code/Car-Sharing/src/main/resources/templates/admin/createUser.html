@@ -108,6 +108,21 @@
       </li>
       
       <!-- Divider -->
+      <hr class="sidebar-divider">
+
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Payment 
+      </div>
+
+      <!-- Nav Item - Stripe -->
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/admin/stripe-dashboard}">
+          <i class="fab fa-cc-stripe fa-2x"></i>
+          <span>Stripe Dashboard</span></a>
+      </li>
+      
+      <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
 
       <!-- Sidebar Toggler (Sidebar) -->
@@ -133,8 +148,8 @@
           </button>
           
           <!-- Topbar Page Name -->
-          <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search input-group">
-            <h1 class="h3 mb-0 text-gray-800">Add User</h1>
+          <div class="d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search input-group">
+            <h1 class="h5 mb-0 text-gray-800">Add User</h1>
           </div>
 
           <!-- Topbar Navbar -->
@@ -179,15 +194,42 @@
         <!-- Begin Page Content -->
          <div class="container-fluid">
          
-            <!-- Password Changed Notification -->
-             <div class="alert alert-success alert-dismissible fade show position-absolute" role="alert" th:if="${message != null}" style="right:20px">
-                <strong>
-                   <span class="col-sm-6 mx-auto" th:text="${message}"/>
-                </strong>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <!-- Notification -->
+          <div class="toast position-absolute" role="alert" th:if="${message != null and messageCode != null}" style="right:20px; z-index: 5;"
+               aria-live="polite" aria-atomic="true" data-delay="5000">
+             
+             <div class="toast-header bg-gradient-success text-gray-100" th:if="${#strings.contains(messageCode, 'Success')}" th:text="${messageCode}">
+                <!-- Success -->
+                <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
+                     preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
+                <rect fill="#007aff" width="100%" height="100%" /></svg>
+                <strong class="mr-auto"></strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
                    <span aria-hidden="true">&times;</span>
                 </button>
              </div>
+             <div class="toast-header bg-gradient-danger text-gray-100" th:if="${#strings.contains(messageCode, 'Error')}" th:text="${messageCode}">
+                <!-- Error -->
+                <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
+                     preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
+                <rect fill="#007aff" width="100%" height="100%" /></svg>
+                <strong class="mr-auto"></strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+                </button>
+             </div>
+             <div class="toast-header bg-gradient-warning text-gray-100" th:if="${#strings.contains(messageCode, 'Warning')}" th:text="${messageCode}">
+                <!-- Warning -->
+                <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
+                     preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
+                <rect fill="#007aff" width="100%" height="100%" /></svg>
+                <strong class="mr-auto"></strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+                </button>
+             </div>
+             <div class="toast-body" th:text="${message}"></div>
+          </div>
    
             <!-- Page Heading -->
             <div class="row">
@@ -251,14 +293,14 @@
                            </div>
                           </div>
                           <hr>
-                          <div class="form-group row justify-content-around">
-                            <div class="col-sm-4 mb-3 mb-sm-0">
-                              <button class="btn btn-success btn-user btn-block" type="submit" name="action" value="submit" id="updateDetails">
+                          <div class="form-group row justify-content-around mb-0">
+                            <div class="col-sm-4  mb-2">
+                              <button class="btn btn-primary btn-block" type="submit" name="action" value="submit" id="updateDetails">
                                 Add
                               </button>
                             </div>
                             <div class="col-sm-4">
-                              <button class="btn btn-danger btn-user btn-block" type="reset">
+                              <button class="btn btn-danger btn-block" type="reset">
                                  Reset
                               </button>
                             </div>

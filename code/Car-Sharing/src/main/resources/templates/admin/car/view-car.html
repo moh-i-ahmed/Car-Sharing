@@ -19,24 +19,12 @@
 
   <!-- Custom styles for this template -->
   <link th:href="@{/css/sb-admin-2.min.css}" type="text/css" rel="stylesheet"/> 
+  <link rel="stylesheet" type="text/css" href="/css/maps.css">
 
-  <!-- Custom styles for this page -->
+  <!-- Import scripts -->
   <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet"/>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
-  <style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      #map {
-        height: 100%;
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-    </style>
+  <script type="text/javascript" src="/js/car-sharing/utilities.js"></script>
+  <script type="text/javascript" src="/js/car-sharing/maps.js"></script>
 
 </head>
 
@@ -60,7 +48,7 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" th:href="@{/dashboard}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
@@ -131,6 +119,21 @@
           <i class="fas fa-list-ul"></i>
           <span>View Requests</span></a>
       </li>
+      
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Payment 
+      </div>
+
+      <!-- Nav Item - Stripe -->
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/admin/stripe-dashboard}">
+          <i class="fab fa-cc-stripe fa-2x"></i>
+          <span>Stripe Dashboard</span></a>
+      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
@@ -158,8 +161,8 @@
           </button>
           
           <!-- Topbar Page Name -->
-          <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search input-group">
-            <h1 class="h3 mb-0 text-gray-800">View Car Details</h1>
+          <div class="d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search input-group">
+            <h1 class="h5 mb-0 text-gray-800">View Car Details</h1>
           </div>
 
           <!-- Topbar Navbar -->
@@ -203,31 +206,59 @@
       <!-- Begin Page Content -->
       <div class="container-fluid">
       
-         <!-- Password Changed Notification -->
-          <div class="alert alert-success alert-dismissible fade show position-absolute" role="alert" th:if="${message != null}" style="right:20px">
-             <strong>
-                <span class="col-sm-6 mx-auto" th:text="${message}"/>
-             </strong>
-             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-             </button>
+          <!-- Notification -->
+          <div class="toast position-absolute" role="alert" th:if="${message != null and messageCode != null}" style="right:20px; z-index: 5;"
+               aria-live="polite" aria-atomic="true" data-delay="5000">
+             
+             <div class="toast-header bg-gradient-success text-gray-100" th:if="${#strings.contains(messageCode, 'Success')}" th:text="${messageCode}">
+                <!-- Success -->
+                <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
+                     preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
+                <rect fill="#007aff" width="100%" height="100%" /></svg>
+                <strong class="mr-auto"></strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+                </button>
+             </div>
+             <div class="toast-header bg-gradient-danger text-gray-100" th:if="${#strings.contains(messageCode, 'Error')}" th:text="${messageCode}">
+                <!-- Error -->
+                <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
+                     preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
+                <rect fill="#007aff" width="100%" height="100%" /></svg>
+                <strong class="mr-auto"></strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+                </button>
+             </div>
+             <div class="toast-header bg-gradient-warning text-gray-100" th:if="${#strings.contains(messageCode, 'Warning')}" th:text="${messageCode}">
+                <!-- Warning -->
+                <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
+                     preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
+                <rect fill="#007aff" width="100%" height="100%" /></svg>
+                <strong class="mr-auto"></strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+                </button>
+             </div>
+             <div class="toast-body" th:text="${message}"></div>
           </div>
 
          <!-- Page Heading -->
          <div class="row">
         
             <!-- Inner Content-->
-            <div class="col-xl-4 col-lg-6 col-md-6 mx-auto">
+            <div class="col-xl-4 col-lg-10 col-md-10 mx-auto">
               <div class="card position-relative mb-3">            
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                    <h6 class="m-0 font-weight-bold text-primary">Overview</h6>
                    <div class="dropdown no-arrow">
-                      <a th:href="@{/car/edit-car/} + ${registrationNumber}">
-                         <i class=" far fa-edit text-gray-400 float-right"></i>
+                      <a class="text-gray-900" th:href="@{/car/edit-car/} + ${registrationNumber}">
+                         Edit <i class="ml-2 far fa-edit float-right"></i>
                       </a>
                    </div>
                 </div>
                 
+                <!-- Overview Card Body -->
                 <div class="card-body">
                   <div class="justify-center">
                     <!-- Car Form -->
@@ -281,245 +312,144 @@
                            <td th:text="${car.fuelLevel} + '%'">
                         </div>
                      </div>
-                     <!--div class="form-group row">
-                        <div class="col-sm-3 mb-3 mb-sm-0">
-                           <strong><td>Current Location</td></strong>
-                        </div>
-                     </div>
-                     <div class="form-group row">
-                        <div class="col-sm-3 mb-3 mb-sm-0">
-                           <strong><td>Latitude</td></strong>
-                        </div>
-                        <div class="col-sm-6 mx-auto">
-                           <td id="latitude" th:text="${car.latitude}">
-                        </div>
-                     </div>
-                     <div class="form-group row">
-                        <div class="col-sm-3 mt-2 mb-sm-0">
-                           <strong><td>Longitude</td></strong>
-                        </div>
-                        <div class="col-sm-6 mx-auto">
-                           <td id="longitude" th:text="${car.longitude}">
-                        </div>
-                     </div-->
                   </div>         
                 </div>
-              </div>
-              <label>
-                 <strong>Current Location</strong>
-              </label>
-              <div class="card position-relative mb-3" id="map" th:if="${car?.location?.latitude != null}" style="position:absolute">
-                 <script>
-                   /*<![CDATA[*/
-                     var latitude = [[${car.location.latitude}]]; 
-                     var longitude = [[${car.location.longitude}]]; 
-                     var registration = [[${car.registrationNumber}]]; 
-                     console.log(registration);
-                     
-                     
-                     // Note: This example requires that you consent to location sharing when
-                     // prompted by your browser. If you see the error "The Geolocation service
-                     // failed.", it means you probably did not give permission for the browser to
-                     /* locate you.
-                     var map, infoWindow;
-                     
-                     function initMap() {
-                       map = new google.maps.Map(document.getElementById('map'), {
-                         center: {lat: 52.6369, lng: -1.1398},
-                         zoom: 16
-                       });
-                       
-                       infoWindow = new google.maps.InfoWindow;
-               
-                       // Try HTML5 geolocation.
-                       if (navigator.geolocation) {
-                         navigator.geolocation.getCurrentPosition(function(position) {
-                           var pos = {
-                        		   lat: latitude,
-                        		   lng: longitude
-                           };
-                           var iconBase =
-                               'https://developers.google.com/maps/documentation/javascript/examples/full/images/';
-                           var marker;
-                           marker = new google.maps.Marker({
-                        	   map: map,
-                        	   draggable: false,
-                        	   animation: google.maps.Animation.DROP,
-                        	   position: pos,
-                        	   label: { color: '#000000', fontWeight: 'bold', fontSize: '14px', text: 'registration' }
-                        	   //icon: iconBase + 'parking_lot_maps.png'
-                            });
-                           infoWindow.setContent('dsafaed');
-                           map.setCenter(pos);
-                         }, function() {
-                           handleLocationError(true, infoWindow, map.getCenter());
-                         });
-                       } else {
-                         // Browser doesn't support Geolocation
-                         handleLocationError(false, infoWindow, map.getCenter());
-                       }
-                     }
-               
-                     function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-                       infoWindow.setPosition(pos);
-                       infoWindow.setContent(browserHasGeolocation ?
-                                             'Error: The Geolocation service failed.' :
-                                             'Error: Your browser doesn\'t support geolocation.');
-                       infoWindow.open(map);
-                     }
-                     /*
-                     function geocodeLatLng(geocoder, map, infowindow) {
-                    	  var latlng = {
-                    			  lat: latitude, 
-                    			  lng: longitude
-                    		};
-                    	  geocoder.geocode({'location': latlng}, function(results, status) {
-                    	    if (status === 'OK') {
-                    	      if (results[0]) {
-                    	        map.setZoom(11);
-                    	        var marker = new google.maps.Marker({
-                    	          position: latlng,
-                    	          map: map
-                    	        });
-                    	        infowindow.setContent(results[0].formatted_address);
-                    	        infowindow.open(map, marker);
-                    	      } else {
-                    	        window.alert('No results found');
-                    	      }
-                    	    } else {
-                    	      window.alert('Geocoder failed due to: ' + status);
-                    	    }
-                    	  }); */
-                    	  
-                    	  function initMap() {
-                          var map = new google.maps.Map(document.getElementById('map'), {
-                             center: {lat: 52.6369, lng: -1.1398},
-                             zoom: 11
-                            });
-                            var geocoder = new google.maps.Geocoder;
-                            var infowindow = new google.maps.InfoWindow;
-
-                            geocodeLatLng(geocoder, map, infowindow);
-                          }
-
-                          function geocodeLatLng(geocoder, map, infowindow) {
-                            var latlng = {
-                                  lat: latitude, 
-                                  lng: longitude
-                             };
-                             geocoder.geocode({'location': latlng}, function(results, status) {
-                                if (status === 'OK') {
-                                  if (results[0]) {
-                                    map.setZoom(16);
-                                    map.setCenter(latlng);
-                                   // var iconBase =
-                                        'https://developers.google.com/maps/documentation/javascript/examples/full/images/';
-                                    var marker = new google.maps.Marker({
-                                      position: latlng,
-                                      draggable: false,
-                                      animation: google.maps.Animation.DROP,
-                                      map: map,
-                                      //icon: iconBase + 'parking_lot_maps.png'
-                                    });
-                                    infowindow.setContent(results[0].formatted_address);
-                                    infowindow.open(map, marker);
-                                  } else {
-                                    window.alert('No results found');
-                                  }
-                                } else {
-                                  window.alert('Geocoder failed due to: ' + status);
-                                }
-                             });
-                           }
-                     /*]]*/
-                </script>
-                <script async defer
-                   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAi9qsACSRpv-drbqKhofMzyVFf_Hr_fI0&callback=initMap">
-                </script>
-              
+                <!-- End of Overview Card Body -->
               </div>
               
-              <!-- Request History -->
-              <div class="card position-relative mt-3">
-                 <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
-                    <h6 class="m-0 text-primary" th:text="'Request History (' + ${#lists.size(car.requests)} + ')'"></h6>
-                 </a>
-                 <!-- Collapsable Card -->
-                 <div class="collapse" id="collapseCardExample">
-                   <div class="justify-center">
-                     <!-- Card Body -->
-                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-5 col-lg-5 col-xl-5" th:each="request: ${car.requests}">
-                             
-                             <div class="card shadow mb-4">
-                               <!-- Card Header - Accordion -->
-                               <a th:attr="data-target='#colla'+${request.requestID}" class="d-block card-header py-3" data-toggle="collapse" 
-                                    role="button" aria-expanded="false" th:aria-controls="colla + ${request.requestID}">
-            
-                                 <h6 class="m-0 font-weight-bold text-primary">
-                                   <td th:text="${request.requestDate} + ', ' + ${request.startTime}"></td>
-                                 </h6>
-                               </a>
-                               
-                               <!-- Card Content - Collapse -->
-                               <div class="collapse" th:id="colla + ${request.requestID}">
-                                 <div class="card-body">   
-                                    <div class="form-group row mx-auto">
-                                       <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5 mb-3 mb-sm-0">
-                                          <strong><td>From</td></strong>
-                                       </div>
-                                       <div class="col-sm-6" style="padding-left: 30px;">
-                                        <td th:text="${request.startTime}"></td>
-                                       </div>
-                                    </div>
-                                    <div class="form-group row mx-auto">
-                                       <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5 mb-3 mb-sm-0">
-                                          <strong><td>To</td></strong>
-                                       </div>
-                                       <div class="col-sm-6" style="padding-left: 30px;">
-                                        <td th:text="${request.endTime}"></td>
-                                       </div>
-                                    </div>
-                                    <div class="form-group row mx-auto">
-                                       <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5 mb-3 mb-sm-0">
-                                          <strong><td>Car</td></strong>
-                                       </div>
-                                       <div class="col-sm-6" style="padding-left: 30px;">
-                                        <td th:text="${request.car.carColor} + ' ' + ${request.car.carName}"></td>
-                                       </div>
-                                    </div>
-                                    <hr>
-                                    <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5 mb-3 mb-sm-0 float-left">
-                                          <td th:text="${request.status}"></td>
-                                       </div>
-                                    <div class="form-group row float-right">
-                                       
-                                       <div class="col-sm-3 mb-3 mb-sm-0" >
-                                          <a href="#" class="btn btn-primary btn-icon-split btn-sm" th:href="@{/admin/view-request/} + ${request.requestID}">
-                                             <span class="icon text-white-50">
-                                                <i class="fas fa-arrow-right"></i>
-                                             </span>
-                                             <span class="text">Details</span>
-                                          </a>
-                                       </div>
-                                    </div>
-                                    
-                                 </div>
-                               </div>
-                         
-                             </div>
-                          </div>
-                        </div>
-                     </div>
-                     <!-- End of Card Body -->
-                  </div>
-                </div>
-                <!-- End of Collapsable Card -->
-              </div>
-
              </div>   
             </div> 
+            
+            <!-- Map View -->
+            <div class="row" th:if="${car?.location?.latitude != null}">
+              <!-- Card Body -->
+                <div class="card-body">
+                  <div class="col-xl-4 col-lg-10 col-md-10 mx-auto" style="height: 500px">
+                    <label>
+                       <strong>Current Location</strong>
+                    </label>
+                    
+                    <div class="card position-relative mb-3" id="map" style="position:absolute">
+                       <script>
+                         /*<![CDATA[*/
+                           var latitude = [[${car.location.latitude}]]; 
+                           var longitude = [[${car.location.longitude}]]; 
+                           var latlng = {
+                        	         lat: latitude, 
+                        	         lng: longitude
+                        	   };
+                           
+                          	function initMap() {
+                              var map = new google.maps.Map(document.getElementById('map'), {
+                                 center: {lat: 52.6369, lng: -1.1398},
+                                 zoom: 11
+                              });
+                              var geocoder = new google.maps.Geocoder;
+                              var infowindow = new google.maps.InfoWindow;
+      
+                              geocodeLatLng(geocoder, map, infowindow, latlng);
+                           }
+                           /*]]*/
+                      </script>
+                      <script async defer
+                         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAi9qsACSRpv-drbqKhofMzyVFf_Hr_fI0&callback=initMap">
+                      </script>
+                    
+                    </div>
+                 </div>
+              </div>
+              <!-- End of Map View -->
+            </div>
+              
+            <!-- Map View -->
+            <div class="row">
+              <!-- Card Body -->
+              <div class="card-body">
+                 <div class="col-xl-4 col-lg-10 col-md-10 mx-auto">
+              
+                    <!-- Request History -->
+                    <div class="card position-relative mt-3">
+                       <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                          <h6 class="m-0 text-primary" th:text="'Request History (' + ${#lists.size(car.requests)} + ')'"></h6>
+                       </a>
+                       <!-- Collapsable Card -->
+                       <div class="collapse" id="collapseCardExample">
+                         <div class="justify-center">
+                           <!-- Card Body -->
+                           <div class="card-body">
+                              <div class="row">
+                                  <div class="col-sm-12 col-md-10 col-lg-10 col-xl-10 mx-auto" th:each="request: ${car.requests}">
+                                   
+                                   <div class="card shadow mb-4" th:with="startTime=${request.startTime},endTime=${request.endTime},date=${request.requestDate}">
+                                     <!-- Card Header - Accordion -->
+                                     <a th:attr="data-target='#colla'+${request.requestID}" class="d-block card-header py-3" data-toggle="collapse" 
+                                          role="button" aria-expanded="true" th:aria-controls="colla + ${request.requestID}">
+                  
+                                       <h6 class="m-0 font-weight-bold text-primary">
+                                         <td th:text="${#temporals.format(date, 'dd MMM yyyy')}"></td>
+                                       </h6>
+                                     </a>
+                                     
+                                     <!-- Card Content - Collapse -->
+                                     <div class="collapse" th:id="colla + ${request.requestID}">
+                                       <div class="card-body">   
+                                          <div class="form-group row mx-auto">
+                                             <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5 mb-3 mb-sm-0">
+                                                <strong><td>From</td></strong>
+                                             </div>
+                                             <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5 mb-3 mb-sm-0">
+                                              <td th:text="${#temporals.format(startTime, 'h:mm a dd MMM yyyy')}"></td>
+                                             </div>
+                                          </div>
+                                          <div class="form-group row mx-auto">
+                                             <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5 mb-3 mb-sm-0">
+                                                <strong><td>To</td></strong>
+                                             </div>
+                                             <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5 mb-3 mb-sm-0">
+                                              <td th:text="${#temporals.format(endTime, 'h:mm a dd MMM yyyy')}"></td>
+                                             </div>
+                                          </div>
+                                          <div class="form-group row mx-auto">
+                                             <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5 mb-3 mb-sm-0">
+                                                <strong><td>User</td></strong>
+                                             </div>
+                                             <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5 mb-3 mb-sm-0">
+                                              <td th:text="${request.user.username}"></td>
+                                             </div>
+                                          </div>
+                                          <hr>
+                                          <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5 mb-3 mb-sm-0 float-left">
+                                                <td th:text="${request.status}"></td>
+                                             </div>
+                                          <div class="form-group row float-right">
+                                             
+                                             <div class="col-sm-3 mb-3 mb-sm-0" >
+                                                <a href="#" class="btn btn-primary btn-icon-split btn-sm" th:href="@{/admin/view-request/} + ${request.requestID}">
+                                                   <span class="text">Details</span>
+                                                   <span class="icon text-white-50">
+                                                      <i class="fas fa-arrow-right"></i>
+                                                   </span>
+                                                </a>
+                                             </div>
+                                          </div>
+                                          
+                                       </div>
+                                     </div>
+                               
+                                   </div>
+                                </div>
+                              </div>
+                           </div>
+                           <!-- End of Card Body -->
+                        </div>
+                      </div>
+                      <!-- End of Collapsable Card -->
+                    </div>
+                  </div>
+                </div>
+              <!-- End of Map View -->
+              </div>
+
                      
             <!-- Delete Car Modal-->
             <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -565,38 +495,6 @@
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
-
-  <script>
-  
-  document.getElementById('updateDetails').addEventListener('click', function() {
-     toastr.success('Button clicked');
-  });
-  
-  $('form').submit( function(event) {
-       var formId = this.id,
-           form = this;
-       mySpecialFunction(formId);
-
-       event.preventDefault();
-
-       setTimeout( function () { 
-           form.submit();
-       }, 3000);
-   });
-  
-  </script>
-  
-  <!-- Validate Phone Number -->
-   <script> 
-       function onlyNumberKey(evt) { 
-             
-           // Only ASCII charactar in that range allowed 
-           var ASCIICode = (evt.which) ? evt.which : evt.keyCode 
-           if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57)) 
-               return false; 
-           return true; 
-       } 
-   </script>
 
   <!-- Bootstrap core JavaScript-->
   <script src="/vendor/jquery/jquery.min.js"></script>

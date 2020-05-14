@@ -19,13 +19,12 @@
 
   <!-- Custom styles for this template -->
   <link th:href="@{/css/sb-admin-2.min.css}" type="text/css" rel="stylesheet"/> 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-  <!-- Custom styles for this page -->
   <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet"/>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
   
+  <!-- Import Scripts -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/car-sharing/utilities.js"></script>
+  <script type="text/javascript" src="/js/car-sharing/maps.js"></script>
 
 </head>
 
@@ -113,6 +112,21 @@
           <i class="fas fa-list-ul"></i>
           <span>View Requests</span></a>
       </li>
+      
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+      <!-- Heading -->
+      <div class="sidebar-heading">
+        Payment 
+      </div>
+
+      <!-- Nav Item - Stripe -->
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/admin/stripe-dashboard}">
+          <i class="fab fa-cc-stripe fa-2x"></i>
+          <span>Stripe Dashboard</span></a>
+      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
@@ -140,8 +154,8 @@
           </button>
           
           <!-- Topbar Page Name -->
-          <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search input-group">
-            <h1 class="h3 mb-0 text-gray-800">Add Car</h1>
+          <div class="d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search input-group">
+            <h1 class="h5 mb-0 text-gray-800">Add Car</h1>
           </div>
 
           <!-- Topbar Navbar -->
@@ -185,15 +199,41 @@
 
       <!-- Begin Page Content -->
       <div class="container-fluid">
-      
-         <!-- Password Changed Notification -->
-          <div class="alert alert-success alert-dismissible fade show position-absolute" role="alert" th:if="${message != null}" style="right:20px">
-             <strong>
-                <span class="col-sm-6 mx-auto" th:text="${message}"/>
-             </strong>
-             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-             </button>
+          <!-- Notification -->
+          <div class="toast position-absolute" role="alert" th:if="${message != null and messageCode != null}" style="right:20px; z-index: 5;"
+               aria-live="polite" aria-atomic="true" data-delay="5000">
+             
+             <div class="toast-header bg-gradient-success text-gray-100" th:if="${#strings.contains(messageCode, 'Success')}" th:text="${messageCode}">
+                <!-- Success -->
+                <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
+                     preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
+                <rect fill="#007aff" width="100%" height="100%" /></svg>
+                <strong class="mr-auto"></strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+                </button>
+             </div>
+             <div class="toast-header bg-gradient-danger text-gray-100" th:if="${#strings.contains(messageCode, 'Error')}" th:text="${messageCode}">
+                <!-- Error -->
+                <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
+                     preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
+                <rect fill="#007aff" width="100%" height="100%" /></svg>
+                <strong class="mr-auto"></strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+                </button>
+             </div>
+             <div class="toast-header bg-gradient-warning text-gray-100" th:if="${#strings.contains(messageCode, 'Warning')}" th:text="${messageCode}">
+                <!-- Warning -->
+                <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
+                     preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
+                <rect fill="#007aff" width="100%" height="100%" /></svg>
+                <strong class="mr-auto"></strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+                </button>
+             </div>
+             <div class="toast-body" th:text="${message}"></div>
           </div>
 
          <!-- Page Heading -->
@@ -280,28 +320,7 @@
                            <span class="help is-danger" th:if="${#fields.hasErrors('isActive')}" th:errors="*{isActive}"></span>
                         </div>
                      </div>
-                     <!--div class="form-row">
-                         <div class="col-md-6 mb-3">
-                           <label for="validationTooltip03">Latitude</label>
-                           <input type="number" class="form-control" id="latitude" placeholder="45N" th:field="*{latitude}" step="0.001" th:min="-90" th:max="90" onkeypress="return onlyNumberKey(event)" required>
-                           <div class="invalid-tooltip">
-                             Please provide a latitude
-                           </div>
-                           <span class="icon is-small-danger is-right is-invalid" th:if="${#fields.hasErrors('latitude')}" th:errors="*{latitude}">
-                             <i class="fas fa-exclamation-triangle"></i>
-                           </span>
-                         </div>
-                         <div class="col-md-6 mb-3">
-                           <label for="validationTooltip03">Longitude</label>
-                           <input type="text" class="form-control" id="longitude" placeholder="90W" th:field="*{longitude}" step="0.001" th:min="-180" th:max="180" onkeypress="return onlyNumberKey(event)" required>
-                           <div class="invalid-tooltip">
-                             Please provide a longitude
-                           </div>
-                           <span class="icon is-small-danger is-right is-invalid" th:if="${#fields.hasErrors('longitude')}" th:errors="*{longitude}">
-                             <i class="fas fa-exclamation-triangle"></i>
-                           </span>
-                         </div>
-                     </div-->
+
                      <!-- Google Autocomplete location  -->
                      <div clas="form-row">
                        <div class="mb-3 mb-sm-0">
@@ -313,13 +332,13 @@
                      </div>
                      <hr>
                      <div class="form-gorup row justify-content-around">
-                        <div class="col-sm-4 mb-3 mb-sm-0">
-                           <button class="btn btn-success btn-user btn-block" type="submit" name="action" value="submit" id="updateDetails">
+                        <div class="col-sm-4 mb-2">
+                           <button class="btn btn-primary btn-block" type="submit" name="action" value="submit" id="updateDetails">
                               Add
                            </button>
                         </div>
                         <div class="col-sm-4">
-                           <button class="btn btn-danger btn-user btn-block" type="reset">
+                           <button class="btn btn-danger btn-block" type="reset">
                               Reset
                            </button>
                         </div>
@@ -360,7 +379,6 @@
   </a>
   
   <script>
-
   $('form').submit( function(event) {
        var formId = this.id,
            form = this;
@@ -375,58 +393,16 @@
   
   </script>
   
-  <!-- Validate Phone Number -->
-  <script> 
-       function onlyNumberKey(evt) { 
-             
-           // ASCII character in that range allowed 
-           // ASCII character for minus(-)& dot ()
-           var ASCIICode = (evt.which) ? evt.which : evt.keyCode 
-           if (ASCIICode > 31) {
-        	   if ((ASCIICode < 45 || ASCIICode > 57) || ASCIICode == 47) {
-        		   return false;
-        	   }
-           }
-           return true; 
-       } 
-  </script>
-  
    <!-- Google Maps JS Library -->
   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyAi9qsACSRpv-drbqKhofMzyVFf_Hr_fI0"></script>
   
-  <!-- Google Maps Autocomplete Search -->
   <script>
   var searchInput = 'search_input';
 
-  $(document).ready(function () {
-      var autocomplete;
-      autocomplete = new google.maps.places.Autocomplete((document.getElementById(searchInput)), {
-          types: ['geocode'],
-          componentRestrictions: {
-              country: "UK"
-          }
-      });
-     
-      google.maps.event.addListener(autocomplete, 'place_changed', function () {
-          var near_place = autocomplete.getPlace();
-          document.getElementById('loc_lat').value = near_place.geometry.location.lat();
-          document.getElementById('loc_long').value = near_place.geometry.location.lng();
-        
-          document.getElementById('latitude_view').innerHTML = near_place.geometry.location.lat();
-          document.getElementById('longitude_view').innerHTML = near_place.geometry.location.lng();
-      });
-
-      
-  });
+  carLocation(searchInput);
   
-  //Update Latitude/Longitude
-  $(document).on('change', '#'+searchInput, function () {
-       document.getElementById('latitude_input').value = '';
-       document.getElementById('longitude_input').value = '';
-      
-       document.getElementById('latitude_view').innerHTML = '';
-       document.getElementById('longitude_view').innerHTML = '';
-   });
+  //Show Notification
+  notificationAlert();
   </script>
 
   <!-- Bootstrap core JavaScript-->
