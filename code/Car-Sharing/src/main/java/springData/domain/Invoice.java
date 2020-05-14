@@ -1,10 +1,7 @@
 package springData.domain;
 
-import java.time.LocalDateTime;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
@@ -12,51 +9,50 @@ import javax.persistence.OneToOne;
 public class Invoice {
 
    @Id
-   @GeneratedValue(strategy = GenerationType.AUTO)
-   private int invoiceID;
+   private String invoiceID;
 
    @Basic
-   private LocalDateTime invoiceTimestamp;
+   private double totalAmount;
 
    @Basic
-   private String invoiceStatus;
+   private double distanceCharge;
 
-   @OneToOne
-   private Payment payment;
+   @Basic
+   private double timeCharge;
 
    @OneToOne(mappedBy = "invoice")
    private Request request;
 
-   public int getInvoiceID() {
+   public String getInvoiceID() {
       return this.invoiceID;
    }
 
-   public void setInvoiceID(int invoiceID) {
+   public void setInvoiceID(String invoiceID) {
       this.invoiceID = invoiceID;
    }
 
-   public LocalDateTime getInvoiceTimestamp() {
-      return this.invoiceTimestamp;
+   public double getTotalAmount() {
+      return this.totalAmount;
    }
 
-   public void setInvoiceTimestamp(LocalDateTime invoiceTimestamp) {
-      this.invoiceTimestamp = invoiceTimestamp;
+   public void setTotalAmount(double totalAmount) {
+      this.totalAmount = totalAmount;
    }
 
-   public String getInvoiceStatus() {
-      return this.invoiceStatus;
+   public double getDistanceCharge() {
+      return this.distanceCharge;
    }
 
-   public void setInvoiceStatus(String invoiceStatus) {
-      this.invoiceStatus = invoiceStatus;
+   public void setDistanceCharge(double distanceCharge) {
+      this.distanceCharge = distanceCharge;
    }
 
-   public Payment getPayment() {
-      return this.payment;
+   public double getTimeCharge() {
+      return this.timeCharge;
    }
 
-   public void setPayment(Payment payment) {
-      this.payment = payment;
+   public void setTimeCharge(double timeCharge) {
+      this.timeCharge = timeCharge;
    }
 
    public Request getRequest() {
@@ -68,4 +64,4 @@ public class Invoice {
    }
 
 }
-//Invoice
+// Invoice

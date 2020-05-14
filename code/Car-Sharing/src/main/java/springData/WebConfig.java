@@ -1,5 +1,7 @@
 package springData;
 
+import java.util.Properties;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -7,50 +9,63 @@ import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
-//@EnableWebMvc
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-   public void addViewControllers(ViewControllerRegistry registry) {
+   public void addViewControllers(final ViewControllerRegistry registry) {
       registry.addViewController("/").setViewName("/login");
-      registry.addViewController("/error").setViewName("error");
+      registry.addViewController("/error").setViewName("404");
       registry.addViewController("/login").setViewName("login");
       registry.addViewController("/dashboard").setViewName("user/dashboard");
-      registry.addViewController("/help").setViewName("help");
+      registry.addViewController("/help").setViewName("/help");
       registry.addViewController("/404").setViewName("404");
       registry.addViewController("/forgot-password").setViewName("forgot-password");
-      //registry.addViewController("/sign-up").setViewName("/sign-up");
    }
-
-   // Handles HTTP GET requests for /resources/** by efficiently serving up static
-   // resources in the ${webappRoot}/resources/ directory
-   // TODO
-   /*@Override
-   public void addResourceHandlers(ResourceHandlerRegistry registry) {
-      registry.addResourceHandler("/static/**").addResourceLocations("/src/main/resources/static/");
-      registry.addResourceHandler("/css/**").addResourceLocations("/src/main/resources/static/css/");
-   }*/
 
    @Override
-   public void addResourceHandlers(ResourceHandlerRegistry registry) {
-      registry.addResourceHandler(
-              "/css/**",
-              "/vendor/**",
-              "/js/**")
+   public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+      registry.addResourceHandler("/css/**", "/vendor/**", "/img/**", "/js/**")
               .addResourceLocations(
-              "classpath:/static/css/",
-              "classpath:/static/vendor/",
-              "classpath:/static/js/");
+                 "classpath:/static/css/",
+                 "classpath:/static/vendor/",
+                 "classpath:/static/img/",
+                 "classpath:/static/js/");
    }
-   
+
+   @Bean
+   public SimpleMappingExceptionResolver simpleMappingExceptionResolver() {
+      final SimpleMappingExceptionResolver b = new SimpleMappingExceptionResolver();
+      final Properties mappings = new Properties();
+      mappings.put("springData.controller.SpringException", "ExceptionPage");
+      mappings.put("defaultErrorView", "404");
+      b.setExceptionMappings(mappings);
+      return b;
+   }
+
+   @Bean
+   public ClassLoaderTemplateResolver templateResolver() {
+       ClassLoaderTemplateResolver secondaryTemplateResolver = new ClassLoaderTemplateResolver();
+       secondaryTemplateResolver.setPrefix("templates/");
+       secondaryTemplateResolver.setSuffix(".html");
+       secondaryTemplateResolver.setTemplateMode(TemplateMode.HTML);
+       secondaryTemplateResolver.setCharacterEncoding("UTF-8");
+       secondaryTemplateResolver.setOrder(1);
+       secondaryTemplateResolver.setCheckExistence(true);
+            
+       return secondaryTemplateResolver;
+   }
+
    @Primary
-   @Bean 
+   @Bean
    public FreeMarkerConfigurationFactoryBean factoryBean() {
-      FreeMarkerConfigurationFactoryBean bean=new FreeMarkerConfigurationFactoryBean();
+      final FreeMarkerConfigurationFactoryBean bean = new FreeMarkerConfigurationFactoryBean();
       bean.setTemplateLoaderPath("classpath:/templates/email/");
       return bean;
    }
 
 }
-
+// WebConfig

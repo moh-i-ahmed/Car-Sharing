@@ -1,6 +1,6 @@
 package springData.domain;
 
-import java.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
@@ -42,12 +42,13 @@ public class User {
    @Basic
    private String phoneNumber;
 
-   @Basic
-   private LocalDate date_of_birth;
-
    @Type(type = "yes_no")
    @Column(name = "isActive", nullable = false)
    private boolean isActive;
+
+   @Type(type = "yes_no")
+   @Column(name = "enabled", nullable = false)
+   private boolean enabled;
 
    @ManyToOne
    private Role role;
@@ -55,11 +56,22 @@ public class User {
    @OneToOne(mappedBy = "user", fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
    private StripeCustomer stripeCustomer;
 
-   @OneToMany(mappedBy = "user", fetch=FetchType.LAZY)
+   @OneToMany(mappedBy = "user", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
    private List<Request> requests;
 
    @ManyToOne(fetch=FetchType.LAZY)
    private Address address;
+
+   public User() {
+      this.enabled = false;
+   }
+
+   public User(String firstName, String lastName, boolean isActive, boolean enabled) {
+      this.firstName = firstName;
+      this.lastName = lastName;
+      this.isActive = isActive;
+      this.enabled = enabled;
+   }
 
    public int getUserID() {
       return this.userID;
@@ -117,20 +129,20 @@ public class User {
       this.phoneNumber = phoneNumber;
    }
 
-   public LocalDate getDate_of_birth() {
-      return this.date_of_birth;
-   }
-
-   public void setDate_of_birth(LocalDate date_of_birth) {
-      this.date_of_birth = date_of_birth;
-   }
-
    public boolean isActive() {
       return isActive;
    }
 
    public void setActive(boolean isActive) {
       this.isActive = isActive;
+   }
+
+   public boolean isEnabled() {
+      return enabled;
+   }
+
+   public void setEnabled(boolean enabled) {
+      this.enabled = enabled;
    }
 
    public Role getRole() {

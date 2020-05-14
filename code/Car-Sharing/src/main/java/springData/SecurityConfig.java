@@ -33,10 +33,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       http
       //AUTHORIZATION
       .authorizeRequests()
-         .antMatchers("/", "/login", "/register/**").permitAll()
+         .antMatchers("/", "/login", "/register/**", "/webjars/**").permitAll()
          .antMatchers("/", "/static/**", "/js/**", "/vendor/**", "/css/**").permitAll()
          .antMatchers("/account/**").hasRole("USER")//.hasAnyRole("USER", "ADMIN")
-         .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+         .antMatchers("/user/**", "/sse/**").hasAnyRole("USER", "ADMIN")
          .antMatchers("/admin/**", "/car/**").hasRole("ADMIN")
          .anyRequest().authenticated() // all requests ABOVE this statement require authentication
          .and() // to redirect the user when trying to access a resource to which access is not granted
@@ -58,17 +58,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
       //Managing Session
       http.sessionManagement()
-         .invalidSessionUrl("/login/form?expired")
-         .maximumSessions(1)
-         .expiredUrl("/login/form?expired");
-      
+         .invalidSessionUrl("/login/form?expired");
+         //.maximumSessions(1)
+         //.expiredUrl("/login/form?expired");
+
       http.authorizeRequests().and() //
          .rememberMe()
             .key("uniqueAndSecret")
+            //.rememberMeCookieDomain("car-sharing")
             .rememberMeCookieName("rememberme")
             .useSecureCookie(true) //
             .tokenRepository(this.persistentTokenRepository()) //
-            .tokenValiditySeconds(1 * 24 * 60); // 30mins
+            .tokenValiditySeconds(1 * 240 * 600); // 30mins
    }
 
    @Autowired
@@ -85,3 +86,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       return db;
    }
 }
+// SecurityConfig

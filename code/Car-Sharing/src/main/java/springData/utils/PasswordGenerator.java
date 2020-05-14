@@ -35,7 +35,6 @@ public class PasswordGenerator {
          System.out.format("%d\t:\t%c%n", rndCharAt, rndChar);
 
          sb.append(rndChar);
-
       }
 
       return sb.toString();
@@ -50,6 +49,6 @@ public class PasswordGenerator {
    }
 
 }
-//PasswordGenerator
-//Adapted from example on -- https://www.mkyong.com/java/java-password-generator-example/
+// PasswordGenerator
+// Adapted from example on -- https://www.mkyong.com/java/java-password-generator-example/
 

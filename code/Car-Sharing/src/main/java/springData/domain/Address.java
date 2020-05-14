@@ -1,20 +1,11 @@
 package springData.domain;
 
-import java.util.Optional;
-
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
-/**
- * @author mia17
- */
 @Entity
 public class Address {
 
@@ -39,10 +30,6 @@ public class Address {
 
    @Basic
    private String country;
-
-   @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-   @JoinColumn(name = "USER_ID")
-   private User user;
 
    public Address(String line1, String line2, String city, String postcode, String country) {
       this.line1 = line1;
@@ -79,8 +66,8 @@ public class Address {
       this.line2 = line2;
    }
 
-   public Optional<String> getLine3() {
-      return Optional.ofNullable(this.line3);
+   public String getLine3() {
+      return this.line3;
    }
 
    public void setLine3(String line3) {
@@ -111,14 +98,6 @@ public class Address {
       this.country = country;
    }
 
-   public User getUser() {
-      return this.user;
-   }
-
-   public void setUser(User user) {
-      this.user = user;
-   }
-
    @Override
    public String toString() {
       return line1
@@ -129,4 +108,4 @@ public class Address {
    }
 
 }
-//Address
+// Address

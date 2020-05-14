@@ -15,8 +15,12 @@ public interface UserRepository extends JpaRepository<User, Integer> {
    @Query("Select u from User u where u.userID = :id")
    User findByUserId(int id);
 
-   @Query("Select u from User u where u.username = :username")
-   User getUserByUsername(@Param("username") String username);
+   @Query("Select count(*) from User u where u.enabled = TRUE")
+   Integer findAllVerified();
+
+   @Query("Select new springData.domain.User(u.firstName, u.lastName, u.isActive, u.enabled) "
+         + "from User u where u.username = :username")
+   User getUserDetails(@Param("username") String username);
 
    @SuppressWarnings("unchecked")
    User save(User user);

@@ -25,15 +25,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import springData.DTO.CarDTO;
+import springData.constants.Constants;
 import springData.domain.Car;
 import springData.domain.Location;
-import springData.repository.AddressRepository;
-import springData.repository.RoleRepository;
 import springData.repository.CarRepository;
 import springData.repository.LocationRepository;
-import springData.repository.RequestRepository;
-import springData.repository.UserRepository;
-import springData.services.EmailServiceImpl;
 import springData.validator.CarDTOValidator;
 import springData.validator.PasswordDTOValidator;
 
@@ -44,17 +40,12 @@ public class CarController {
    @PersistenceContext
    EntityManager entityManager;
 
-   private static final Logger logger = LoggerFactory.getLogger(CarController.class);
+   private static final Logger LOGGER = LoggerFactory.getLogger(CarController.class);
 
    BCryptPasswordEncoder pe = new  BCryptPasswordEncoder();
 
-   @Autowired UserRepository userRepo;
-   @Autowired RoleRepository roleRepo;
-   @Autowired CarRepository carRepo;
-   @Autowired RequestRepository requestRepo;
-   @Autowired AddressRepository addressRepo;
-   @Autowired LocationRepository locationRepo;
-   @Autowired private EmailServiceImpl emailService;
+   @Autowired private CarRepository carRepo;
+   @Autowired private LocationRepository locationRepo;
 
    @InitBinder("carDTO")
    protected void initCarDTOBinder(WebDataBinder binder) {
@@ -79,23 +70,23 @@ public class CarController {
       model.addAttribute("carDTO", carDTO);
       model.addAttribute("username", principal.getName());
 
-      return "admin/car/add-Car";
+      return "admin/car/add-car";
    }
 
    @PostMapping("/add-car")
    public String addCar(@Valid @ModelAttribute("carDTO") CarDTO carDTO, BindingResult result, Model model,
-         Principal principal) {
+           Principal principal) {
 
       Car carExists = carRepo.findByRegistrationNumber(carDTO.getRegistrationNumber());
 
-      //Registration Number is already in use
+      // Registration Number is already in use
       if (carExists != null) {
          result.rejectValue("registrationNumber", "", "Registration Number is already in use.");
          model.addAttribute("carDTO", carDTO);
 
          return "admin/car/add-car";
       }
-      //DTO Validation Errors
+      // Validation Errors
       if (result.hasErrors()) {
          model.addAttribute("carDTO", carDTO);
          model.addAttribute("username", principal.getName());
@@ -104,7 +95,7 @@ public class CarController {
 
          return "admin/car/add-car";
       } else {
-         //Create new Car using CarDTO details
+         // Create new Car using CarDTO details
          Car newCar = new Car();
          newCar.setRegistrationNumber(carDTO.getRegistrationNumber().toUpperCase());
          newCar.setCarName(carDTO.getCarName());
@@ -117,12 +108,11 @@ public class CarController {
          locationRepo.save(requestLocation);
 
          newCar.setLocation(requestLocation);
-         //newCar.setLongitude(carDTO.getLongitude());
 
-         //Save Car
+         // Save Car
          carRepo.save(newCar);
 
-         logger.info("\n Admin Log: Car added with " + carDTO.getRegistrationNumber().toUpperCase());
+         LOGGER.info("\n Admin Log: Car added with " + carDTO.getRegistrationNumber().toUpperCase());
 
          return "redirect:/car/view-all-cars";
       }
@@ -130,10 +120,10 @@ public class CarController {
 
    @GetMapping("/edit-car/{registrationNumber}")
    public String editCar(@PathVariable String registrationNumber, Model model, Principal principal) {
-      //Find Car by @PathVariable
+      // Find Car by registration number
       Car car = carRepo.findByRegistrationNumber(registrationNumber);
 
-      //Add Car details to DTO
+      // Add Car details to DTO
       CarDTO carDTO = new CarDTO();
       carDTO.setRegistrationNumber(car.getRegistrationNumber().toUpperCase());
       carDTO.setCarName(car.getCarName());
@@ -156,7 +146,7 @@ public class CarController {
 
    @GetMapping("/view-car/{registrationNumber}")
    public String viewCar(@PathVariable String registrationNumber, Model model, Principal principal) {
-      //Find Car by @PathVariable
+      // Find Car by @PathVariable
       Car car = carRepo.findByRegistrationNumber(registrationNumber);
 
       model.addAttribute("car", car);
@@ -167,86 +157,66 @@ public class CarController {
 
    @PostMapping("/update-car/{registrationNumber}")
    public String updateCar(@Valid @ModelAttribute("carDTO") CarDTO carDTO, BindingResult result,
-         @PathVariable String registrationNumber, Model model, RedirectAttributes redirectAttributes) {
+           @PathVariable String registrationNumber, Model model, RedirectAttributes redirectAttributes) {
 
-      //Find Car by @PathVariable
+      // Find Car by @PathVariable
       Car car = carRepo.findByRegistrationNumber(registrationNumber);
 
       Car carExists = carRepo.findByRegistrationNumber(carDTO.getRegistrationNumber());
-      
-      //Registration Number is already in use
+
+      // Registration Number is already in use
       if (!(carDTO.getRegistrationNumber().equalsIgnoreCase(registrationNumber)) && (carExists != null)) {
          result.rejectValue("registrationNumber", "", "Registration Number is already in use.");
          model.addAttribute("carDTO", carDTO);
 
          return "admin/car/edit-car";
       }
-      //DTO Validation Errors
+      // Validation Errors
       if (result.hasErrors()) {
          model.addAttribute("carDTO", carDTO);
 
          System.err.println(result);
          return "admin/car/edit-car";
-      } 
-      else {
-         //Update Car using CarDTO details
+      } else {
+         // Update Car using CarDTO details
          car.setCarName(carDTO.getCarName());
          car.setCarMake(carDTO.getCarMake());
          car.setCarColor(carDTO.getCarColor());
-         System.err.println("dasfa: " + carDTO.getIsActive());
          car.setIsActive(carDTO.getIsActive());
          car.setFuelLevel(carDTO.getFuelLevel());
 
-         //Update Location
-         if(!carDTO.getLatitude().isEmpty()) {
+         // Update Location
+         if (!carDTO.getLatitude().isEmpty() || carDTO.getLatitude() != null) {
             Location carLocation = car.getLocation();
 
-            if (carLocation == null) carLocation = new Location();
-
+            if (carLocation == null) {
+               carLocation = new Location();
+            }
             carLocation.setLatitude(carDTO.getLatitude());
             carLocation.setLongitude(carDTO.getLongitude());
             locationRepo.save(carLocation);
 
             car.setLocation(carLocation);
          }
-         //Save Car
+         // Save Car
          carRepo.save(car);
 
-         //Notification message
-         String message = "Success: Car details updated";
+         // Notification message
+         String messageCode = Constants.NOTIFICATION_SUCCESS;
+         String message = "Car details updated";
+
+         redirectAttributes.addFlashAttribute("messageCode", messageCode);
          redirectAttributes.addFlashAttribute("message", message);
 
-         logger.info("\n Admin Log: Car details updated: " + car.getRegistrationNumber());
+         LOGGER.info("\n Admin Log: Car details updated: " + car.getRegistrationNumber());
 
          return "redirect:/car/view-all-cars";
       }
    }
 
-   @Transactional
-   @GetMapping("/delete-car/{registrationNumber}")
-   public String deleteCar(@PathVariable String registrationNumber, RedirectAttributes redirectAttributes) {
-      //Find Car by @PathVariable
-      Car car = carRepo.findByRegistrationNumber(registrationNumber);
-
-      /*if (!(addressRepo.findAllByUser(user) == null)) {
-         //Delete the user's addresses
-         addressRepo.deleteAll(addressRepo.findAllByUser(user));
-      } */
-      //Drop Car from database
-      entityManager.remove(car);
-      //carRepo.delete(car);
-
-      logger.info("\n Admin Log: Car deleted: " + car.getRegistrationNumber());
-
-      String message = "Success: Car deleted from database";
-      redirectAttributes.addFlashAttribute("message", message);
-
-      return "redirect:/car/view-all-cars";
-   }
-
    @GetMapping("/view-all-cars")
    public String viewAllCars(Model model, Principal principal) {
-      //List of Users
+      // List of Users
       List<Car> cars = (List<Car>) carRepo.findAll();
 
       model.addAttribute("cars", cars);
@@ -254,6 +224,27 @@ public class CarController {
 
       return "admin/car/view-all-cars";
    }
- 
+
+   @Transactional
+   @GetMapping("/delete-car/{registrationNumber}")
+   public String deleteCar(@PathVariable String registrationNumber, RedirectAttributes redirectAttributes) {
+      // Find Car by @PathVariable
+      Car car = carRepo.findByRegistrationNumber(registrationNumber);
+
+      // Drop Car from database
+      entityManager.remove(car);
+
+      LOGGER.info("\n Admin Log: Car deleted: " + car.getRegistrationNumber());
+
+      // Notification message
+      String messageCode = Constants.NOTIFICATION_SUCCESS;
+      String message = "Car deleted from database";
+
+      redirectAttributes.addFlashAttribute("messageCode", messageCode);
+      redirectAttributes.addFlashAttribute("message", message);
+
+      return "redirect:/car/view-all-cars";
+   }
+
 }
-//CarController
+// CarController

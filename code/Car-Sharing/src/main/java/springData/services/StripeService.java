@@ -11,33 +11,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.stripe.Stripe;
-import com.stripe.exception.CardException;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Card;
-import com.stripe.model.Charge;
 import com.stripe.model.Customer;
-import com.stripe.model.PaymentIntent;
-import com.stripe.model.PaymentMethod;
-import com.stripe.model.SetupIntent;
+import com.stripe.model.Invoice;
+import com.stripe.model.InvoiceItem;
 import com.stripe.model.Token;
-import com.stripe.param.PaymentIntentCreateParams;
-import com.stripe.param.PaymentMethodListParams;
-import com.stripe.model.PaymentMethodCollection;
 import com.stripe.model.PaymentSource;
 
 import springData.domain.StripeCustomer;
-import springData.domain.Payment;
 import springData.domain.User;
 import springData.repository.StripeCustomerRepository;
+import springData.repository.UserRepository;
 
 @Service
 public class StripeService {
 
    private static final Logger LOGGER = LoggerFactory.getLogger(StripeService.class);
 
+   @Autowired UserRepository userRepo;
    @Autowired StripeCustomerRepository stripeCustomerRepo;
 
    @Value("${stripe.secretKey}")
@@ -45,83 +38,108 @@ public class StripeService {
 
    @Autowired
    public StripeService() {
-      //Stripe.apiKey = API_SECRET_KEY;
       Stripe.apiKey = "sk_test_gU5GhJRhS7Os2ujZdmLlAA1e009c6iReYK";
    }
 
-   public Charge chargeCard(User user, Payment payment) throws Exception {
-      Map<String, Object> chargeParams = new HashMap<String, Object>();
-      chargeParams.put("amount", (int)(55 * 100));
-      chargeParams.put("currency", "gbp");
-      chargeParams.put("customer", user.getStripeCustomer().getTokenID());
-
-      Charge charge = Charge.create(chargeParams);
-      return charge;
-   }
-
-   //Creates new customer and returns token
-   public Customer createStripeCustomer(User user) throws Exception {
-      // Customer creation parameters
+   /**
+    * Creates new Stripe customer & returns the customer entity
+    *
+    * @param user - user for whom entity is being created
+    * @return - Stripe Customer entity
+    * @throws StripeException
+    */
+   public Customer createStripeCustomer(User user) throws StripeException {
+      // Customer building parameters
       Map<String, Object> customerParams = new HashMap<>();
       customerParams.put("email", user.getUsername());
       customerParams.put("name", user.getFirstName() + " " + user.getLastName());
 
-      //Create Customer via Stripe API call
+      // Create Customer via Stripe API call
       Customer customer = Customer.create(customerParams);
 
-      //Store Stripe Customer ID
+      // Store Stripe Customer ID
       StripeCustomer stripeCustomer = new StripeCustomer();
       stripeCustomer.setTokenID(customer.getId());
       stripeCustomer.setUser(user);
       stripeCustomerRepo.save(stripeCustomer);
 
-      System.err.println("Customer info: "+customer.getId());
       user.setStripeCustomer(stripeCustomer);
+      userRepo.save(user);
 
       return customer;
    }
 
-   //Retrieve customer using tokenID
+   /**
+    * Retrieves Stripe Customer using the stored customerID
+    *
+    * @param user - user for whom customerID is being retrieved
+    * @return - Stripe Customer entity
+    * @throws StripeException
+    */
    public Customer retriveStripeCustomer(User user) throws StripeException {
-      //Retrieve Stripe customer using ID
+      if (user.getStripeCustomer() == null) {
+         return createStripeCustomer(user);
+      }
+      // Retrieve Stripe customer using ID
       Customer customer = Customer.retrieve(user.getStripeCustomer().getTokenID());
-
-      Gson gson = new GsonBuilder().setPrettyPrinting().create();
-      System.out.println(gson.toJson(customer));
 
       return customer;
    }
 
-   //Delete customer using tokenID
-   public Customer deleteStripeCustomer(User user) throws StripeException {
-      //Retrieve Stripe customer using ID
-      Customer customer = Customer.retrieve(user.getStripeCustomer().getTokenID());
-
-      Customer deletedCustomer = customer.delete();
-
+   /**
+    * Delete Stripe Customer using stored customerID
+    *
+    * @param user - user being deleted
+    * @return - empty Stripe Customer entity
+    * @throws StripeException
+    */
+   public Customer deleteStripeCustomer(User user) {
+      // Retrieve Stripe customer using ID
+      Customer customer;
+      Customer deletedCustomer = null;
+      try {
+         customer = Customer.retrieve(user.getStripeCustomer().getTokenID());
+         deletedCustomer = customer.delete();
+      } catch (StripeException e) {
+         e.printStackTrace();
+      }
       return deletedCustomer;
    }
 
+   /**
+    * Add card payment method to attached Stripe Customer
+    *
+    * @param user - user for whom card is being added
+    * @param stripeToken - token generated by stripe.js element
+    * @return - status message; Success or Error
+    * @throws StripeException
+    */
    public String addCard(User user, String stripeToken) throws StripeException {
-      //Retrieve Stripe customer using ID
+      // Retrieve Stripe customer using ID
       Customer existingCustomer = Customer.retrieve(user.getStripeCustomer().getTokenID());
 
-      //Retrieve token generated by JavaScript client
+      // No StripeCustomer found
+      if (existingCustomer == null) {
+         this.createStripeCustomer(user);
+         existingCustomer = Customer.retrieve(user.getStripeCustomer().getTokenID());
+      }
+
+      // Retrieve token generated by JavaScript client
       Token token = Token.retrieve(stripeToken);
 
-      //Retrieve customer's stored cards
+      // Retrieve customer's stored cards
       List<Card> stripeCardsList = getCards(user);
 
       boolean cardNotFound = true;
 
-      //Check if card is already stored
-      if(stripeCardsList.size() != 0) {
-         for(int i = 0; i < stripeCardsList.size(); i++) {
-            //Get token fingerprint
+      // Check if card is already stored
+      if (stripeCardsList.size() != 0) {
+         for (int i = 0; i < stripeCardsList.size(); i++) {
+            // Get token fingerprint
             Card storedCard = stripeCardsList.get(i);
 
-            //Compare card Fingerprint
-            if(storedCard.getFingerprint().equals(token.getCard().getFingerprint())) {
+            // Compare card Fingerprint
+            if (storedCard.getFingerprint().equals(token.getCard().getFingerprint())) {
                //Card is already stored
                cardNotFound = false;
                break;
@@ -129,36 +147,65 @@ public class StripeService {
          }
       }
       //Add new card
-      if(cardNotFound) {
+      if (cardNotFound) {
          Map<String, Object> source = new HashMap<String, Object>();
          source.put("source", token.getId());
 
-         //Add card to Stripe sources
+         // Add card to Stripe sources
          existingCustomer.getSources().create(source);
 
-         return "Success: Card added.";
+         return "Success";
       }
       else {
-         return "Error: Card already exists!";
+         return "Error";
       }
    }
 
-   //Retrieve cards stored on Stripe
+   /**
+    * Checks for payment sources attached Stripe Customer
+    *
+    * @param user - user being checked
+    * @return boolean - true/false
+    * @throws StripeException
+    */
+   public boolean hasPaymentSource(User user) throws StripeException {
+      // Retrieve Stripe customer using ID
+      Customer existingCustomer = retriveStripeCustomer(user);
+
+      // Retrieve customer's stored cards
+      List<Card> stripeCardsList = getCards(user);
+
+      // No StripeCustomer or cards found
+      if (stripeCardsList.size() == 0 || existingCustomer == null) {
+         return false;
+      }
+      else {
+         return true;
+      }
+   }
+
+   /**
+    * Retrieves list of cards attached to Stripe Customer
+    *
+    * @param user - user for whom cards are attached
+    * @return - List<Card> attached to Stripe Customer
+    * @throws StripeException
+    */
    public List<Card> getCards(User user) throws StripeException {
-      //Retrieve Stripe customer using ID
+      // Retrieve Stripe customer using ID
       Customer existingCustomer = Customer.retrieve(user.getStripeCustomer().getTokenID());
 
-      //Stripe API call request parameters
+      // Stripe API call request parameters
       Map<String, Object> params = new HashMap<>();
       params.put("object", "card");
 
-      //List of cards to return
+      // List of cards to return
       List<Card> customerCards = new ArrayList<>();
 
-      //Stored payment sources
+      // Stored payment sources
       List<PaymentSource> paymentSources = existingCustomer.getSources().getData();
 
-      //Retrieve source and cast to Card object
+      // Retrieve source and cast to Card object
       for (int i = 0; i < paymentSources.size(); i++) {
          PaymentSource card = paymentSources.get(i);
          Card getCard = (Card) existingCustomer.getSources().retrieve(card.getId());
@@ -167,15 +214,22 @@ public class StripeService {
       return customerCards;
    }
 
-   //Re card using cardID
+   /**
+    * Removes payment card attached to Stripe Customer
+    *
+    * @param user - user for whom card is being removed
+    * @param cardID - payment card Stripe ID
+    * @return - empty Stripe Card entity
+    * @throws StripeException
+    */
    public Card removeCard(User user, String cardID) throws StripeException {
-      //Retrieve customer from Stripe
+      // Retrieve customer from Stripe
       Customer customer = Customer.retrieve(user.getStripeCustomer().getTokenID());
 
-      //Retrieve card from Stripe using stored cardID
+      // Retrieve card from Stripe using stored cardID
       Card card = (Card) customer.getSources().retrieve(cardID);
 
-      //Call Stripe to delete card
+      // Call Stripe to delete card
       Card deletedCard = card.delete();
 
       LOGGER.info("Card deleted: " + cardID);
@@ -183,49 +237,33 @@ public class StripeService {
       return deletedCard;
    }
 
-   public Map<String, String> saveCardForLater(User user, String customerID) throws Exception {
-      //Stripe API call request parameters
-      Map<String, Object> customerParams = new HashMap<String, Object>();
-      Customer customer = Customer.create(customerParams);
+   /**
+    * Creates Invoice for payment that is sent to the user
+    *
+    * @param user - user being charged
+    * @param paymentAmount - amount due
+    * @throws StripeException
+    */
+   public String createInvoice(User user, double paymentAmount) throws StripeException {
+      // Invoice building parameters
+      Map<String, Object> invoiceItemParams = new HashMap<String, Object>();
+      invoiceItemParams.put("customer", user.getStripeCustomer().getTokenID());
+      invoiceItemParams.put("amount", (int) paymentAmount);
+      invoiceItemParams.put("currency", "gbp");
+      invoiceItemParams.put("description", "One-time");
 
-      Stripe.apiKey = API_SECRET_KEY;
+      InvoiceItem.create(invoiceItemParams);
 
-      Map<String, Object> params = new HashMap<>();
-      params.put("customer", customer.getId());
-      SetupIntent intent = SetupIntent.create(params);
+      // Create Invoice item & add customerID
+      Map<String, Object> invoiceParams = new HashMap<String, Object>();
+      invoiceParams.put("customer", user.getStripeCustomer().getTokenID());
+      invoiceParams.put("auto_advance", true);
+      invoiceParams.put("collection_method", "charge_automatically");
+      invoiceParams.put("description", "Car Sharing Reqeust");
 
-      Map<String, String> map = new HashMap<String, String>();
-      map.put("client_secret", intent.getClientSecret());
-
-      return map;
+      Invoice invoice = Invoice.create(invoiceParams);
+      return invoice.getId();
    }
 
-   public void chargeLater(User user, double amount) throws Exception {
-      PaymentMethodListParams listParams = new PaymentMethodListParams.Builder()
-            .setCustomer(user.getStripeCustomer().getTokenID())
-            .setType(PaymentMethodListParams.Type.CARD)
-            .build();
-
-      PaymentMethodCollection paymentMethods = PaymentMethod.list(listParams);
-
-      PaymentIntentCreateParams createParams = new PaymentIntentCreateParams.Builder()
-            .setCurrency("gbp")
-            .setAmount((long) 1099)
-            .setPaymentMethod("{{PAYMENT_METHOD_ID}}")
-            .setCustomer(user.getStripeCustomer().getTokenID())
-            .setConfirm(true)
-            .setOffSession(true)
-            .build();
-      try {
-         PaymentIntent.create(createParams);
-      } catch (CardException err) {
-         // Error code will be authentication_required if authentication is needed
-         System.out.println("Error code is : " + err.getCode());
-
-         String paymentIntentId = err.getStripeError().getPaymentIntent().getId();
-         PaymentIntent paymentIntent = PaymentIntent.retrieve(paymentIntentId);
-         System.out.println(paymentIntent.getId());
-      }
-   }
 }
-//StripeService
+// StripeService

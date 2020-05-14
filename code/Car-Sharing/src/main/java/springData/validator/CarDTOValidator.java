@@ -27,11 +27,13 @@ public class CarDTOValidator implements Validator {
       ValidationUtils.rejectIfEmptyOrWhitespace(errors, "fuelLevel", "", "Enter a fuel level");
 
       //Ensure Registration Number is valid
-      if ((dto.getRegistrationNumber() != null) && (dto.getRegistrationNumber().length() > 0) && (dto.getRegistrationNumber().length() < 6)) {
+      if ((dto.getRegistrationNumber() != null) && (dto.getRegistrationNumber().length() > 0)
+              && (dto.getRegistrationNumber().length() < 6)) {
          errors.rejectValue("registrationNumber", "", "Registration number has less than 2 characters.");
       }
       //Ensure Registration Number is valid
-      if ((dto.getRegistrationNumber() != null) && (dto.getRegistrationNumber().length() > 0) && (dto.getRegistrationNumber().length() > 10)) {
+      if ((dto.getRegistrationNumber() != null) && (dto.getRegistrationNumber().length() > 0)
+              && (dto.getRegistrationNumber().length() > 10)) {
          errors.rejectValue("registrationNumber", "", "Registration number is too long.");
       }
       //Ensure carName is within maximum length
@@ -57,4 +59,4 @@ public class CarDTOValidator implements Validator {
 
    }
 }
-//CarDTOValidator
+// CarDTOValidator

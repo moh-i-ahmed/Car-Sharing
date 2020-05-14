@@ -28,14 +28,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.stripe.exception.StripeException;
-
 import springData.DTO.PasswordDTO;
 import springData.DTO.UserDTO;
 import springData.constants.Constants;
 import springData.domain.User;
 import springData.domain.VerificationToken;
-import springData.repository.AddressRepository;
 import springData.repository.UserRepository;
 import springData.repository.VerificationTokenRepository;
 import springData.services.EmailServiceImpl;
@@ -47,12 +44,11 @@ import springData.validator.UserDTOValidator;
 @RequestMapping("/account")
 public class AccountController {
 
-   private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
+   private static final Logger LOGGER = LoggerFactory.getLogger(AccountController.class);
 
    BCryptPasswordEncoder pe = new BCryptPasswordEncoder();
 
    @Autowired private UserRepository userRepo;
-   @Autowired private AddressRepository addressRepo;
    @Autowired private VerificationTokenRepository verificationTokenRepo;
 
    @Autowired private EmailServiceImpl emailService;
@@ -83,7 +79,7 @@ public class AccountController {
          userDTO.setLastName(user.getLastName());
          userDTO.setUsername(user.getUsername());
          userDTO.setPhoneNumber(user.getPhoneNumber());
-         //userDTO.setDriverLicense(user.getDriverLicense());
+         userDTO.setDriverLicense(user.getDriverLicense());
 
          model.addAttribute("userId", user.getUserID());
          model.addAttribute("address", user.getAddress());
@@ -103,26 +99,26 @@ public class AccountController {
       //Retrieve user
       User user = userRepo.findById(userId);
 
-      // Notification message
-      String messageCode = "";
-      String message = "";
+      // Notification notificationBody
+      String notificationHeader = "";
+      String notificationBody = "";
 
       // Generate token & send email
       try {
          // Send Email
          emailService.sendRegistrationEmail(user, request);
 
-         // Notification message
-         messageCode = Constants.NOTIFICATION_SUCCESS;
-         message = "Verification email sent";
+         // Notification notificationBody
+         notificationHeader = Constants.NOTIFICATION_SUCCESS;
+         notificationBody = "Verification email sent";
 
-         logger.info("\n Verification email sent to " + user.getUsername());
+         LOGGER.info("\n Verification email sent to " + user.getUsername());
 
       } catch (Exception e) {
-         logger.info("Exception: " + e.toString());
+         LOGGER.info("Exception: " + e.toString());
       }
-      redirectAttributes.addFlashAttribute("messageCode", messageCode);
-      redirectAttributes.addFlashAttribute("message", message);
+      redirectAttributes.addFlashAttribute("notificationHeader", notificationHeader);
+      redirectAttributes.addFlashAttribute("notificationBody", notificationBody);
 
       return "redirect:/account/profile";
    }
@@ -155,7 +151,7 @@ public class AccountController {
          model.addAttribute("userDTO", userDTO);
          model.addAttribute("passwordError", "password error");
 
-         logger.info(result.toString());
+         LOGGER.info(result.toString());
 
          return "user/profile";
       } else {
@@ -165,14 +161,14 @@ public class AccountController {
          // Save User
          userRepo.save(user);
 
-         // Notification Message
-         String messageCode = Constants.NOTIFICATION_SUCCESS;
-         String message = "Password Changed";
+         // Notification notificationBody
+         String notificationHeader = Constants.NOTIFICATION_SUCCESS;
+         String notificationBody = "Password Changed";
 
-         redirectAttributes.addFlashAttribute("messageCode", messageCode);
-         redirectAttributes.addFlashAttribute("message", message);
+         redirectAttributes.addFlashAttribute("notificationHeader", notificationHeader);
+         redirectAttributes.addFlashAttribute("notificationBody", notificationBody);
 
-         logger.info("\n Password changed by: " + user.getUsername());
+         LOGGER.info("\n Password changed by: " + user.getUsername());
 
          return "redirect:/account/profile";
       }
@@ -188,13 +184,12 @@ public class AccountController {
       // Check if another account uses the username
       User userExists = userRepo.findByUsername(userDTO.getUsername());
 
-      // Username is already in use by another user
+      // Email in use by another user
       if (!user.getUsername().equalsIgnoreCase(userExists.getUsername()) && userExists != null) {
          result.rejectValue("username", "", "Email is not available.");
       }
       // Validate Password Input
       if (result.hasErrors()) {
-         // Display User info using UserDTO
          model.addAttribute("user", user);
          model.addAttribute("userId", user.getUserID());
 
@@ -205,7 +200,7 @@ public class AccountController {
          model.addAttribute("profileError", "profile error");
          model.addAttribute("username", user.getFirstName() + " " + user.getLastName());
 
-         logger.info(result.toString());
+         LOGGER.info(result.toString());
 
          return "user/profile";
       } else {
@@ -220,19 +215,19 @@ public class AccountController {
          user.setLastName(userDTO.getLastName());
          user.setUsername(userDTO.getUsername());
          user.setPhoneNumber(userDTO.getPhoneNumber());
-         //user.setDriverLicense(userDTO.getDriverLicense());
+         user.setDriverLicense(userDTO.getDriverLicense());
 
          // Save User
          userRepo.save(user);
 
-         logger.info("\n Profile updated: " + user.getUsername());
+         LOGGER.info("\n Profile updated: " + user.getUsername());
 
-         // Notification Message
-         String messageCode = Constants.NOTIFICATION_SUCCESS;
-         String message = "Profile Updated";
+         // Notification message
+         String notificationHeader = Constants.NOTIFICATION_SUCCESS;
+         String notificationBody = "Profile Updated";
 
-         redirectAttributes.addFlashAttribute("messageCode", messageCode);
-         redirectAttributes.addFlashAttribute("message", message);
+         redirectAttributes.addFlashAttribute("notificationHeader", notificationHeader);
+         redirectAttributes.addFlashAttribute("notificationBody", notificationBody);
 
          return "redirect:/account/profile";
       }
@@ -241,29 +236,23 @@ public class AccountController {
    @GetMapping("/delete-account")
    public String deleteAccount(RedirectAttributes redirectAttributes, Principal principal) {
       // Find User by @PathVariable
-      //User user = userRepo.findById(userID);
       User user = userRepo.findByUsername(principal.getName());
 
-      String messageCode = "";
-      String message = "";
+      // Notification message
+      String notificationHeader = "";
+      String notificationBody = "";
 
       if (user.isActive() == true) {
-         // Notification Message
-         messageCode = Constants.NOTIFICATION_ERROR;
-         message = "Can't delete account during request";
+         notificationHeader = Constants.NOTIFICATION_ERROR;
+         notificationBody = "Can't delete account during request";
 
-         redirectAttributes.addFlashAttribute("messageCode", messageCode);
-         redirectAttributes.addFlashAttribute("message", message);
+         redirectAttributes.addFlashAttribute("notificationHeader", notificationHeader);
+         redirectAttributes.addFlashAttribute("notificationBody", notificationBody);
 
          return "redirect:/account/profile";
       } else {
-         // Delete Stripe Customer
-         try {
-            //TODO Customer not found exception
-            stripeService.deleteCustomer(user);
-         } catch (StripeException e) {
-            logger.info(e.toString());
-         }
+         stripeService.deleteStripeCustomer(user);
+
          // Delete any valid token
          VerificationToken verificationToken = verificationTokenRepo.findByUser(user);
          verificationTokenRepo.delete(verificationToken);
@@ -271,7 +260,7 @@ public class AccountController {
          // Delete User from database
          userRepo.delete(user);
 
-         logger.info("\n User deleted account: " + user.getUsername());
+         LOGGER.info("\n User deleted account: " + user.getUsername());
 
          return "redirect:/logout";
       }

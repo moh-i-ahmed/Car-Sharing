@@ -19,9 +19,14 @@ public interface CarRepository extends JpaRepository<Car, Integer> {
    @Query("Select count(*) from Car e where e.isActive = TRUE")
    Integer findAllInUse();
 
-   @Query(value="Select e.registrationNumber, l.latitude, l.longitude from Car e INNER JOIN Location l on l.id = e.location")
+   @Query("Select e.registrationNumber, e.carColor, e.carMake, e.carName, e.fuelLevel, e.isActive, count(r.car) from Car e"
+         + " INNER JOIN Request r on r.car = e.registrationNumber")
+   List<Car> findAllSummary();
+
+   @Query("Select e.registrationNumber, l.latitude, l.longitude from Car e INNER JOIN Location l on l.id = e.location")
    List<Car> findAllCarLocations();
 
    @SuppressWarnings("unchecked")
    Car save(Car car);
 }
+// CarRepository

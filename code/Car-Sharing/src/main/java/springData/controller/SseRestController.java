@@ -26,7 +26,7 @@ import springData.services.SseService;
 @RequestMapping("/sse")
 public class SseRestController {
 
-   private static final Logger logger = LoggerFactory.getLogger(SseRestController.class);
+   private static final Logger LOGGER = LoggerFactory.getLogger(SseRestController.class);
 
    @Autowired SseService sseService;
    @Autowired private RequestRepository requestRepo;
@@ -43,7 +43,7 @@ public class SseRestController {
     */
    @GetMapping("/notification/{requestID}")
    public ResponseEntity<SseEmitter> doNotify(@PathVariable int requestID) throws InterruptedException, IOException {
-      logger.info("Sse Notifier Rest Controller");
+      LOGGER.info("Sse Notifier Rest Controller");
 
       // Find Request by ID
       Request request = requestRepo.findById(requestID);

@@ -3,7 +3,7 @@ package springData.DTO;
 public class CarDTO {
 
    private String registrationNumber;
-   
+
    private String carName;
 
    private String carMake;
@@ -15,7 +15,7 @@ public class CarDTO {
    private String longitude;
 
    private boolean isActive;
-   
+
    private int fuelLevel;
 
    // default and parameterized constructors
@@ -85,6 +85,6 @@ public class CarDTO {
    public void setFuelLevel(int fuelLevel) {
       this.fuelLevel = fuelLevel;
    }
- 
+
 }
-//CarDTO
+// CarDTO
