@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="9bca4fe8-38ac-4e01-8699-a93ec4372909" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/springData/DbConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/springData/DbConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/springData/WebApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/springData/WebApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/springData/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/springData/WebConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/springData/controller/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/springData/controller/AccountController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/springData/controller/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/springData/controller/AdminController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/springData/controller/AuthenticationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/springData/controller/AuthenticationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/springData/controller/CarController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/springData/controller/CarController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/springData/controller/PaymentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/springData/controller/PaymentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/springData/controller/RegistrationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/springData/controller/RegistrationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/springData/controller/SseRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/springData/controller/SseRestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/springData/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/springData/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/springData/exception/CustomAsyncExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/springData/exception/CustomAsyncExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/springData/repository/AddressRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/springData/repository/AddressRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/springData/repository/LocationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/springData/repository/LocationRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/springData/repository/RoleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/springData/repository/RoleRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/springData/repository/StripeCustomerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/springData/repository/StripeCustomerRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/springData/repository/VerificationTokenRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/springData/repository/VerificationTokenRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/springData/scheduler/ScheduledTasks.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/springData/scheduler/ScheduledTasks.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/springData/services/EmailServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/springData/services/EmailServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/springData/services/InvoiceService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/springData/services/InvoiceService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/springData/validator/UserDTOValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/springData/validator/UserDTOValidator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/forgot-password.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/forgot-password.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/user/active-request.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/user/active-request.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/user/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/user/profile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/user/wallet.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/user/wallet.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/groovy/springData/controller/AccountControllerIntegrationTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/groovy/springData/controller/AccountControllerIntegrationTest.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/groovy/springData/controller/AdminControllerIntegrationTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/groovy/springData/controller/AdminControllerIntegrationTest.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/groovy/springData/controller/AuthenticationControllerIntegrationTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/groovy/springData/controller/AuthenticationControllerIntegrationTest.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/groovy/springData/controller/RegistrationControllerIntegrationTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/groovy/springData/controller/RegistrationControllerIntegrationTest.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/groovy/springData/controller/UserControllerIntegrationTest.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/groovy/springData/controller/UserControllerIntegrationTest.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/SpockConfig.groovy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/test.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/application.properties" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1XJhq9e3SdibDKaj0IA6gxjQUP4" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="settings.editor.selected.configurable" value="Errors" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Gradle.UserTest">
+    <configuration name="AuthenticationControllerTest.testDashboard" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests &quot;springData.controller.AuthenticationControllerTest.testDashboard&quot;" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":cleanTest" />
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="PaymentTypeTest.testRemovePayment" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests &quot;springData.domain.PaymentTypeTest.testRemovePayment&quot;" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":cleanTest" />
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="UserTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests &quot;springData.domain.UserTest&quot;" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":cleanTest" />
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <GradleScriptDebugEnabled>false</GradleScriptDebugEnabled>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.UserTest" />
+        <item itemvalue="Gradle.AuthenticationControllerTest.testDashboard" />
+        <item itemvalue="Gradle.PaymentTypeTest.testRemovePayment" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9bca4fe8-38ac-4e01-8699-a93ec4372909" name="Default Changelist" comment="" />
+      <created>1580770292602</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1580770292602</updated>
+      <workItem from="1580770297245" duration="1508000" />
+      <workItem from="1580771819737" duration="4968000" />
+      <workItem from="1581624976005" duration="460000" />
+      <workItem from="1589049303618" duration="616000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Car_Sharing$PaymentTypeTest_testRemovePayment.ic" NAME="PaymentTypeTest.testRemovePayment Coverage Results" MODIFIED="1580770651750" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Car_Sharing$UserTest.ic" NAME="UserTest Coverage Results" MODIFIED="1580908212831" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+  </component>
+</project>

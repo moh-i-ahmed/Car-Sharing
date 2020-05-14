@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+encoding//src/main/java/springData/services/EmailServiceImpl.java=UTF-8
+encoding//src/main/java/springData/services/InvoiceService.java=UTF-8
+encoding//src/main/java/springData/services/SseService.java=UTF-8
+encoding//src/main/java/springData/services/StripeService.java=UTF-8
+encoding//src/main/resources/templates/email/registration.ftl=UTF-8
