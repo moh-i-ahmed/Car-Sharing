@@ -3,20 +3,11 @@ package springData.domain;
 import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.List;
-
 import static org.hamcrest.Matchers.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import springData.domain.Address;
-import springData.domain.Car;
-import springData.domain.Invoice;
-import springData.domain.Payment;
-import springData.domain.PaymentType;
-import springData.domain.Request;
 import springData.domain.Role;
 import springData.domain.User;
 
@@ -33,7 +24,6 @@ class UserTest {
       user.setUsername("bob@mail.com");
       user.setPassword("testpassword");
       user.setPhoneNumber("07834572877");
-      user.setDate_of_birth(LocalDate.of(1985, 10, 31));
       user.setDriverLicense("MORQ6785368M01");
       user.setPhoneNumber("07435882466");
       user.setActive(false);
@@ -111,16 +101,6 @@ class UserTest {
    }
 
    @Test
-   void testGetSetDate_of_birth() {
-      //Test GetDate_of_birth
-      assertThat(user, hasProperty("date_of_birth", equalTo(LocalDate.of(1985, 10, 31))));
-      
-      //Test SetDate_of_birth
-      user.setDate_of_birth(LocalDate.of(1990, 04, 15));
-      assertThat(user, hasProperty("date_of_birth", equalTo(LocalDate.of(1990, 04, 15))));
-   }
-
-   @Test
    void testActive() {
       //Test isActive
       assertFalse(user.isActive());
@@ -147,75 +127,7 @@ class UserTest {
        // Setup
 
        // Run the test
-       final List<Request> result = user.getRequests();
-
-       // Verify the results
-   }
-
-   @Test
-   public void testAddRequest() {
-       // Setup
-       final Request request = new Request();
-       request.setRequestID(0);
-       request.setRequestDate(LocalDate.of(2017, 1, 1));
-       request.setStartTime(LocalTime.of(12, 0, 0));
-       request.setEndTime(LocalTime.of(12, 0, 0));
-       request.setLatitude("latitude");
-       request.setLongitude("longitude");
-       request.setCar(new Car("registrationNumber", "carColor", "carName", false));
-       final Invoice invoice = new Invoice();
-       invoice.setInvoiceID(0);
-       invoice.setInvoiceDate(LocalDate.of(2017, 1, 1));
-       invoice.setInvoiceTime(LocalTime.of(12, 0, 0));
-       invoice.setInvoiceStatus("invoiceStatus");
-       invoice.setRequest(new Request());
-       final Payment payment = new Payment();
-       payment.setPaymentID(0);
-       payment.setPaymentDate(LocalDate.of(2017, 1, 1));
-       payment.setPaymentAmount(0.0);
-       payment.setInvoice(new Invoice());
-       payment.setPaymentType(new PaymentType());
-       invoice.setPayment(payment);
-       request.setInvoice(invoice);
-       request.setUser(new User());
-       request.setStatus("status");
-
-       // Run the test
-       user.addRequest(request);
-
-       // Verify the results
-   }
-
-   @Test
-   public void testRemoveRequest() {
-       // Setup
-       final Request request = new Request();
-       request.setRequestID(0);
-       request.setRequestDate(LocalDate.of(2017, 1, 1));
-       request.setStartTime(LocalTime.of(12, 0, 0));
-       request.setEndTime(LocalTime.of(12, 0, 0));
-       request.setLatitude("latitude");
-       request.setLongitude("longitude");
-       request.setCar(new Car("registrationNumber", "carColor", "carName", false));
-       final Invoice invoice = new Invoice();
-       invoice.setInvoiceID(0);
-       invoice.setInvoiceDate(LocalDate.of(2017, 1, 1));
-       invoice.setInvoiceTime(LocalTime.of(12, 0, 0));
-       invoice.setInvoiceStatus("invoiceStatus");
-       invoice.setRequest(new Request());
-       final Payment payment = new Payment();
-       payment.setPaymentID(0);
-       payment.setPaymentDate(LocalDate.of(2017, 1, 1));
-       payment.setPaymentAmount(0.0);
-       payment.setInvoice(new Invoice());
-       payment.setPaymentType(new PaymentType());
-       invoice.setPayment(payment);
-       request.setInvoice(invoice);
-       request.setUser(new User());
-       request.setStatus("status");
-
-       // Run the test
-       user.removeRequest(request);
+       //final List<Request> result = user.getRequests();
 
        // Verify the results
    }
@@ -225,7 +137,7 @@ class UserTest {
        // Setup
 
        // Run the test
-       final List<Address> result = user.getAddresses();
+      // final List<Address> result = user.getAddresses();
 
        // Verify the results
    }
@@ -241,10 +153,9 @@ class UserTest {
        address.setCity("city");
        address.setPostcode("postcode");
        address.setCountry("country");
-       address.setUser(new User());
 
        // Run the test
-       user.addAddress(address);
+       user.setAddress(address);
 
        // Verify the results
    }
@@ -260,10 +171,6 @@ class UserTest {
        address.setCity("city");
        address.setPostcode("postcode");
        address.setCountry("country");
-       address.setUser(new User());
-
-       // Run the test
-       user.removeAddress(address);
 
        // Verify the results
    }

@@ -4,7 +4,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,10 +23,8 @@ class CarTest {
    @BeforeEach
    void setUpCar() {
       //Create new car
-      car = new Car("ALIDJGLSA", "Red", "Prius", false);
-      car.setCarType("saloon");
-      car.setLatitude("51.5074N");
-      car.setLongitude("0.1278W");
+      car = new Car("ALIDJGLSA", "Red", "Toyota", "Prius", false);
+      car.setLocation(new Location("51.5074N", "51.5074N"));
       car.setFuelLevel(70);
    }
 
@@ -58,16 +56,6 @@ class CarTest {
    }
 
    @Test
-   void testGetSetCarType() {
-      //Test GetCarType
-      assertThat(car, Matchers.hasProperty("carType", Matchers.equalTo("saloon")));
-      
-      //Test SetCarName
-      car.setCarType("Hatchback");
-      assertThat(car, Matchers.hasProperty("carType", Matchers.equalTo("Hatchback")));
-   }
-
-   @Test
    void testGetSetCarColor() {
       //Test GetCarColor
       assertThat(car, Matchers.hasProperty("carColor", Matchers.equalTo("Red")));
@@ -78,27 +66,14 @@ class CarTest {
    }
 
    @Test
-   void testGetSetLatitude() {
-      //Test GetLatitude
-      assertThat(car, Matchers.hasProperty("latitude", Matchers.equalTo("51.5074N")));
-      assertThat(car, Matchers.hasProperty("latitude", Matchers.not(Matchers.equalTo("52.987N"))));
+   void testGetSetLocation() {
+      //Test GetLocation
+      assertThat(car, Matchers.hasProperty("location"));
       
-      //Test SetLatitude
-      car.setLatitude("45.3460N");
-      assertThat(car, Matchers.hasProperty("latitude", Matchers.not(Matchers.equalTo("Hatchback"))));
-      assertThat(car, Matchers.hasProperty("latitude", Matchers.equalTo("45.3460N")));
-   }
-
-   @Test
-   void testGetSetLongitude() {
-      //Test GetLongitude
-      assertThat(car, Matchers.hasProperty("latitude", Matchers.equalTo("51.5074N")));
-      assertThat(car, Matchers.hasProperty("latitude", Matchers.not(Matchers.equalTo("52.987N"))));
-      
-      //Test SetLongitude
-      car.setLatitude("45.3460N");
-      assertThat(car, Matchers.hasProperty("latitude", Matchers.not(Matchers.equalTo("Hatchback"))));
-      assertThat(car, Matchers.hasProperty("latitude", Matchers.equalTo("45.3460N")));
+      //Test SetLocation
+      Location testLocation = new Location();
+      car.setLocation(testLocation);
+      assertThat(car, Matchers.hasProperty("location", Matchers.not(Matchers.equalTo("testLocation"))));
    }
 
    @Test
@@ -122,45 +97,39 @@ class CarTest {
    }
    
    @Test
-   void testGetSetRequest() {
+   void testAddRemoveRequest() {
       //Test GetRequest
-      assertThat(car, Matchers.hasProperty("request", Matchers.equalTo(null)));
+      assertThat(car, Matchers.hasProperty("requests", Matchers.equalTo(car.getRequests())));
 
       //Create Request
       Request req1 = new Request();
-      req1.setStartTime(LocalTime.NOON);
-      req1.setEndTime(LocalTime.NOON.plusHours(4));
+      req1.setStartTime(LocalDateTime.now());
+      req1.setEndTime(LocalDateTime.now().plusHours(4));
       req1.setRequestDate(LocalDate.of(2019, 11, 20));
-      req1.setStatus(Constants.STATUS_COMPLETE);
-      req1.setCar(car);
+      req1.setStatus(Constants.REQUEST_STATUS_COMPLETE);
       
-      //Test SetRequest
-      car.setRequest(req1);
-      assertThat(car, Matchers.hasProperty("request", Matchers.equalTo(req1)));
-      assertTrue(req1.getCar().equals(car));
+      //Test AddRequest
+      car.addRequest(req1);
+      //assertTrue(req1.getCar().equals(car));
    }
 
    @Test
-   void testGetCarAvailability() {
-      //Test GetCarAvailability
-      assertThat(car, Matchers.hasProperty("request", Matchers.equalTo(null)));
+   void testAddCarAvailability() {
+      //Test AddCarAvailabilities
+      assertThat(car, Matchers.hasProperty("carAvailabilities"));
 
       //Create Request
       Request req1 = new Request();
-      req1.setStartTime(LocalTime.NOON);
-      req1.setEndTime(LocalTime.NOON.plusHours(4));
-      req1.setRequestDate(LocalDate.of(2019, 11, 20));
-      req1.setStatus(Constants.STATUS_COMPLETE);
-      req1.setCar(car);
+      req1.setEndTime(LocalDateTime.now().plusHours(4));
       
       //Create CarAvailability
-      CarAvailability carAvl = new CarAvailability(req1.getEndTime(), AccessCodeGenerator.generateAccessCode(), car);
+      CarAvailability carAvl = new CarAvailability(req1.getEndTime(), req1.getEndTime(),
+            AccessCodeGenerator.generateAccessCode(), car);
       
       //Test SetCarAvailability
-      car.setCarAvailability(carAvl);
+      car.addCarAvailability(carAvl);
       
-      assertThat(car, Matchers.hasProperty("carAvailability", Matchers.equalTo(carAvl)));
-      assertTrue(req1.getCar().getCarAvailability().equals(carAvl));
+      assertThat(car, Matchers.hasProperty("carAvailabilities", Matchers.equalTo(car.getCarAvailabilities())));
    }
 
 }

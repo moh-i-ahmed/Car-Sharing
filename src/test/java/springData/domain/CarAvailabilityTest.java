@@ -3,7 +3,7 @@ package springData.domain;
 import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,14 +20,13 @@ class CarAvailabilityTest {
    @BeforeEach
    void setUpCarAvailability() {
       //Create Car
-      car = new Car("ALIDJGLSA", "Red", "Prius", false);
-      car.setCarType("Sedan");
-      car.setLatitude("51.5074N");
-      car.setLongitude("0.1278W");
+      car = new Car("ALIDJGLSA", "Red", "Toyota", "Prius", false);
+      car.setCarName("Sedan");
+      car.setLocation(new Location("51.5074","0.1278W"));
       car.setFuelLevel(70);
 
       //Create CarAvailability
-      carAvl = new CarAvailability(LocalTime.now(), "TESTCODE", car);
+      carAvl = new CarAvailability(LocalDateTime.now(), LocalDateTime.now().plusHours(2), "TESTCODE", car);
    }
 
    @Test
@@ -40,13 +39,13 @@ class CarAvailabilityTest {
    }
 
    @Test
-   void testGetSetAvailabilityTime() {
+   void testGetSetStartTime() {
       //Test GetAvailabilityTime
-      assertThat(carAvl, Matchers.hasProperty("availabilityTime", Matchers.equalTo(LocalTime.now())));
+      assertThat(carAvl, Matchers.hasProperty("startTime", Matchers.equalTo(LocalDateTime.now())));
 
       //Test SetAvailabilityTime
-      carAvl.setAvailabilityTime(LocalTime.NOON);
-      assertThat(carAvl, Matchers.hasProperty("availabilityTime", Matchers.equalTo(LocalTime.NOON)));
+      carAvl.setStartTime(LocalDateTime.now().plusHours(1));
+      assertThat(carAvl, Matchers.hasProperty("startTime", Matchers.equalTo(LocalDateTime.now().plusHours(1))));
    }
 
    @Test
@@ -65,10 +64,9 @@ class CarAvailabilityTest {
       assertThat(carAvl, Matchers.hasProperty("car", Matchers.notNullValue()));
 
       //Create Car
-      Car car1 = new Car("ALGNVGLTY", "Black", "Accord", true);
-      car1.setCarType("Sedan");
-      car1.setLatitude("51.5074N");
-      car1.setLongitude("0.1278W");
+      Car car1 = new Car("ALGNVGLTY", "Black", "Honda", "Accord", true);
+      car1.setCarName("Sedan");
+      car1.setLocation(new Location("51.5074N", "0.1278W"));
       car1.setFuelLevel(50);
 
       //Test SetCar
