@@ -23,41 +23,47 @@ public class CarAllocation {
    private static DecimalFormat decimalFormatter = new DecimalFormat("#.##");
 
    public TreeMap<Double, Car> carAllocator(Request request) {
-      // Initial radius
+      //Initial radius
       double radius = 2;
 
-      // Find all available cars
+      //Find all available cars
       List<Car> availableCars = carRepo.findAllAvailable();
 
-      // Cars near request pickup location
+      //Cars near request pickup location
       TreeMap<Double, Car> carsWithinRadius = findCars(radius, request, availableCars);
 
-      // Cars by distance (ascending order)
+      //Cars by distance (ascending order)
       return carsWithinRadius;
    }
 
-   // Function that finds available cars within radius
+   /**
+    * Car allocation algorithm that finds available cars within radius
+    *
+    * @param radius
+    * @param request
+    * @param availableCars
+    * @return TreeMap
+    */
    private TreeMap<Double, Car> findCars(double radius, Request request, List<Car> availableCars) {
       // Cars near request pickup location
       TreeMap<Double, Car> carsWithinRadius = new TreeMap<Double, Car>();
-      System.err.println("Reg is------------------------------------------");
+
       // Find distance between cars & request pickup location
       for (Car car: availableCars) {
-         System.err.println("Reg is" + car.getRegistrationNumber());
          // No location data for car
-         if (car.getLocation() == null) continue;
-
+         if (car.getLocation() == null) {
+            continue;
+         }
          // Car is within radius
          double distance = Haversine.haversine(
-               Double.parseDouble(request.getPickupLocation().getLatitude()),
-               Double.parseDouble(request.getPickupLocation().getLongitude()),
-               Double.parseDouble(car.getLocation().getLatitude()),
-               Double.parseDouble(car.getLocation().getLongitude()));
+                  Double.parseDouble(request.getPickupLocation().getLatitude()),
+                  Double.parseDouble(request.getPickupLocation().getLongitude()),
+                  Double.parseDouble(car.getLocation().getLatitude()),
+                  Double.parseDouble(car.getLocation().getLongitude()));
 
          distance = Double.valueOf(decimalFormatter.format(distance));
-         
-         System.err.print(" --- Distance is " + distance);
-         // Add cars it's within radius
+
+         // Add cars within radius
          if (distance <= radius) {
             // Car is available
             if (car.getCarAvailabilities().size() == 0) {
@@ -80,7 +86,7 @@ public class CarAllocation {
          }
       }
       // Expand radius if no Cars found
-      while (carsWithinRadius.isEmpty() && radius <= 3) {
+      while (carsWithinRadius.isEmpty() && radius <= 2) {
          // Expand radius by 0.25km
          radius += 0.25;
 
@@ -88,27 +94,28 @@ public class CarAllocation {
          carsWithinRadius = findCars(radius, request, availableCars);
       }
       // No suitable cars
-      // ask user if they want a different time
+      //ask user if they want a different time
 
       return carsWithinRadius;
    }
 
-   // Check overlapping times
+   //Check overlapping times
    private boolean isOverlapping(CarAvailability availability, Request request) {
       // Overlapping end & start times
       if (request.getStartTime().equals(availability.getEndTime())) {
          // S1 BEFORE E2 && S2 BEFORE E1
-         return !availability.getStartTime().isAfter(request.getEndTime()) 
+         return !availability.getStartTime().isAfter(request.getEndTime())
                && !request.getStartTime().isAfter(availability.getEndTime());
-      }
-      else {
+      } else {
          // S1 BEFORE E2 && S2 BEFORE E1
          return availability.getStartTime().isBefore(request.getEndTime())
                && request.getStartTime().isBefore(availability.getEndTime());
       }
-   } // Adapted from: https://stackoverflow.com/questions/17106670/how-to-check-a-timeperiod-is-overlapping-another-time-period-in-java
+   }
+   // Adapted from: https://stackoverflow.com/questions/17106670/how-to-check-a-timeperiod-is-overlapping-another-
+   // time-period-in-java
 
-   // Function that finds first available Car
+   //Function that finds first available Car
    public Car findCar(Request request) {
       try {
          Car car = new Car();
@@ -119,7 +126,7 @@ public class CarAllocation {
          carRepo.save(car);
 
          CarAvailability availability = new CarAvailability(request.getStartTime(), request.getEndTime(),
-               AccessCodeGenerator.generateAccessCode(), car);
+                 AccessCodeGenerator.generateAccessCode(), car);
 
          request.setAccessCode(availability.getAccessCode());
          carAvailabilityRepo.save(availability);
@@ -136,4 +143,4 @@ public class CarAllocation {
    }
 
 }
-//CarAllocation
+// CarAllocation
