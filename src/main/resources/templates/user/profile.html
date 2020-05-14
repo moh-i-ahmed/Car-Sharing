@@ -182,10 +182,10 @@
         <div class="container-fluid">
           
           <!-- Notification -->
-          <div class="toast position-absolute" role="alert" th:if="${message != null and messageCode != null}" style="right:20px; z-index: 5;"
+          <div class="toast position-absolute" role="alert" th:if="${notificationBody!= null and notificationHeader!= null}" style="right:20px; z-index: 5;"
                aria-live="polite" aria-atomic="true" data-delay="5000">
              
-             <div class="toast-header bg-gradient-success text-gray-100" th:if="${#strings.contains(messageCode, 'Success')}" th:text="${messageCode}">
+             <div class="toast-header bg-gradient-success text-gray-100" th:if="${#strings.contains(notificationHeader, 'Success')}" th:text="${notificationHeader}">
                 <!-- Success -->
                 <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
                      preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
@@ -195,7 +195,7 @@
                    <span aria-hidden="true">&times;</span>
                 </button>
              </div>
-             <div class="toast-header bg-gradient-danger text-gray-100" th:if="${#strings.contains(messageCode, 'Error')}" th:text="${messageCode}">
+             <div class="toast-header bg-gradient-danger text-gray-100" th:if="${#strings.contains(notificationHeader, 'Error')}" th:text="${notificationHeader}">
                 <!-- Error -->
                 <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
                      preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
@@ -205,7 +205,7 @@
                    <span aria-hidden="true">&times;</span>
                 </button>
              </div>
-             <div class="toast-header bg-gradient-warning text-gray-100" th:if="${#strings.contains(messageCode, 'Warning')}" th:text="${messageCode}">
+             <div class="toast-header bg-gradient-warning text-gray-100" th:if="${#strings.contains(notificationHeader, 'Warning')}" th:text="${notificationHeader}">
                 <!-- Warning -->
                 <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
                      preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
@@ -215,7 +215,7 @@
                    <span aria-hidden="true">&times;</span>
                 </button>
              </div>
-             <div class="toast-body" th:text="${message}"></div>
+             <div class="toast-body" th:text="${notificationBody}"></div>
           </div>
 
           <!-- Content Row -->

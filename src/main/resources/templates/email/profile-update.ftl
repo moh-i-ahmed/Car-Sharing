@@ -6,7 +6,7 @@
   <meta name="x-apple-disable-message-reformatting"> 
   <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
   <meta content="telephone=no" name="format-detection"> 
-  <title>Password reset template</title> 
+  <title>Profile update template</title> 
   <!--[if (mso 16)]>
     <style type="text/css">
     a {text-decoration: none;}
@@ -104,19 +104,13 @@ a[x-apple-data-detectors] {
                   <td width="600" valign="top" align="center" style="padding:0;Margin:0;"> 
                    <table style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:separate;border-spacing:0px;border-radius:4px;background-color:#FFFFFF;" width="100%" cellspacing="0" cellpadding="0" bgcolor="#ffffff" data-darkreader-inline-bgcolor role="presentation"> 
                      <tr style="border-collapse:collapse;"> 
-                      <td class="es-m-txt-l" bgcolor="#ffffff" align="left" data-darkreader-inline-bgcolor style="Margin:0;padding-top:20px;padding-bottom:20px;padding-left:30px;padding-right:30px;"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:18px;font-family:lato, 'helvetica neue', helvetica, arial, sans-serif;line-height:27px;color:#666666;">Hi ${name},<br><br>Your requested a password reset for your account. This link is only valid for the next 24 hours. If this wasn't you, please sign in and change your password immediately.<br></p></td> 
+                      <td class="es-m-txt-l" bgcolor="#ffffff" align="left" data-darkreader-inline-bgcolor style="Margin:0;padding-top:20px;padding-bottom:20px;padding-left:30px;padding-right:30px;"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:18px;font-family:lato, 'helvetica neue', helvetica, arial, sans-serif;line-height:27px;color:#666666;">Hi ${name},<br><br>Your profile has been updated. If this wasn't you, please sign in and change your password immediately.<br><br>If you can't sign in, please contact us at web.carsharing@gmail.com.</p></td> 
                      </tr> 
                      <tr style="border-collapse:collapse;"> 
-                      <td align="center" style="padding:10px;Margin:0;"><span class="es-button-border" style="border-style:solid;border-color:#FFA73B;background:#6FA8DC;border-width:1px;display:inline-block;border-radius:2px;width:auto;"><a href="https://${appUrl}" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;font-size:20px;color:#FFFFFF;border-style:solid;border-color:#6FA8DC;border-width:15px 25px 15px 25px;display:inline-block;background:#6FA8DC;border-radius:2px;font-weight:normal;font-style:normal;line-height:24px;width:auto;text-align:center;">Reset password</a></span></td> 
+                      <td class="es-m-txt-l" align="left" bgcolor="#ffffff" style="padding:0;Margin:0;padding-top:20px;padding-left:30px;padding-right:30px;"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:18px;font-family:lato, 'helvetica neue', helvetica, arial, sans-serif;line-height:27px;color:#666666;">If that doesn't work, copy and paste the following link in your browser:</p></td> 
                      </tr> 
                      <tr style="border-collapse:collapse;"> 
-                      <td class="es-m-txt-l" align="left" bgcolor="#ffffff" style="padding:0;Margin:0;padding-top:20px;padding-left:30px;padding-right:30px;"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:18px;font-family:lato, 'helvetica neue', helvetica, arial, sans-serif;line-height:27px;color:#666666;">If that doesn't work, copy and paste the following link in your browser:<br><br></p></td> 
-                     </tr> 
-                     <tr style="border-collapse:collapse;"> 
-                      <td class="es-m-txt-l" align="left" style="padding:0;Margin:0;padding-top:20px;padding-left:30px;padding-right:30px;"><a target="_blank" href="${appUrl}" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:lato, 'helvetica neue', helvetica, arial, sans-serif;font-size:18px;text-decoration:underline;color:#6FA8DC;">${appUrl}</a></td> 
-                     </tr>
-                     <tr style="border-collapse:collapse;"> 
-                      <td class="es-m-txt-l" align="left" bgcolor="#ffffff" style="padding:0;Margin:0;padding-top:20px;padding-left:30px;padding-right:30px;"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:18px;font-family:lato, 'helvetica neue', helvetica, arial, sans-serif;line-height:27px;color:#666666;">If you have any questions, please contact us at web.carsharing@gmail.com.</p></td> 
+                      <td class="es-m-txt-l" align="left" bgcolor="#ffffff" style="padding:0;Margin:0;padding-top:20px;padding-left:30px;padding-right:30px;"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:18px;font-family:lato, 'helvetica neue', helvetica, arial, sans-serif;line-height:27px;color:#666666;">If you have any questions, just reply to this email—we're always happy to help out.</p></td> 
                      </tr> 
                      <tr style="border-collapse:collapse;"> 
                       <td class="es-m-txt-l" align="left" bgcolor="#ffffff" style="Margin:0;padding-top:20px;padding-left:30px;padding-right:30px;padding-bottom:40px;"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:18px;font-family:lato, 'helvetica neue', helvetica, arial, sans-serif;line-height:27px;color:#666666;">Cheers,</p><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:18px;font-family:lato, 'helvetica neue', helvetica, arial, sans-serif;line-height:27px;color:#666666;">Car Sharing Team</p></td> 
