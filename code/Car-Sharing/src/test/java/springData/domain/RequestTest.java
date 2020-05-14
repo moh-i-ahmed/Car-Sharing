@@ -4,7 +4,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,11 +22,11 @@ class RequestTest {
       //Create Request
       request = new Request();
       request.setRequestDate(LocalDate.of(2019, 11, 23));
-      request.setStartTime(LocalTime.of(9, 30));
-      request.setEndTime(LocalTime.of(11, 30));
-      request.setLatitude("51.5074N");
-      request.setLongitude("0.1278W");
-      request.setStatus(Constants.STATUS_COMPLETE);
+      request.setStartTime(LocalDateTime.of(9, 3, 1, 0, 0));
+      request.setEndTime(LocalDateTime.of(11, 3, 1, 0, 0));
+      request.setPickupLocation(new Location());
+      request.setDropoffLocation(new Location());
+      request.setStatus(Constants.REQUEST_STATUS_COMPLETE);
    }
 
    @Test
@@ -48,51 +48,51 @@ class RequestTest {
    @Test
    void testGetSetStartTime() {
       //Test GetStartTime
-      assertThat(request, Matchers.hasProperty("startTime", Matchers.equalTo(LocalTime.of(9, 30))));
+      assertThat(request, Matchers.hasProperty("startTime", Matchers.equalTo(LocalDateTime.of(9, 3, 1, 0, 0))));
       
       //Test SetStartTime
-      request.setStartTime(LocalTime.of(7, 46));
-      assertThat(request, Matchers.hasProperty("startTime", Matchers.equalTo(LocalTime.of(7, 46))));
+      request.setStartTime(LocalDateTime.of(7, 6, 1, 0, 0));
+      assertThat(request, Matchers.hasProperty("startTime", Matchers.equalTo(LocalDateTime.of(7, 6, 1, 0, 0))));
    }
 
    @Test
    void testGetSetEndTime() {
       //Test GetEndTime
-      assertThat(request, Matchers.hasProperty("endTime", Matchers.equalTo(LocalTime.of(11, 30))));
+      assertThat(request, Matchers.hasProperty("endTime", Matchers.equalTo(LocalDateTime.of(11, 3, 1, 0, 0))));
       
       //Test SetEndTime
-      request.setEndTime(LocalTime.of(13, 35));
-      assertThat(request, Matchers.hasProperty("endTime", Matchers.equalTo(LocalTime.of(13, 35))));
+      request.setEndTime(LocalDateTime.of(13, 3, 1, 0, 0));
+      assertThat(request, Matchers.hasProperty("endTime", Matchers.equalTo(LocalDateTime.of(13, 3, 1, 0, 0))));
    }
 
    @Test
-   void testGetSetLatitude() {
+   void testGetSetPickupLocation() {
       //Test GetLatitude
-      assertThat(request, Matchers.hasProperty("latitude", Matchers.equalTo("51.5074N")));
+      assertThat(request, Matchers.hasProperty("pickupLocation"));
       
       //Test SetLatitude
-      request.setLatitude("53.5674S");
-      assertThat(request, Matchers.hasProperty("latitude", Matchers.equalTo("53.5674S")));
+      request.setPickupLocation(new Location());
+      assertThat(request, Matchers.hasProperty("pickupLocation"));
    }
 
    @Test
-   void testGetSetLongitude() {
+   void testGetSetDropoffLocation() {
       //Test GetLongitude
-      assertThat(request, Matchers.hasProperty("longitude", Matchers.equalTo("0.1278W")));
+      assertThat(request, Matchers.hasProperty("dropoffLocation"));
       
       //Test SetLongitude
-      request.setLongitude("3.1578W");
-      assertThat(request, Matchers.hasProperty("longitude", Matchers.equalTo("3.1578W")));
+      request.setDropoffLocation(new Location());
+      assertThat(request, Matchers.hasProperty("dropoffLocation"));
    }
 
    @Test
    void testGetSetStatus() {
       //Test GetStatus
-      assertThat(request, Matchers.hasProperty("status", Matchers.equalTo(Constants.STATUS_COMPLETE)));
+      assertThat(request, Matchers.hasProperty("status", Matchers.equalTo(Constants.REQUEST_STATUS_COMPLETE)));
       
       //Test SetStatus
-      request.setStatus(Constants.STATUS_CANCELLED);
-      assertThat(request, Matchers.hasProperty("status", Matchers.equalTo(Constants.STATUS_CANCELLED)));
+      request.setStatus(Constants.REQUEST_STATUS_CANCELLED);
+      assertThat(request, Matchers.hasProperty("status", Matchers.equalTo(Constants.REQUEST_STATUS_CANCELLED)));
    }
    
 }
