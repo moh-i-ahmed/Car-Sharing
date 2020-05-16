@@ -43,8 +43,8 @@ public class Constants {
    public static final String NOTIFICATION_WARNING = "Warning";
    public static final String NOTIFICATION_ERROR = "Error";
 
-   //public static final String SERVER_URL = "://localhost:8080/";
-   public static final String SERVER_URL = "://heroku-carsharing.herokuapp.com/";
+   public static final String SERVER_URL = "://localhost:8080/";
+   //public static final String SERVER_URL = "://heroku-carsharing.herokuapp.com/";
 
 }
 //Constants
