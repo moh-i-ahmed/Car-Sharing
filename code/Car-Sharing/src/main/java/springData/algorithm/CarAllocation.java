@@ -1,6 +1,7 @@
 package springData.algorithm;
 
 import java.text.DecimalFormat;
+import java.time.Duration;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -10,15 +11,12 @@ import org.springframework.stereotype.Component;
 import springData.domain.Car;
 import springData.domain.CarAvailability;
 import springData.domain.Request;
-import springData.repository.CarAvailabilityRepository;
 import springData.repository.CarRepository;
-import springData.utils.AccessCodeGenerator;
 
 @Component
 public class CarAllocation {
 
    @Autowired private CarRepository carRepo;
-   @Autowired private CarAvailabilityRepository carAvailabilityRepo;
 
    private static DecimalFormat decimalFormatter = new DecimalFormat("#.##");
 
@@ -116,24 +114,31 @@ public class CarAllocation {
    // time-period-in-java
 
    //Function that finds first available Car
-   public Car findCar(Request request) {
+   public TreeMap<Double, Car> findFirstCar(Request request) {
       try {
-         Car car = new Car();
-         List<Car> availableCars = carRepo.findAllAvailable();
+         TreeMap<Double, Car> car = new TreeMap<Double, Car>();
 
-         car = availableCars.get(0);
-         car.setIsActive(true);
-         carRepo.save(car);
+         List<Car> availableCars = carRepo.findAll();
 
-         CarAvailability availability = new CarAvailability(request.getStartTime(), request.getEndTime(),
-                 AccessCodeGenerator.generateAccessCode(), car);
+         for (Car eachCar: availableCars) {
+            for (CarAvailability availability: eachCar.getCarAvailabilities()) {
+               // Request duration
+               Duration duration = Duration.between(availability.getStartTime(), request.getEndTime());
 
-         request.setAccessCode(availability.getAccessCode());
-         carAvailabilityRepo.save(availability);
+               if ((isOverlapping(availability, request) == false) && (duration.toMinutes() <= 120)) {
+                  double distance = Haversine.haversine(
+                        Double.parseDouble(request.getPickupLocation().getLatitude()),
+                        Double.parseDouble(request.getPickupLocation().getLongitude()),
+                        Double.parseDouble(eachCar.getLocation().getLatitude()),
+                        Double.parseDouble(eachCar.getLocation().getLongitude()));
 
-         car.addCarAvailability(availability);
-
-         carRepo.save(car);
+                  distance = Double.valueOf(decimalFormatter.format(distance));
+                  
+                  car.put(distance, eachCar);
+                  return car;
+               }
+            }
+         }
 
          return car;
       } catch (Exception e) {

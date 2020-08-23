@@ -180,9 +180,42 @@ public class UserController {
       // Retrieve cars
       TreeMap<Double, Car> carsWithinRadius = carAllocator.carAllocator(request);
 
+      if (carsWithinRadius.isEmpty()) {
+         model.addAttribute("carsList", 0);
+      }
       model.addAttribute("cars", carsWithinRadius);
 
       return "/user/car-selection";
+   }
+
+   @GetMapping("/next-available-car/{requestID}")
+   public String nextAvailableCar(@PathVariable int requestID, Model model, Principal principal,
+           RedirectAttributes redirectAttributes) {
+      // Find request
+      Request request = requestRepo.findById(requestID);
+
+      User user = userRepo.findByUsername(principal.getName());
+
+      // Active Request exists
+      if (request == null || ((request != null) && (user.isActive() == true))) {
+         return "redirect:/user/dashboard";
+      }
+      // Retrieve cars
+      TreeMap<Double, Car> carsWithinRadius = carAllocator.findFirstCar(request);
+
+      if (carsWithinRadius.isEmpty()) {
+         //Notification message
+         String messageCode = Constants.NOTIFICATION_ERROR;
+         String message = "Unable to fulfill request, please try again later";
+
+         redirectAttributes.addFlashAttribute("messageCode", messageCode);
+         redirectAttributes.addFlashAttribute("message", message);
+
+         return "redirect:/user/dashboard";
+      }
+      model.addAttribute("cars", carsWithinRadius);
+
+      return "/user/car-selection/";
    }
 
    @GetMapping("/select-car/{registrationNumber}/{requestID}")
