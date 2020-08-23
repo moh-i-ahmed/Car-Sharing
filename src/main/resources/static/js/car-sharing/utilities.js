@@ -29,7 +29,7 @@ function onlyNumberKey(evt) {
 
 //Countdown Timer
 function countdownTimer() {
-	var seconds = 60;
+	var seconds = 300;
 	$("countdown").text(seconds);
 
 	setInterval(function () {

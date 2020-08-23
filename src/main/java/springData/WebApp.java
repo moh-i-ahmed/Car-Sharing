@@ -13,14 +13,17 @@ import it.ozimov.springboot.mail.configuration.EnableEmailTools;
 import springData.repository.RoleRepository;
 import springData.repository.StripeCustomerRepository;
 import springData.repository.UserRepository;
+import springData.services.InvoiceService;
 import springData.repository.AddressRepository;
 import springData.repository.CarAvailabilityRepository;
 import springData.repository.CarRepository;
+import springData.repository.InvoiceRepository;
 import springData.repository.LocationRepository;
 import springData.repository.RequestRepository;
 import springData.constants.Constants;
 import springData.domain.Address;
 import springData.domain.Car;
+import springData.domain.Invoice;
 import springData.domain.Location;
 import springData.domain.Request;
 import springData.domain.Role;
@@ -37,8 +40,11 @@ public class WebApp implements CommandLineRunner {
    @Autowired AddressRepository addressRepo;
    @Autowired CarRepository carRepo;
    @Autowired LocationRepository locationRepo;
+   @Autowired InvoiceRepository invoiceRepo;
    @Autowired CarAvailabilityRepository carAvailabilityRepo;
    @Autowired StripeCustomerRepository stripeCustomerRepo;
+
+   @Autowired private InvoiceService invoiceService;
 
    public static void main(String[] args) {
       SpringApplication.run(WebApp.class, args);
@@ -66,7 +72,19 @@ public class WebApp implements CommandLineRunner {
       user.setEnabled(true);
       user.setRole(role);
       userRepo.save(user);
-      
+
+      // Sample User account
+      User user3 = new User();
+      user3.setFirstName("Jake");
+      user3.setLastName("Johnson");
+      user3.setUsername("jake@mail.com");
+      user3.setPhoneNumber("07834992877");
+      user3.setDriverLicense("MAR22755614BC2TL");
+      user3.setPassword(pe.encode("password"));
+      user3.setEnabled(true);
+      user3.setRole(role);
+      userRepo.save(user3);
+
       // Sample Stripe Customer
       StripeCustomer customer = new StripeCustomer();
       customer.setTokenID("cus_HEfFSAOpO4sfTl");
@@ -111,9 +129,9 @@ public class WebApp implements CommandLineRunner {
       Car blueCivic = new Car("JS8DJGLGB", "Blue", "Honda", "Civic", false);
       // New sample
       Car redYaris = new Car("ZBIDJGLSA", "Red", "Toyota", "Yaris", false);
-      Car silverPrius = new Car("TUIDJLI89", "Silver", "Toyota", "Prius", false);
-      Car blueCorolla = new Car("QS3DJLI33", "Blue", "Toyota", "Corolla", false);
-      Car blackAygo = new Car("JH8DJGLPL", "Black", "Toyota", "Aygo", false);
+      Car silverPrius = new Car("TUIDJLI89", "Silver", "Toyota", "Prius", true);
+      Car blueCorolla = new Car("QS3DJLI33", "Blue", "Toyota", "Corolla", true);
+      Car blackAygo = new Car("JH8DJGLPL", "Black", "Toyota", "Aygo", true);
 
       // Sample locations/Parked together
       Location defaultLocation1 = new Location("52.6197362", "-1.1263900999999805");
@@ -172,6 +190,46 @@ public class WebApp implements CommandLineRunner {
       request.setDropoffLocation(defaultLocation2);
       request.setCar(redPrius);
       requestRepo.save(request);
+
+      Request request2 = new Request();
+      request2.setRequestDate(LocalDate.of(2020, 04, 12));
+      request2.setStartTime(LocalDateTime.of(2020, 04, 12, 8, 30));
+      request2.setEndTime(LocalDateTime.of(2020, 04, 12, 11, 30));
+      request2.setStatus(Constants.REQUEST_STATUS_CANCELLED);
+      request2.setUser((user));
+      request2.setDistance(760);
+
+      request2.setPickupLocation(defaultLocation3);
+      request2.setDropoffLocation(defaultLocation1);
+      request2.setCar(blueCorolla);
+      requestRepo.save(request2);
+
+      // Sample Invoice
+      Invoice invoice = new Invoice();
+      invoice.setDistanceCharge(2.6);
+      invoice.setTimeCharge(12);
+      invoice.setInvoiceID("in_1GlIW9L7Xz2qBDJdm4H5iIvq");
+      invoice.setTotalAmount(14.6);
+      invoiceRepo.save(invoice);
+
+      request.setInvoice(invoice);
+      requestRepo.save(request);
+
+      invoice.setRequest(request);
+      invoiceRepo.save(invoice);
+
+      // Sample Invoice 2
+      Invoice invoice2 = new Invoice();
+      invoice2.setDistanceCharge(request2.getDistance());
+      invoice2.setInvoiceID("in_1GlI8oL7Xz2qBDJdzjwqmFGm");
+      invoice2.setTotalAmount(Constants.PRICE_CANCELLATION/100);
+      invoiceRepo.save(invoice2);
+
+      request2.setInvoice(invoice2);
+      requestRepo.save(request2);
+
+      invoice2.setRequest(request2);
+      invoiceRepo.save(invoice2);
    }
 
 }

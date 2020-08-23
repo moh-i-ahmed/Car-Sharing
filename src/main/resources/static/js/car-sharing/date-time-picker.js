@@ -83,7 +83,12 @@ function dateTimePickerEventListener() {
 		//Exact hour(s)
 		else if((hours >= 1) && (minutes == 0)){
 			$('#request_car').removeAttr("disabled");
-			$("#error_time").text(hours + " hour");
+			if (hours == 1) {
+				$("#error_time").text(hours + " hour");
+			}
+			else {
+				$("#error_time").text(hours + " hours");
+			}
 		}
 		//Exact hour(s)
 		else if(hours >= 24){

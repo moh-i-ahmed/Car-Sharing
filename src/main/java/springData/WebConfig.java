@@ -46,6 +46,7 @@ public class WebConfig implements WebMvcConfigurer {
       return b;
    }
 
+   /*
    @Bean
    public ClassLoaderTemplateResolver templateResolver() {
        ClassLoaderTemplateResolver secondaryTemplateResolver = new ClassLoaderTemplateResolver();
@@ -57,7 +58,7 @@ public class WebConfig implements WebMvcConfigurer {
        secondaryTemplateResolver.setCheckExistence(true);
             
        return secondaryTemplateResolver;
-   }
+   }*/
 
    @Primary
    @Bean

@@ -186,15 +186,40 @@
             <!-- Inner Content-->
             <div class="col-xl-4 col-lg-6 col-md-6 mx-auto">
               <div class="card position-relative mb-3">            
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                   <h6 class="m-0 font-weight-bold text-primary">Cars near your pickup location</h6>
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" th:if="${not #lists.isEmpty(cars) and carsList != 0}" >
+                   <h6 class="m-0 font-weight-bold text-primary" >Cars near your pickup location</h6>
+                </div>
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between" th:if="${carsList == 0}" >
+                   <h6 class="m-0 font-weight-bold text-primary" >No cars available at your desired time. Would you like to wait for the next available car?</h6>
                 </div>
                 
-                <div class="card-body mx-auto" th:if="${#lists.isEmpty(cars)}">
-                   <h6 class="m-0 font-weight-bold text-danger">No cars available</h6>
+                <div class="card-body" th:if="${carsList == 0}">
+                   
+                   <div class="row">
+                   <a th:href="@{/user/next-available-car/} + ${requestID}" class="col-10 mb-2 mt-2 mx-auto"
+                      data-toggle="tooltip" data-placement="bottom" title="Find the next available car">
+       
+                      <!-- Number of Cars -->
+                         <div class="card border-left-success shadow h-100 py-1">
+                            <div class="card-body p-2">
+                                 <div class="text-primary row no-gutters align-items-center">
+
+                                   <div class="col mr-2">
+                                     <div class="h5 mb-0 ml-3 text-gray-800">
+                                       <td>Find the next available car?</td>
+                                     </div>
+                                   </div>
+                                   <div class="col-auto mr-4">
+                                      <i class="fas fa-check text-primary fa-2x"></i>
+                                   </div>
+                                 </div>
+                            </div>
+                         </div>
+                     </a>
+                   </div>
                 </div>
 
-                <div class="card-body" th:if="${not #lists.isEmpty(cars)}">
+                <div class="card-body" th:if="${not #lists.isEmpty(cars) and carsList != 0}">
                    
                    <div class="row" th:each="carMap: ${cars}">
                    <a th:href="@{/user/select-car/} + ${car.registrationNumber} + '/' + ${requestID}" class="col-10 mb-2 mt-2 mx-auto" th:each="car: ${carMap.value}"

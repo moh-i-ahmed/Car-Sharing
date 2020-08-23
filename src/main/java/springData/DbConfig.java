@@ -16,7 +16,7 @@ public class DbConfig {
    public DriverManagerDataSource dataSource() {
       DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
       driverManagerDataSource.setDriverClassName("com.mysql.jdbc.Driver");
-      driverManagerDataSource.setUrl("jdbc:mysql://aa5dhnyfie97k3.ckevzmyw6aey.us-east-2.rds.amazonaws.com:8081/ebdb");
+      driverManagerDataSource.setUrl("jdbc:mysql://localhost:8081/carsharing");
       driverManagerDataSource.setUsername("root");
       driverManagerDataSource.setPassword("2NyKnc7nncu4hC3l");
       return driverManagerDataSource;
