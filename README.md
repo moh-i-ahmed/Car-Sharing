@@ -13,7 +13,7 @@ Backend
 Frontend
 - [Google Maps Platform](https://developers.google.com/maps)
 - [JavaScript](https://www.javascript.com/)
-- [jQuery]([https://www.javascript.com/](https://jquery.com/)
+- [jQuery](https://jquery.com/)
 
 Frontend styling
 - [Bootstrap](https://themes.getbootstrap.com/product-category/admin-dashboard/)
