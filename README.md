@@ -2,7 +2,7 @@
 Application for car sharing that explores the algorithmic difficulties of serving customer requests with limited resources.
 The objective was to design and deliver a medium-scale software product for my 3rd year (Bachelors) Computer Science Dissertation project (capstone). 
 
-## Dependancies
+## Dependencies
 
 Backend
 - [MySQL](https://www.mysql.com/)
